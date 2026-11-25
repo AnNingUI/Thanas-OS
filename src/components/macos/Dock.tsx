@@ -259,6 +259,7 @@ export const Dock = () => {
 
       <div
         ref={dockRef}
+        data-dock-root
         className={`fixed bottom-2 left-1/2 -translate-x-1/2 backdrop-blur-macos-heavy rounded-3xl shadow-macos-glass z-[70] ${
           settings.reducedMotion ? '' : 'transition-all duration-500 ease-out'
         } ${

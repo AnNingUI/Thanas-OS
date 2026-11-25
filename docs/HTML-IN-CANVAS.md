@@ -57,6 +57,13 @@ No context API changes, no new dependencies, no build config changes.
    side margins follow `mix(mix(fromP, toP, slide), fromP, easeInOutQuad(t))`.
    Content is **compressed** into the shrinking band, never cropped.
 
+### Dock stays above every effect
+
+The dock is part of the captured desktop, so an effect quad would otherwise paint over
+it. After the effect pass the renderer re-draws the **docked region** from the live
+texture with a scissor rectangle (`data-dock-root`); no extra pipeline, uniform or
+texture is needed. Dock magnification therefore stays visible above smoke and genie.
+
 DOM stays fully interactive and accessible: hit-testing follows the original layout,
 so drag, resize, inputs and dock magnification keep working.
 

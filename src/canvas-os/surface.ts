@@ -361,6 +361,20 @@ export class Surface {
     return this.effects.length;
   }
 
+  /** Dock 的物理像素矩形：特效之后用它做 scissor，把 Dock 重新画到最上层。 */
+  private dockScissor(): { x: number; y: number; w: number; h: number } | null {
+    const el = document.querySelector<HTMLElement>('[data-dock-root]');
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1) return null;
+    const dpr = this.texW / Math.max(1, this.cssW);
+    const x = Math.max(0, Math.floor(r.left * dpr) - 1);
+    const y = Math.max(0, Math.floor(r.top * dpr) - 1);
+    const right = Math.min(this.texW, Math.ceil((r.left + r.width) * dpr) + 1);
+    const bottom = Math.min(this.texH, Math.ceil((r.top + r.height) * dpr) + 1);
+    return { x, y, w: Math.max(0, right - x), h: Math.max(0, bottom - y) };
+  }
+
   private draw(): void {
     if (this.disposed || !this.pipelineMain || !this.liveTex || !this.bindGroup) return;
     if (this.canvas.width === 0 || this.canvas.height === 0) return;
@@ -394,6 +408,18 @@ export class Surface {
       pass.setPipeline(this.pipelineFx);
       pass.setBindGroup(0, this.bindGroup);
       pass.draw(6, count);
+
+      // ⚠️ Dock 在 live 纹理里，特效画完会盖住它。
+      // 用 scissor 把 Dock 区域按最新一帧重绘一次 —— Dock 永远在动画之上，
+      // 不需要把 Dock 拆出 canvas，也不增加任何管线/uniform。
+      const dock = this.dockScissor();
+      if (dock && dock.w > 0 && dock.h > 0) {
+        pass.setScissorRect(dock.x, dock.y, dock.w, dock.h);
+        pass.setPipeline(this.pipelineMain);
+        pass.setBindGroup(0, this.bindGroup);
+        pass.draw(6);
+        pass.setScissorRect(0, 0, this.texW, this.texH);
+      }
     }
 
     pass.end();
