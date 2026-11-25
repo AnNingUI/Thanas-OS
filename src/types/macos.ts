@@ -62,6 +62,8 @@ export interface MacOSSettings {
   lowPowerMode?: boolean;
   defaultBrowser?: 'safari' | 'google';
   googleInstalled?: boolean;
+  /** 是否用 HTML-in-Canvas 把整个桌面作为一张 WebGPU 纹理绘制（实验性）。 */
+  htmlInCanvas?: boolean;
 }
 
 export interface DockItem {

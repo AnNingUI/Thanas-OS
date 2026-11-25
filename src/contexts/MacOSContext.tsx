@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useMemo, ReactNo
 import { WindowState, MacOSSettings, DockItem, AppConfig } from '@/types/macos';
 import { useGoogleInstalled } from '@/lib/installedApps';
 import { setPlayerVolume } from '@/lib/nowPlaying';
+import { emitEffect, type EffectKind } from '@/canvas-os/effect-bus';
 
 interface MacOSContextType {
   windows: WindowState[];
@@ -60,6 +61,21 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
     document.documentElement.classList.toggle('dark', settings.theme === 'dark');
     setPlayerVolume(settings.volume ?? 65);
   }, [settings]);
+
+  /**
+   * 把窗口动作转成表面特效（仅 HTML-in-Canvas 模式）。
+   * 只对最上层窗口生效：特效是叠加绘制的，后台窗口做特效会盖住上层窗口。
+   */
+  const triggerWindowEffect = (kind: EffectKind, windowId: string) => {
+    if (!settings.htmlInCanvas) return;
+    const target = windows.find(w => w.id === windowId);
+    if (!target) return;
+    const top = windows.reduce((a, b) => (a.zIndex >= b.zIndex ? a : b), windows[0]);
+    if (!top || top.id !== windowId) return;
+    const el = document.querySelector<HTMLElement>(`[data-window-id="${windowId}"]`);
+    if (!el) return;
+    emitEffect({ kind, element: el, appId: target.appId });
+  };
 
   const openApp = (appId: string) => {
     if (appId !== 'launchpad') {
@@ -127,6 +143,7 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
   };
 
   const closeWindow = (windowId: string) => {
+    triggerWindowEffect('smoke', windowId);
     setWindows(prev => prev.filter(w => w.id !== windowId));
     if (focusedWindowId === windowId) {
       const remaining = windows.filter(w => w.id !== windowId);
@@ -135,6 +152,7 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
   };
 
   const minimizeWindow = (windowId: string) => {
+    triggerWindowEffect('genie', windowId);
     setWindows(prev =>
       prev.map(w => (w.id === windowId ? { ...w, isMinimized: true } : w))
     );
@@ -148,6 +166,7 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
   };
 
   const maximizeWindow = (windowId: string) => {
+    triggerWindowEffect('wobble', windowId);
     setWindows(prev =>
       prev.map(w => {
         if (w.id !== windowId) return w;

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMacOS } from '@/contexts/MacOSContext';
+import { HTMLInCanvasSurface } from '@/canvas-os/HTMLInCanvasSurface';
 import { Window } from './Window';
 import { Dock } from './Dock';
 import { MenuBar } from './MenuBar';
@@ -117,6 +118,7 @@ export const Desktop = () => {
   };
 
   return (
+    <HTMLInCanvasSurface enabled={!!settings.htmlInCanvas}>
     <div
       className={`fixed inset-0 overflow-hidden ${isMobile ? 'min-w-[1024px]' : ''}`}
       style={{
@@ -162,5 +164,6 @@ export const Desktop = () => {
       <Dock />
       </div>
     </div>
+    </HTMLInCanvasSurface>
   );
 };

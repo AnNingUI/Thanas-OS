@@ -280,6 +280,9 @@ export const SettingsApp = () => {
                 <Row label="Brightness" desc={`${settings.brightness ?? 80}%`}>
                   <div className="w-48"><AppleSlider value={settings.brightness ?? 80} min={20} onChange={v => updateSettings({ brightness: v })} /></div>
                 </Row>
+                <Row label="HTML-in-Canvas" desc="Draw the whole desktop through one WebGPU canvas (experimental).">
+                  <Switch checked={!!settings.htmlInCanvas} onCheckedChange={v => updateSettings({ htmlInCanvas: v })} />
+                </Row>
               </Card>
             )}
 

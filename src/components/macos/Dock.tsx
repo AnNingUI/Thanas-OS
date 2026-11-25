@@ -323,6 +323,7 @@ export const Dock = () => {
             return (
               <div
                 key={app.id}
+                data-dock-app={app.id}
                 ref={(el) => {
                   iconRefs.current[index] = el;
                 }}

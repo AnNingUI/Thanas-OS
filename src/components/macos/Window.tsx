@@ -199,6 +199,7 @@ newWidth = Math.min(newWidth, usableWidth - resizeStart.posX);
   return (
     <div
       ref={windowRef}
+      data-window-id={window.id}
       className={`absolute backdrop-blur-macos-heavy rounded-2xl shadow-macos-window overflow-hidden ${settings.reducedMotion ? '' : 'animate-fade-in'}`}
       style={{
         left: window.isMaximized ? 0 : window.position.x,

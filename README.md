@@ -284,6 +284,21 @@ Things planned but not yet built. Contributions welcome.
 | Theme Builder | User-defined accent colors |
 | Profiles | Save and switch user profiles |
 
+## HTML-in-Canvas desktop mode
+
+ThanasOS can render the **entire desktop as one WebGPU texture** captured from real DOM
+(`canvas[content="drawable"]`), with window effects ported from the local `Macos-Genie-Effect-With-WebGPU` prototype:
+smoke dissolve on close, funnel collapse into the dock on minimize, and an overshoot
+wobble on maximize/restore. Dock magnification, drag and resize keep working because
+the DOM is still the source of truth for layout and hit-testing.
+
+Enable it in **Settings → Displays → HTML-in-Canvas**. It is off by default, requires
+Chrome with HTML-in-Canvas + WebGPU, and falls back to the normal DOM renderer if either
+is missing. Toggling the switch remounts the desktop (open windows are closed).
+
+Implementation notes and the traps that were hit are documented in
+[docs/HTML-IN-CANVAS.md](docs/HTML-IN-CANVAS.md).
+
 ## License
 
 MIT. Use it, fork it, learn from it. A credit back is appreciated but not required.
