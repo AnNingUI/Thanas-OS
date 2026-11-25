@@ -186,11 +186,23 @@ export const Dock = () => {
 
       if (dockRef.current) {
         const rect = dockRef.current.getBoundingClientRect();
-        const dynamicPadding = Math.max(8, baseSize * 0.12);
-        setMouseX(e.clientX - rect.left - dynamicPadding);
+        // ⚠️ 不能用 rect.left：Dock 宽度随放大动态变化并居中，会用移动中的左边不断把鼠标推向右侧（hover 设置却放大 App Store）。
+        // 映射必须基于未放大的基准布局：Dock 中心固定，基准左边界 = 中心 - 基准宽/2。
+        // 完整基准布局 = App 基准宽度 + 分隔线 + 垃圾桶（不含 padding）。
+        // Dock 的额外宽度全部来自这些项的固定尺寸与放大增量；用中心反推基准原点，
+        // 放大时原点才不会被 Dock 自身变宽带偏。
+        // Dock 在桌面 scale(0.9) 容器里：clientX 是屏幕像素，而图标位置是
+        // 未缩放的布局像素，必须先换算，否则右侧图标会累计偏移（hover 设置变成 App Store）。
+        const layoutWidth = parseFloat(dockRef.current.style.width) || rect.width;
+        const scale = rect.width / Math.max(1, layoutWidth);
+        const sepGap = baseSpacing * 1.5;
+        const baseApps = dockItems.length * (baseSize + baseSpacing) - baseSpacing;
+        const baseLayout = baseApps + sepGap * 2 + 1 + baseSize;
+        const baseLeft = rect.left + (rect.width - baseLayout * scale) / 2;
+        setMouseX((e.clientX - baseLeft) / scale);
       }
     },
-    [baseSize, settings.reducedMotion]
+    [baseSize, baseSpacing, dockItems.length, settings.reducedMotion]
   );
 
   const handleMouseLeave = useCallback(() => {
