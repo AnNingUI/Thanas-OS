@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { AppleHelloEffect } from '@/components/effects/AppleHelloEffect';
 import { useImagePreloader } from '@/hooks/useImagePreloader';
@@ -8,6 +9,7 @@ interface WelcomeScreenProps {
 }
 
 export const WelcomeScreen = ({ onEnter }: WelcomeScreenProps) => {
+  const { t } = useTranslation('os');
   // Preload every asset (wallpapers, icons, profile) while the Hello plays.
   useImagePreloader();
   const [phase, setPhase] = useState<'hello' | 'info' | 'exiting'>('hello');
@@ -99,7 +101,7 @@ export const WelcomeScreen = ({ onEnter }: WelcomeScreenProps) => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              Best viewed on desktop · Mobile not optimized
+              {t('welcome.disclaimer')}
             </motion.div>
 
             {/* Enter */}
@@ -117,7 +119,7 @@ export const WelcomeScreen = ({ onEnter }: WelcomeScreenProps) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.4 }}
             >
-              Enter
+              {t('welcome.enter')}
             </motion.button>
 
             {/* Bottom hint */}
@@ -127,7 +129,7 @@ export const WelcomeScreen = ({ onEnter }: WelcomeScreenProps) => {
               animate={{ opacity: 1 }}
               transition={{ delay: 1 }}
             >
-              Click Enter to explore
+              {t('welcome.hint')}
             </motion.p>
           </motion.div>
         )}

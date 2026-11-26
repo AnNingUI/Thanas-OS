@@ -1,0 +1,95 @@
+{
+  "apps": {
+    "about": {
+      "tagline": "开发者，也是擅长创造性解决问题的人。用代码打造细致入微的数字体验。",
+      "age": "{{age}} 岁",
+      "education": "PES 大学计算机科学与工程（人工智能/机器学习）学士",
+      "location": "印度 班加罗尔",
+      "aboutMe": "关于我",
+      "bio1": "我是一个热爱学习的人，相信每天都能进步一点点。我对编程和解决问题抱有真正的热情，也乐于把复杂的挑战变成简单而有效的解决方案。我认真对待自己的工作，同时也重视营造积极愉快的工作氛围。",
+      "bio2": "我力求做到诚实、乐于助人、值得信赖。我把技术能力与 UI/UX 知识结合起来，打造直观而强大的应用。目前正在 PES 大学攻读计算机科学与工程学士学位，专业方向为人工智能/机器学习。",
+      "stats": {
+        "yearsCoding": "编程经验",
+        "projectsBuilt": "已完成项目",
+        "learningGoals": "学习目标"
+      },
+      "portfolioCta": "访问我的主站作品集",
+      "portfolioDesc": "thanas.vercel.app — 最新、功能最完整的版本",
+      "techStack": "技术栈",
+      "techGroups": {
+        "languages": "编程语言",
+        "frameworks": "框架",
+        "aiMl": "人工智能 / 机器学习",
+        "tooling": "工具"
+      }
+    },
+    "finder": {
+      "favorites": "个人收藏",
+      "locations": "位置",
+      "documents": "文稿",
+      "downloads": "下载",
+      "desktop": "桌面",
+      "pictures": "图片",
+      "music": "音乐",
+      "movies": "影片",
+      "folder": "文件夹",
+      "file": "文件",
+      "emptyFile": "（空文件）"
+    },
+    "notes": {
+      "searchPlaceholder": "搜索"
+    },
+    "calculator": {
+      "menuCopy": "拷贝",
+      "menuClear": "清除",
+      "backspace": "退格",
+      "percent": "百分比",
+      "divide": "除以",
+      "multiply": "乘以",
+      "minus": "减去",
+      "plus": "加上",
+      "toggleSign": "切换正负号",
+      "equals": "等于",
+      "error": "错误"
+    },
+    "safari": {
+      "favorites": "个人收藏",
+      "searchPlaceholder": "搜索或输入网站名称",
+      "tabs": "标签页",
+      "bookmarks": "书签",
+      "newTab": "新建标签页",
+      "closeTab": "关闭标签页",
+      "cut": "剪切",
+      "copy": "拷贝",
+      "paste": "粘贴",
+      "reloadPage": "重新载入页面",
+      "showBookmarksBar": "显示书签栏",
+      "hideBookmarksBar": "隐藏书签栏",
+      "showSidebar": "显示边栏",
+      "hideSidebar": "隐藏边栏",
+      "home": "主页"
+    },
+    "appstore": {
+      "searchPlaceholder": "搜索",
+      "discover": "发现",
+      "subtitle": "浏览并安装 Thanas 的项目。",
+      "open": "打开",
+      "get": "获取"
+    },
+    "contact": {
+      "mobile": "手机",
+      "email": "邮箱",
+      "portfolio": "作品集"
+    },
+    "technologies": {
+      "loadingWorkspace": "正在加载工作区…",
+      "blockedTitle": "编辑器无法嵌入显示",
+      "blockedDesc": "浏览器阻止了工作区在此窗口中加载。请在新标签页中打开以继续。",
+      "openWorkspace": "打开工作区",
+      "workspaceTitle": "工作区"
+    },
+    "launchpad": {
+      "searchPlaceholder": "搜索"
+    }
+  }
+}

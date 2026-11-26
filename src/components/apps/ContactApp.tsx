@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Phone,
   MessageSquare,
@@ -9,6 +10,8 @@ import newProfile from '@/assets/newprofile.png';
 
 // iOS-26 liquid-glass contact card updated
 export const ContactApp = () => {
+  const { t } = useTranslation('appsCore');
+
   return (
     <div
       className="relative h-full w-full overflow-hidden text-white"
@@ -79,13 +82,13 @@ export const ContactApp = () => {
         <div className="mt-6 mx-4">
           <GlassPanel className="divide-y divide-white/10">
             <Field
-              label="mobile"
+              label={t('apps.contact.mobile')}
               value="+91 91419 44808"
               href="tel:+919141944808"
               right={<Phone className="w-5 h-5 text-yellow-400" />}
             />
             <Field
-              label="email"
+              label={t('apps.contact.email')}
               value="thanas5.rd@gmail.com"
               href="mailto:thanas5.rd@gmail.com"
               right={<Mail className="w-5 h-5 text-yellow-400" />}
@@ -115,7 +118,7 @@ export const ContactApp = () => {
               right={<GitHubIcon className="w-5 h-5 text-yellow-400" />}
             />
             <Field
-              label="portfolio"
+              label={t('apps.contact.portfolio')}
               value="thanas.dev"
               href="https://thanas.dev"
               right={<PortfolioIcon className="w-5 h-5 text-yellow-400" />}

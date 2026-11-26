@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 
 interface ActivityData {
-  label: string;
+  key: string;
   value: number;
   color: string;
   size: number;
   current: number;
   target: number;
-  unit: string;
 }
 
 const baseActivities = (
@@ -17,30 +17,27 @@ const baseActivities = (
   repoCount: number
 ): ActivityData[] => [
   {
-    label: 'LINKEDIN',
+    key: 'linkedin',
     color: '#FF2D55',
     size: 200,
     current: 132,
     target: 300,
-    unit: 'FOLLOWERS',
     value: Math.min(100, (100 / 250) * 100),
   },
   {
-    label: 'PROJECTS',
+    key: 'projects',
     color: '#A3F900',
     size: 160,
     current: repoCount,
     target: 25,
-    unit: 'REPOS',
     value: Math.min(100, (repoCount / 25) * 100),
   },
   {
-    label: 'STARS',
+    key: 'stars',
     color: '#04C7DD',
     size: 120,
     current: stars,
     target: 200,
-    unit: 'STARS',
     value: Math.min(100, (stars / 30) * 100),
   },
 ];
@@ -50,6 +47,7 @@ export const StatsWidget = ({
 }: {
   className?: string;
 }) => {
+  const { t } = useTranslation('os');
   const [stars, setStars] = useState<number>(8);
   const [repoCount, setRepoCount] = useState<number>(0);
 
@@ -113,11 +111,11 @@ export const StatsWidget = ({
               const progress =
                 ((100 - activity.value) / 100) * circumference;
 
-              const gradientId = `g-stats-${activity.label.toLowerCase()}`;
+              const gradientId = `g-stats-${activity.key}`;
 
               return (
                 <motion.div
-                  key={activity.label}
+                  key={activity.key}
                   className="absolute left-1/2 top-1/2"
                   style={{
                     width: scaledSize,
@@ -196,12 +194,12 @@ export const StatsWidget = ({
 
           <div className="flex flex-col gap-2 flex-1 pl-5">
             {activities.map((a) => (
-              <div key={a.label}>
+              <div key={a.key}>
                 <div
                   className="text-[11px] font-bold tracking-wider"
                   style={{ color: a.color }}
                 >
-                  {a.label}
+                  {t(`widgets.stats.activities.${a.key}.label`)}
                 </div>
 
                 <div className="text-white/95 text-[15px] font-semibold leading-tight">
@@ -210,7 +208,7 @@ export const StatsWidget = ({
                     /{a.target}
                   </span>
                   <span className="text-white/40 text-[10px] ml-1">
-                    {a.unit}
+                    {t(`widgets.stats.activities.${a.key}.unit`)}
                   </span>
                 </div>
               </div>

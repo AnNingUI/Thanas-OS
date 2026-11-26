@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useImagePreloader } from '@/hooks/useImagePreloader';
 import wallpaperLock from '@/assets/wallpaper-tahoe.jpg';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const LockScreen = ({ onUnlock, enterFromTop = false }: Props) => {
+  const { t, i18n } = useTranslation('os');
   useImagePreloader();
   const [now, setNow] = useState(new Date());
   const [exiting, setExiting] = useState(false);
@@ -19,8 +21,8 @@ export const LockScreen = ({ onUnlock, enterFromTop = false }: Props) => {
     return () => clearInterval(t);
   }, []);
 
-  const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false });
-  const date = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const time = now.toLocaleTimeString(i18n.language, { hour: 'numeric', minute: '2-digit', hour12: false });
+  const date = now.toLocaleDateString(i18n.language, { weekday: 'long', month: 'long', day: 'numeric' });
 
   const unlock = async () => {
     if (exiting) return;
@@ -68,7 +70,7 @@ export const LockScreen = ({ onUnlock, enterFromTop = false }: Props) => {
             whileHover={{ scale: 1.04, background: 'rgba(255,255,255,0.26)' }}
             whileTap={{ scale: 0.97 }}
           >
-            Enter
+            {t('lock.enter')}
           </motion.button>
         </div>
       </div>

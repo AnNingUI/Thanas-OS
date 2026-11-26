@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { registerAppMenus } from '@/types/macos';
 import { HiOutlineEquals, HiMiniDivide, HiOutlineBackspace, HiOutlinePlus, HiOutlineMinus } from 'react-icons/hi2';
 import { TbPlusMinus } from 'react-icons/tb';
@@ -9,10 +10,12 @@ type Op = '+' | '-' | '*' | '/' | null;
 // Fixed-size macOS Calculator. No scroll, no resize, no maximize button.
 // Colors: orange #FF9203, digits #333333, utility #5E5E5E.
 export const CalculatorApp = () => {
+  const { t } = useTranslation('appsCore');
   const [display, setDisplay] = useState('0');
   const [accumulator, setAccumulator] = useState<number | null>(null);
   const [operator, setOperator] = useState<Op>(null);
   const [waitingForNew, setWaitingForNew] = useState(false);
+  const errorText = t('apps.calculator.error');
 
   const inputDigit = useCallback((d: string) => {
     setDisplay((cur) => {
@@ -60,9 +63,9 @@ export const CalculatorApp = () => {
     setDisplay((cur) => {
       const n = parseFloat(cur);
       if (Number.isNaN(n)) return cur;
-      return formatNum(n / 100);
+      return formatNum(n / 100, errorText);
     });
-  }, []);
+  }, [errorText]);
 
   const backspace = useCallback(() => {
     if (waitingForNew) return;
@@ -93,14 +96,14 @@ export const CalculatorApp = () => {
         setAccumulator(result);
         setWaitingForNew(true);
         setOperator(next);
-        return formatNum(result);
+        return formatNum(result, errorText);
       }
 
       setOperator(next);
       setWaitingForNew(true);
       return cur;
     });
-  }, [accumulator, operator, waitingForNew]);
+  }, [accumulator, operator, waitingForNew, errorText]);
 
   const equals = useCallback(() => {
     setDisplay((cur) => {
@@ -110,9 +113,9 @@ export const CalculatorApp = () => {
       setAccumulator(null);
       setOperator(null);
       setWaitingForNew(true);
-      return formatNum(result);
+      return formatNum(result, errorText);
     });
-  }, [accumulator, operator]);
+  }, [accumulator, operator, errorText]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -149,12 +152,12 @@ export const CalculatorApp = () => {
   useEffect(() => {
     registerAppMenus('calculator', {
       Edit: [
-        { label: 'Copy', action: () => navigator.clipboard?.writeText(display) },
-        { label: 'Clear', action: clearAll },
+        { label: t('apps.calculator.menuCopy'), action: () => navigator.clipboard?.writeText(display) },
+        { label: t('apps.calculator.menuClear'), action: clearAll },
       ],
     });
     return () => registerAppMenus('calculator', null);
-  }, [display, clearAll]);
+  }, [display, clearAll, t]);
 
   const allClear = display === '0' && accumulator === null && operator === null && !waitingForNew;
   const clearLabel = allClear ? 'AC' : 'C';
@@ -211,7 +214,7 @@ export const CalculatorApp = () => {
         className="px-2.5 pb-3 grid gap-2"
         style={{ gridTemplateColumns: 'repeat(4, 1fr)', gridAutoRows: '1fr' }}
       >
-        <Key variant="util" onClick={backspace} aria-label="Backspace">
+        <Key variant="util" onClick={backspace} aria-label={t('apps.calculator.backspace')}>
           <HiOutlineBackspace style={{ width: 36, height: 36 }} />
         </Key>
 
@@ -219,41 +222,41 @@ export const CalculatorApp = () => {
           <span className="text-[30px] leading-none">{clearLabel}</span>
         </Key>
 
-        <Key variant="util" onClick={percent} aria-label="Percent">
+        <Key variant="util" onClick={percent} aria-label={t('apps.calculator.percent')}>
           <span className="text-[32px] leading-none">%</span>
         </Key>
 
-        <Key variant="op" onClick={() => setOp('/')} aria-label="Divide">
+        <Key variant="op" onClick={() => setOp('/')} aria-label={t('apps.calculator.divide')}>
           <HiMiniDivide style={{ width: 38, height: 38 }} />
         </Key>
 
         <Key onClick={() => inputDigit('7')}>7</Key>
         <Key onClick={() => inputDigit('8')}>8</Key>
         <Key onClick={() => inputDigit('9')}>9</Key>
-        <Key variant="op" onClick={() => setOp('*')} aria-label="Multiply">
+        <Key variant="op" onClick={() => setOp('*')} aria-label={t('apps.calculator.multiply')}>
           <RxCross1 style={{ width: 32, height: 32 }} />
         </Key>
 
         <Key onClick={() => inputDigit('4')}>4</Key>
         <Key onClick={() => inputDigit('5')}>5</Key>
         <Key onClick={() => inputDigit('6')}>6</Key>
-        <Key variant="op" onClick={() => setOp('-')} aria-label="Minus">
+        <Key variant="op" onClick={() => setOp('-')} aria-label={t('apps.calculator.minus')}>
           <HiOutlineMinus style={{ width: 38, height: 38 }} />
         </Key>
 
         <Key onClick={() => inputDigit('1')}>1</Key>
         <Key onClick={() => inputDigit('2')}>2</Key>
         <Key onClick={() => inputDigit('3')}>3</Key>
-        <Key variant="op" onClick={() => setOp('+')} aria-label="Plus">
+        <Key variant="op" onClick={() => setOp('+')} aria-label={t('apps.calculator.plus')}>
           <HiOutlinePlus style={{ width: 38, height: 38 }} />
         </Key>
 
-        <Key variant="util" onClick={toggleSign} aria-label="Toggle sign">
+        <Key variant="util" onClick={toggleSign} aria-label={t('apps.calculator.toggleSign')}>
           <TbPlusMinus style={{ width: 32, height: 32 }} />
         </Key>
         <Key onClick={() => inputDigit('0')}>0</Key>
         <Key onClick={inputDecimal}>.</Key>
-        <Key variant="op" onClick={equals} aria-label="Equals">
+        <Key variant="op" onClick={equals} aria-label={t('apps.calculator.equals')}>
           <HiOutlineEquals style={{ width: 38, height: 38 }} />
         </Key>
       </div>
@@ -294,8 +297,8 @@ const Key = ({
   );
 };
 
-const formatNum = (n: number): string => {
-  if (!Number.isFinite(n)) return 'Error';
+const formatNum = (n: number, errorText: string): string => {
+  if (!Number.isFinite(n)) return errorText;
   const abs = Math.abs(n);
   if (abs !== 0 && (abs < 1e-6 || abs >= 1e10)) return n.toExponential(5).replace(/\.?0+e/, 'e');
   return parseFloat(n.toFixed(8)).toString();

@@ -1,0 +1,262 @@
+{
+  "sidebar": {
+    "wifi": "Wi-Fi",
+    "bluetooth": "Bluetooth",
+    "battery": "Battery",
+    "notifications": "Notifications",
+    "sound": "Sound",
+    "focus": "Focus",
+    "general": "General",
+    "appearance": "Appearance",
+    "privacy": "Privacy & Security",
+    "desktop": "Desktop & Dock",
+    "displays": "Displays",
+    "wallpaper": "Wallpaper",
+    "browser": "Default Browser",
+    "appleAccount": "Apple Account",
+    "settings": "Settings"
+  },
+  "search": {
+    "placeholder": "Search"
+  },
+  "values": {
+    "on": "On",
+    "off": "Off",
+    "manage": "Manage",
+    "none": "None",
+    "unavailable": "Unavailable"
+  },
+  "actions": {
+    "chooseCustomImage": "Choose Custom Image…"
+  },
+  "rows": {
+    "appearance": {
+      "style": {
+        "label": "Appearance",
+        "desc": "Choose your accent style."
+      },
+      "theme": {
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "reducedMotion": {
+        "label": "Reduced Motion",
+        "desc": "Minimize animations across the system."
+      }
+    },
+    "wifi": {
+      "toggle": {
+        "label": "Wi-Fi",
+        "descOn": "ThanasOS-Net",
+        "descOff": "Off"
+      },
+      "networkName": {
+        "label": "Network Name",
+        "desc": "ThanasOS-Net"
+      },
+      "askToJoin": {
+        "label": "Ask to join networks",
+        "desc": "Known networks join automatically."
+      }
+    },
+    "bluetooth": {
+      "toggle": {
+        "label": "Bluetooth"
+      }
+    },
+    "sound": {
+      "outputVolume": {
+        "label": "Output Volume",
+        "desc": "{{percent}}%"
+      },
+      "mute": {
+        "label": "Mute",
+        "desc": "Silence all sound output."
+      }
+    },
+    "focus": {
+      "doNotDisturb": {
+        "label": "Do Not Disturb",
+        "desc": "Silences notifications."
+      }
+    },
+    "displays": {
+      "brightness": {
+        "label": "Brightness",
+        "desc": "{{percent}}%"
+      },
+      "htmlInCanvas": {
+        "label": "HTML-in-Canvas",
+        "desc": "Draw the whole desktop through one WebGPU canvas (experimental)."
+      },
+      "minimizeAnimation": {
+        "label": "Minimize Animation",
+        "desc": "{{ms}} ms · HTML-in-Canvas"
+      },
+      "closeAnimation": {
+        "label": "Close Animation",
+        "desc": "{{ms}} ms · HTML-in-Canvas"
+      }
+    },
+    "desktop": {
+      "autoHideDock": {
+        "label": "Auto-hide Dock",
+        "desc": "Show the dock only on hover."
+      },
+      "magnification": {
+        "label": "Dock Magnification",
+        "desc": "{{percent}}%"
+      },
+      "reduceMotion": {
+        "label": "Reduce Motion",
+        "desc": "Disable dock and window animations."
+      }
+    },
+    "battery": {
+      "level": {
+        "label": "Battery Level",
+        "desc": "{{percent}}%",
+        "descCharging": "{{percent}}% (Charging)",
+        "descUnavailable": "Battery API unavailable"
+      },
+      "lowPowerMode": {
+        "label": "Low Power Mode",
+        "desc": "Reduce energy use to extend battery life. Battery icon turns yellow."
+      }
+    },
+    "browser": {
+      "defaultBrowser": {
+        "label": "Default web browser",
+        "desc": "Pick which browser opens links by default.",
+        "descNoGoogle": "Install Google from the App Store to choose it."
+      }
+    },
+    "privacy": {
+      "locationServices": {
+        "label": "Location Services"
+      },
+      "analytics": {
+        "label": "Analytics & Improvements",
+        "desc": "Help improve ThanasOS."
+      }
+    },
+    "notifications": {
+      "reserved": {
+        "desc": "Pane reserved. Settings will appear here."
+      }
+    }
+  },
+  "general": {
+    "title": "General",
+    "items": {
+      "about": "About",
+      "software": "Software Update",
+      "storage": "Storage",
+      "airdrop": "AirDrop & Handoff",
+      "login": "Login Items",
+      "language": "Language & Region",
+      "datetime": "Date & Time",
+      "sharing": "Sharing",
+      "timeMachine": "Time Machine",
+      "transfer": "Transfer or Reset",
+      "startup": "Startup Disk"
+    },
+    "reserved": {
+      "label": "Section",
+      "desc": "Reserved."
+    }
+  },
+  "about": {
+    "modelName": "Model Name",
+    "modelIdentifier": "Model Identifier",
+    "chip": "Chip",
+    "cores": "Total Number of Cores",
+    "coresValue": "{{total}} ({{performance}} performance and {{efficiency}} efficiency)",
+    "memory": "Memory",
+    "memoryValue": "{{gb}} GB Unified Memory",
+    "storage": "Storage",
+    "storageValue": "{{gb}} GB SSD",
+    "display": "Display",
+    "displayValue": "{{size}}-inch Liquid Retina, {{width}}×{{height}}",
+    "serialNumber": "Serial Number",
+    "battery": "Battery",
+    "batteryValue": "{{percent}}%",
+    "batteryChargingValue": "{{percent}}% Charging",
+    "macos": "macOS",
+    "version": "Version {{version}} (Build {{build}})"
+  },
+  "appleAccount": {
+    "title": "Apple Account",
+    "personalInformation": "Personal Information",
+    "signInSecurity": "Sign-In & Security",
+    "paymentShipping": "Payment & Shipping",
+    "icloud": "iCloud",
+    "icloudPlus": "iCloud+",
+    "icloudPlan": "{{gb}} GB Plan",
+    "icloudDrive": "iCloud Drive",
+    "photos": "Photos",
+    "devicesTitle": "Devices",
+    "devices": {
+      "macbookAirM6": {
+        "name": "MacBook Air M6 (this device)",
+        "value": "Online"
+      },
+      "thanasIphone17": {
+        "name": "Thanas's iPhone 17",
+        "value": "This iPhone 17"
+      },
+      "thanasIphone": {
+        "name": "Thanas's iPhone",
+        "value": "iPhone 6"
+      },
+      "ipad": {
+        "name": "iPad",
+        "value": "iPad Air"
+      },
+      "iphone5": {
+        "name": "iPhone 5",
+        "value": "iPhone 5"
+      },
+      "iphone8Plus": {
+        "name": "iPhone 8 Plus",
+        "value": "iPhone 8 Plus"
+      },
+      "thanasLaptop": {
+        "name": "THANAS-LAPTOP",
+        "value": "Windows"
+      },
+      "thanasIpad": {
+        "name": "Thanas's iPad",
+        "value": "iPad"
+      },
+      "thanasIphone13ProMax": {
+        "name": "Thanas's iPhone 13 Pro Max",
+        "value": "iPhone 13 Pro Max"
+      },
+      "thanasIphoneXr": {
+        "name": "Thanas's iPhone XR",
+        "value": "iPhone XR"
+      }
+    }
+  },
+  "wallpaperNames": {
+    "highlands": "Highlands",
+    "lakeTahoe": "Lake Tahoe",
+    "glenfinnanViaduct": "Glenfinnan Viaduct",
+    "dolomites": "Dolomites",
+    "vestrahorn": "Vestrahorn",
+    "annapurnaNight": "Annapurna Night",
+    "swissAlps": "Swiss Alps",
+    "curiousCat": "Curious Cat",
+    "bigSur": "Big Sur",
+    "aurora": "Aurora",
+    "winterTrail": "Winter Trail",
+    "canyonStars": "Canyon Stars",
+    "vineyardHills": "Vineyard Hills",
+    "catalina": "Catalina",
+    "paintedValley": "Painted Valley",
+    "mountainLake": "Mountain Lake",
+    "mistyValley": "Misty Valley",
+    "winterForest": "Winter Forest"
+  }
+}

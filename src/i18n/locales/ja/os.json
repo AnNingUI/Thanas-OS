@@ -1,0 +1,249 @@
+{
+  "menu": {
+    "aboutThisMac": "このMacについて",
+    "forceQuitAll": "すべてのアプリを強制終了",
+    "sleep": "スリープ",
+    "restart": "再起動",
+    "lockScreen": "画面をロック",
+    "file": "ファイル",
+    "edit": "編集",
+    "view": "表示",
+    "window": "ウインドウ",
+    "help": "ヘルプ",
+    "aboutApp": "{{app}}について",
+    "hideApp": "{{app}}を隠す",
+    "quitApp": "{{app}}を終了",
+    "newLaunchpad": "Launchpadを開く",
+    "closeWindow": "ウインドウを閉じる",
+    "minimize": "しまう",
+    "print": "プリント",
+    "undo": "取り消す",
+    "redo": "やり直す",
+    "cut": "カット",
+    "copy": "コピー",
+    "paste": "ペースト",
+    "selectAll": "すべてを選択",
+    "showDesktop": "デスクトップを表示",
+    "openSpotlight": "Spotlightを開く",
+    "noWindowsOpen": "開いているウインドウはありません",
+    "minimizeAll": "すべてをしまう",
+    "thanasHelp": "ThanasOSヘルプ",
+    "keyboardShortcuts": "キーボードショートカット",
+    "contactMe": "連絡先",
+    "bluetooth": "Bluetooth",
+    "wifiOnline": "オンライン",
+    "wifiOffline": "オフライン",
+    "battery": "バッテリー",
+    "spotlightShortcut": "Spotlight（⌘K）",
+    "controlCenter": "コントロールセンター",
+    "devices": "デバイス",
+    "networks": "ネットワーク",
+    "turnBluetoothOn": "Bluetoothをオンにする",
+    "turnBluetoothOff": "Bluetoothをオフにする",
+    "turnWifiOn": "Wi-Fiをオンにする",
+    "turnWifiOff": "Wi-Fiをオフにする",
+    "bluetoothSettings": "Bluetooth設定…",
+    "wifiSettings": "Wi-Fi設定…",
+    "batterySettings": "バッテリー設定…",
+    "lowPowerMode": "低電力モード",
+    "powerSource": "電源：{{source}}",
+    "powerAdapter": "電源アダプタ",
+    "logoAlt": "ThanasOSのロゴ"
+  },
+  "status": {
+    "on": "オン",
+    "off": "オフ",
+    "connected": "接続済み"
+  },
+  "dock": {
+    "trash": "ゴミ箱"
+  },
+  "window": {
+    "maximizeDisabled": "最大化は使用できません"
+  },
+  "spotlight": {
+    "placeholder": "Spotlight検索",
+    "shortcuts": {
+      "apps": "アプリ",
+      "files": "ファイル",
+      "web": "Web",
+      "settings": "設定"
+    },
+    "noResults": "「{{query}}」の結果が見つかりません",
+    "kinds": {
+      "app": "アプリ",
+      "project": "プロジェクト",
+      "note": "メモ",
+      "bookmark": "ブックマーク",
+      "appstore": "App Store",
+      "setting": "設定"
+    },
+    "application": "アプリケーション",
+    "sections": {
+      "wifi": "Wi-Fi",
+      "bluetooth": "Bluetooth",
+      "sound": "サウンド",
+      "displays": "ディスプレイ",
+      "wallpaper": "壁紙",
+      "appearance": "外観",
+      "desktop": "デスクトップとDock",
+      "general": "一般",
+      "accessibility": "アクセシビリティ"
+    },
+    "getOnAppStore": "App Storeで入手"
+  },
+  "controlCenter": {
+    "wifi": "Wi-Fi",
+    "bluetooth": "Bluetooth",
+    "airdrop": "AirDrop",
+    "contactsOnly": "連絡先のみ",
+    "focus": "集中モード",
+    "sponsor": "スポンサー",
+    "light": "ライト",
+    "dark": "ダーク",
+    "display": "ディスプレイ",
+    "sound": "サウンド"
+  },
+  "nowPlaying": {
+    "seek": "曲をシーク",
+    "previous": "前の曲",
+    "play": "曲を再生",
+    "pause": "曲を一時停止",
+    "next": "次の曲",
+    "volume": "音楽の音量",
+    "love": "曲をお気に入り"
+  },
+  "notifications": {
+    "minutesAgo": "{{count}}分前",
+    "today": "今日",
+    "items": {
+      "mail": {
+        "app": "メール",
+        "title": "Parts Express",
+        "body": "メモリアルデーおめでとうございます！段階的オファー — 米国での $50 以上のご注文は送料無料。"
+      },
+      "appleInsider": {
+        "app": "AppleInsider",
+        "title": "新着記事",
+        "body": "ElgatoがStream Deck Mobileアプリを発表。iPhoneがライブ配信コントローラーに。"
+      },
+      "updates": {
+        "app": "アップデート",
+        "title": "アプリのアップデートあり",
+        "body": "1件のアプリのアップデートがあります。",
+        "when": "午前9:19"
+      },
+      "calendar": {
+        "title": "チームとランチ",
+        "body": "今日 午後1:00 — カッボン・パーク"
+      }
+    }
+  },
+  "lock": {
+    "enter": "はじめる"
+  },
+  "welcome": {
+    "enter": "はじめる",
+    "disclaimer": "デスクトップでの閲覧を推奨 · モバイルは未最適化",
+    "hint": "「はじめる」をクリックして探索"
+  },
+  "help": {
+    "title": "ThanasOSヘルプ",
+    "intro": "<app>ThanasOS</app>へようこそ。macOSをテーマにしたインタラクティブなポートフォリオです。Dockのアプリをクリックするか、Launchpadを開いて探索してください。<kbd>⌘K</kbd>でSpotlightを呼び出せます。",
+    "getInTouch": "連絡先",
+    "easterEggs": "イースターエッグ",
+    "eggTrash": "<b>ゴミ箱</b>は削除だけではありません。クリックしてみてください。",
+    "eggTerminal": "ターミナルは<i>サンドイッチ</i>に一家言あります。チートコードも。チャイも。",
+    "eggCommands": "ターミナルで <code>matrix</code>、<code>do a barrel roll</code>、<code>42</code> を試してみてください。",
+    "eggFinder": "Finderのフォルダには見た目より<i>多く</i>のファイルが入っていることがあります。隠しフォルダを覗いてみてください。",
+    "eggCalendar": "<b>カレンダー</b>ウィジェットはクリックできます。というか、ほぼすべてクリックできます。",
+    "eggRickroll": "私を信じるなら <code>rickroll</code> と入力してください。（信じないでください。）",
+    "eggSecrets": "<code>.secrets</code> フォルダがあります。探してみてください。",
+    "eggHack": "ターミナルで <code>{{cmd}}</code> を実行すると、即座にl33tになれます。",
+    "eggCalculator": "計算機で67と入力してください。"
+  },
+  "shortcuts": {
+    "title": "キーボードショートカット",
+    "tip": "ヒント：macOSではCmd、WindowsではCtrlを使います。",
+    "items": {
+      "spotlight": "Spotlight検索を開く",
+      "newWindow": "新規ウインドウ（対応アプリ）",
+      "newTab": "新規タブ（Safari）",
+      "close": "ウインドウ / タブを閉じる",
+      "minimize": "アクティブなウインドウをしまう",
+      "fullScreen": "フルスクリーンにする",
+      "quit": "フォーカス中のアプリを終了",
+      "showDesktop": "デスクトップを表示",
+      "closeOverlay": "Spotlight / モーダルを閉じる",
+      "settings": "設定を開く"
+    }
+  },
+  "widgets": {
+    "weather": {
+      "city": "ベンガルール",
+      "conditions": {
+        "sunny": "晴れ",
+        "clear": "快晴",
+        "partlyCloudy": "所により曇り",
+        "cloudy": "曇り",
+        "foggy": "霧",
+        "drizzle": "霧雨",
+        "rain": "雨",
+        "snow": "雪",
+        "showers": "にわか雨",
+        "snowShowers": "にわか雪",
+        "thunderstorm": "雷雨"
+      },
+      "highLow": "最高 {{high}}° 最低 {{low}}°",
+      "sunset": "日の入り",
+      "sunrise": "日の出"
+    },
+    "calendar": {
+      "months": {
+        "january": "1月",
+        "february": "2月",
+        "march": "3月",
+        "april": "4月",
+        "may": "5月",
+        "june": "6月",
+        "july": "7月",
+        "august": "8月",
+        "september": "9月",
+        "october": "10月",
+        "november": "11月",
+        "december": "12月"
+      },
+      "weekdays": {
+        "sun": "日",
+        "mon": "月",
+        "tue": "火",
+        "wed": "水",
+        "thu": "木",
+        "fri": "金",
+        "sat": "土"
+      }
+    },
+    "stats": {
+      "activities": {
+        "linkedin": {
+          "label": "LINKEDIN",
+          "unit": "フォロワー"
+        },
+        "projects": {
+          "label": "プロジェクト",
+          "unit": "リポジトリ"
+        },
+        "stars": {
+          "label": "スター",
+          "unit": "スター"
+        }
+      }
+    }
+  },
+  "mobileFallback": {
+    "headlinePre": "これまでで最高の",
+    "headlineMain": "ウェブ版 macOS。",
+    "lead": "ThanasOSは、macOSを忠実かつインタラクティブに再現し、ブラウザ向けに一から作り直したものです。",
+    "openOnDesktop": "フル体験をお楽しみいただくには、<mono>デスクトップ</mono>でこのサイトを開いてください。"
+  }
+}

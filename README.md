@@ -300,6 +300,22 @@ is missing. Toggling the switch remounts the desktop (open windows are closed).
 Implementation notes and the traps that were hit are documented in
 [docs/HTML-IN-CANVAS.md](docs/HTML-IN-CANVAS.md).
 
+## Internationalization
+
+- Runtime: **react-i18next** with three locales — `en`, `zh`, `ja`.
+- Detection: on first load the app reads `navigator.languages` (`zh*` → 简体中文, `ja*` → 日本語, everything else → English) and remembers the choice in `localStorage` (`thanas-language`).
+- Switch: **Settings → Appearance → Language** (English / 简体中文 / 日本語).
+- Strings live in `src/i18n/locales/{en,zh,ja}/{common,os,settings,appsCore,appsMedia}.json`; UI code uses `useTranslation('<namespace>')` and `t('key')`.
+- Tooling: **@x18n/cli** checks keys, missing translations and unused strings.
+
+```bash
+npm run i18n:status   # locales, key coverage
+npm run i18n:check    # missing / unused keys, like tsc --noEmit
+npm run i18n:ui       # browse and edit messages in the browser
+```
+
+Authored content (blog posts, project descriptions, profile data, song titles) stays in its source language; all UI chrome, menus, settings, dialogs and widget labels are localized.
+
 ## License
 
 MIT. Use it, fork it, learn from it. A credit back is appreciated but not required.

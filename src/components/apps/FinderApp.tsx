@@ -1,30 +1,22 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronRight, Star, HardDrive, Download, Image as ImageIcon, FileText, Music, Film, Grid, List, Columns, X } from 'lucide-react';
 import { ROOT, FsNode, HOME, splitPath, getNode } from '@/lib/terminalFs';
 import folderIcon from '@/assets/folder-icon.png';
 import documentIcon from '@/assets/document-icon.png';
 
-const FolderImg = ({ size = 18 }: { size?: number }) => (
-  <img src={folderIcon} alt="folder" width={size} height={size} className="object-contain shrink-0" style={{ width: size, height: size }} />
-);
-const FileImg = ({ size = 18 }: { size?: number }) => (
-  <img src={documentIcon} alt="file" width={size} height={size} className="object-contain shrink-0" style={{ width: size, height: size }} />
-);
-
-const SIDEBAR = [
-  { label: 'Favorites', items: [
-    { name: 'thanas', path: HOME, icon: Star },
-    { name: 'Documents', path: HOME + '/Documents', icon: FileText },
-    { name: 'Downloads', path: HOME + '/Downloads', icon: Download },
-    { name: 'Desktop', path: HOME + '/Desktop', icon: FileText },
-    { name: 'Pictures', path: HOME + '/Pictures', icon: ImageIcon },
-    { name: 'Music', path: HOME + '/Music', icon: Music },
-    { name: 'Movies', path: HOME + '/Movies', icon: Film },
-  ]},
-  { label: 'Locations', items: [
-    { name: 'ThanasOS', path: '/', icon: HardDrive },
-  ]},
-];
+const FolderImg = ({ size = 18 }: { size?: number }) => {
+  const { t } = useTranslation('appsCore');
+  return (
+    <img src={folderIcon} alt={t('apps.finder.folder')} width={size} height={size} className="object-contain shrink-0" style={{ width: size, height: size }} />
+  );
+};
+const FileImg = ({ size = 18 }: { size?: number }) => {
+  const { t } = useTranslation('appsCore');
+  return (
+    <img src={documentIcon} alt={t('apps.finder.file')} width={size} height={size} className="object-contain shrink-0" style={{ width: size, height: size }} />
+  );
+};
 
 type View = 'icons' | 'list' | 'columns';
 
@@ -51,6 +43,24 @@ const renderMarkdown = (md: string) => {
 };
 
 export const FinderApp = () => {
+  const { t } = useTranslation('appsCore');
+
+  const sidebar = [
+    { key: 'favorites', label: t('apps.finder.favorites'), items: [
+      // Home folder keeps the account name; only the folder labels are translated.
+      { name: 'thanas', path: HOME, icon: Star },
+      { name: t('apps.finder.documents'), path: HOME + '/Documents', icon: FileText },
+      { name: t('apps.finder.downloads'), path: HOME + '/Downloads', icon: Download },
+      { name: t('apps.finder.desktop'), path: HOME + '/Desktop', icon: FileText },
+      { name: t('apps.finder.pictures'), path: HOME + '/Pictures', icon: ImageIcon },
+      { name: t('apps.finder.music'), path: HOME + '/Music', icon: Music },
+      { name: t('apps.finder.movies'), path: HOME + '/Movies', icon: Film },
+    ]},
+    { key: 'locations', label: t('apps.finder.locations'), items: [
+      { name: 'ThanasOS', path: '/', icon: HardDrive },
+    ]},
+  ];
+
   const [path, setPath] = useState<string>(HOME);
   const [view, setView] = useState<View>('icons');
   const [selected, setSelected] = useState<string | null>(null);
@@ -99,8 +109,8 @@ export const FinderApp = () => {
       {/* Sidebar — extends to top, hosts the traffic lights overlay above the Favorites header */}
       <div className="w-48 border-r border-white/10 pl-2.5 pr-2.5 pb-2.5 overflow-y-auto bg-black/20 thin-scrollbar"
         style={{ paddingTop: 38 }}>
-        {SIDEBAR.map(group => (
-          <div key={group.label} className="mb-3">
+        {sidebar.map(group => (
+          <div key={group.key} className="mb-3">
             <div className="text-[11px] uppercase tracking-wider text-white/50 font-semibold mb-1.5 px-1">{group.label}</div>
             {group.items.map(it => {
               const Icon = it.icon;
@@ -199,7 +209,7 @@ export const FinderApp = () => {
               {isMd ? (
                 <div dangerouslySetInnerHTML={{ __html: renderMarkdown(openedFile.content) }} />
               ) : (
-                <pre className="whitespace-pre-wrap text-[12.5px] font-mono text-white/85">{openedFile.content || '(empty file)'}</pre>
+                <pre className="whitespace-pre-wrap text-[12.5px] font-mono text-white/85">{openedFile.content || t('apps.finder.emptyFile')}</pre>
               )}
             </div>
           </div>

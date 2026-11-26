@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 declare global {
   interface Window {
@@ -13,6 +14,7 @@ import { APP_ICONS as iconMap } from '@/components/apps/LaunchpadApp';
 import trashIcon from '@/assets/trash-icon.png';
 
 export const Dock = () => {
+  const { t } = useTranslation(['os', 'common']);
   const { apps, dockItems, openApp, windows, settings } = useMacOS();
   const [isDockVisible, setIsDockVisible] = useState(!settings.dockAutoHide);
   const [mouseX, setMouseX] = useState<number | null>(null);
@@ -371,7 +373,7 @@ export const Dock = () => {
                   {iconSrc ? (
                     <img
                       src={iconSrc}
-                      alt={app.name}
+                      alt={t(`apps.${app.id}`, { ns: 'common', defaultValue: app.name })}
                       className="w-full h-full object-cover"
                       decoding="async"
                       loading="eager"
@@ -453,7 +455,7 @@ export const Dock = () => {
             >
               <img
                 src={trashIcon}
-                alt="Trash"
+                alt={t('dock.trash')}
                 className="w-full h-full object-contain"
               />
             </div>

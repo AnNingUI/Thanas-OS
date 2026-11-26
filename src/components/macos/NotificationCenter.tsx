@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Props {
@@ -6,16 +7,37 @@ interface Props {
   onClose: () => void;
 }
 
-const NOTIFS = [
-  { app: 'Mail', title: 'Parts Express', body: 'Happy Memorial Day! Tiered Offer — Free shipping on US orders over $50.', when: '38m ago' },
-  { app: 'AppleInsider', title: 'New Story', body: 'Elgato intros Stream Deck Mobile app, turning iPhones into live broadcast controllers.', when: '53m ago' },
-  { app: 'Updates', title: 'App update available', body: 'There is 1 App update available.', when: '9:19 AM' },
-  { app: 'Calendar', title: 'Lunch with team', body: 'Today at 1:00 PM — Cubbon Park', when: 'Today' },
-];
-
 export const NotificationCenter = ({ open, onClose }: Props) => {
+  const { t } = useTranslation(['os', 'common']);
   const ref = useRef<HTMLDivElement>(null);
   const time = new Date();
+
+  const notifs = [
+    {
+      app: t('notifications.items.mail.app'),
+      title: t('notifications.items.mail.title'),
+      body: t('notifications.items.mail.body'),
+      when: t('notifications.minutesAgo', { count: 38 }),
+    },
+    {
+      app: t('notifications.items.appleInsider.app'),
+      title: t('notifications.items.appleInsider.title'),
+      body: t('notifications.items.appleInsider.body'),
+      when: t('notifications.minutesAgo', { count: 53 }),
+    },
+    {
+      app: t('notifications.items.updates.app'),
+      title: t('notifications.items.updates.title'),
+      body: t('notifications.items.updates.body'),
+      when: t('notifications.items.updates.when'),
+    },
+    {
+      app: t('common:apps.calendar'),
+      title: t('notifications.items.calendar.title'),
+      body: t('notifications.items.calendar.body'),
+      when: t('notifications.today'),
+    },
+  ];
 
   useEffect(() => {
     if (!open) return;
@@ -54,7 +76,7 @@ export const NotificationCenter = ({ open, onClose }: Props) => {
           </div>
 
           <div className="space-y-2">
-            {NOTIFS.map((n, i) => (
+            {notifs.map((n, i) => (
               <div key={i} className="rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.08)' }}>
                 <div className="flex items-center justify-between text-[10.5px] uppercase tracking-wide text-white/60">
                   <span>{n.app}</span><span>{n.when}</span>

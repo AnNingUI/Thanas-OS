@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Search } from 'lucide-react';
 import { BLOG_POSTS } from '@/lib/blogPosts';
 
 export const NotesApp = () => {
+  const { t } = useTranslation('appsCore');
   const [activeId, setActiveId] = useState(BLOG_POSTS[0].id);
   const [query, setQuery] = useState('');
   const active = BLOG_POSTS.find(p => p.id === activeId)!;
@@ -35,7 +37,7 @@ export const NotesApp = () => {
             <input
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Search"
+              placeholder={t('apps.notes.searchPlaceholder')}
               className="flex-1 bg-transparent outline-none text-xs text-white placeholder-neutral-500 min-w-0"
             />
           </div>

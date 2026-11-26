@@ -1,0 +1,262 @@
+{
+  "sidebar": {
+    "wifi": "Wi-Fi",
+    "bluetooth": "Bluetooth",
+    "battery": "バッテリー",
+    "notifications": "通知",
+    "sound": "サウンド",
+    "focus": "集中モード",
+    "general": "一般",
+    "appearance": "外観",
+    "privacy": "プライバシーとセキュリティ",
+    "desktop": "デスクトップとDock",
+    "displays": "ディスプレイ",
+    "wallpaper": "壁紙",
+    "browser": "デフォルトのWebブラウザ",
+    "appleAccount": "Apple アカウント",
+    "settings": "設定"
+  },
+  "search": {
+    "placeholder": "検索"
+  },
+  "values": {
+    "on": "オン",
+    "off": "オフ",
+    "manage": "管理",
+    "none": "なし",
+    "unavailable": "利用不可"
+  },
+  "actions": {
+    "chooseCustomImage": "カスタム画像を選択…"
+  },
+  "rows": {
+    "appearance": {
+      "style": {
+        "label": "外観",
+        "desc": "アクセントのスタイルを選択します。"
+      },
+      "theme": {
+        "light": "ライト",
+        "dark": "ダーク"
+      },
+      "reducedMotion": {
+        "label": "視差効果を減らす",
+        "desc": "システム全体のアニメーションを最小限にします。"
+      }
+    },
+    "wifi": {
+      "toggle": {
+        "label": "Wi-Fi",
+        "descOn": "ThanasOS-Net",
+        "descOff": "オフ"
+      },
+      "networkName": {
+        "label": "ネットワーク名",
+        "desc": "ThanasOS-Net"
+      },
+      "askToJoin": {
+        "label": "ネットワークへの参加を確認",
+        "desc": "既知のネットワークには自動的に接続します。"
+      }
+    },
+    "bluetooth": {
+      "toggle": {
+        "label": "Bluetooth"
+      }
+    },
+    "sound": {
+      "outputVolume": {
+        "label": "出力音量",
+        "desc": "{{percent}}%"
+      },
+      "mute": {
+        "label": "消音",
+        "desc": "すべてのサウンド出力を消音します。"
+      }
+    },
+    "focus": {
+      "doNotDisturb": {
+        "label": "集中モード",
+        "desc": "通知を消音します。"
+      }
+    },
+    "displays": {
+      "brightness": {
+        "label": "明るさ",
+        "desc": "{{percent}}%"
+      },
+      "htmlInCanvas": {
+        "label": "HTML-in-Canvas",
+        "desc": "1つの WebGPU キャンバスでデスクトップ全体を描画します（試験的）。"
+      },
+      "minimizeAnimation": {
+        "label": "最小化アニメーション",
+        "desc": "{{ms}} ms · HTML-in-Canvas"
+      },
+      "closeAnimation": {
+        "label": "閉じるアニメーション",
+        "desc": "{{ms}} ms · HTML-in-Canvas"
+      }
+    },
+    "desktop": {
+      "autoHideDock": {
+        "label": "Dockを自動的に隠す",
+        "desc": "ポインタを合わせたときだけDockを表示します。"
+      },
+      "magnification": {
+        "label": "Dockの拡大",
+        "desc": "{{percent}}%"
+      },
+      "reduceMotion": {
+        "label": "視差効果を減らす",
+        "desc": "Dockとウインドウのアニメーションを無効にします。"
+      }
+    },
+    "battery": {
+      "level": {
+        "label": "バッテリー残量",
+        "desc": "{{percent}}%",
+        "descCharging": "{{percent}}%（充電中）",
+        "descUnavailable": "バッテリーAPIを利用できません"
+      },
+      "lowPowerMode": {
+        "label": "低電力モード",
+        "desc": "エネルギー使用量を抑えてバッテリーを長持ちさせます。バッテリーアイコンが黄色になります。"
+      }
+    },
+    "browser": {
+      "defaultBrowser": {
+        "label": "デフォルトのWebブラウザ",
+        "desc": "リンクを開くブラウザを選択します。",
+        "descNoGoogle": "App StoreからGoogleをインストールすると選択できます。"
+      }
+    },
+    "privacy": {
+      "locationServices": {
+        "label": "位置情報サービス"
+      },
+      "analytics": {
+        "label": "分析と改善",
+        "desc": "ThanasOSの改善に役立てます。"
+      }
+    },
+    "notifications": {
+      "reserved": {
+        "desc": "このペインは予約済みです。設定はここに表示されます。"
+      }
+    }
+  },
+  "general": {
+    "title": "一般",
+    "items": {
+      "about": "情報",
+      "software": "ソフトウェアアップデート",
+      "storage": "ストレージ",
+      "airdrop": "AirDropとHandoff",
+      "login": "ログイン項目",
+      "language": "言語と地域",
+      "datetime": "日付と時刻",
+      "sharing": "共有",
+      "timeMachine": "Time Machine",
+      "transfer": "転送またはリセット",
+      "startup": "起動ディスク"
+    },
+    "reserved": {
+      "label": "セクション",
+      "desc": "予約済み。"
+    }
+  },
+  "about": {
+    "modelName": "モデル名",
+    "modelIdentifier": "モデル識別子",
+    "chip": "チップ",
+    "cores": "コア総数",
+    "coresValue": "{{total}}（高性能 {{performance}}、高効率 {{efficiency}}）",
+    "memory": "メモリ",
+    "memoryValue": "{{gb}} GB ユニファイドメモリ",
+    "storage": "ストレージ",
+    "storageValue": "{{gb}} GB SSD",
+    "display": "ディスプレイ",
+    "displayValue": "{{size}}インチ Liquid Retina、{{width}}×{{height}}",
+    "serialNumber": "シリアル番号",
+    "battery": "バッテリー",
+    "batteryValue": "{{percent}}%",
+    "batteryChargingValue": "{{percent}}%（充電中）",
+    "macos": "macOS",
+    "version": "バージョン {{version}}（ビルド {{build}}）"
+  },
+  "appleAccount": {
+    "title": "Apple アカウント",
+    "personalInformation": "個人情報",
+    "signInSecurity": "サインインとセキュリティ",
+    "paymentShipping": "支払いと配送",
+    "icloud": "iCloud",
+    "icloudPlus": "iCloud+",
+    "icloudPlan": "{{gb}} GB プラン",
+    "icloudDrive": "iCloud Drive",
+    "photos": "写真",
+    "devicesTitle": "デバイス",
+    "devices": {
+      "macbookAirM6": {
+        "name": "MacBook Air M6（このデバイス）",
+        "value": "オンライン"
+      },
+      "thanasIphone17": {
+        "name": "ThanasのiPhone 17",
+        "value": "このiPhone 17"
+      },
+      "thanasIphone": {
+        "name": "ThanasのiPhone",
+        "value": "iPhone 6"
+      },
+      "ipad": {
+        "name": "iPad",
+        "value": "iPad Air"
+      },
+      "iphone5": {
+        "name": "iPhone 5",
+        "value": "iPhone 5"
+      },
+      "iphone8Plus": {
+        "name": "iPhone 8 Plus",
+        "value": "iPhone 8 Plus"
+      },
+      "thanasLaptop": {
+        "name": "THANAS-LAPTOP",
+        "value": "Windows"
+      },
+      "thanasIpad": {
+        "name": "ThanasのiPad",
+        "value": "iPad"
+      },
+      "thanasIphone13ProMax": {
+        "name": "ThanasのiPhone 13 Pro Max",
+        "value": "iPhone 13 Pro Max"
+      },
+      "thanasIphoneXr": {
+        "name": "ThanasのiPhone XR",
+        "value": "iPhone XR"
+      }
+    }
+  },
+  "wallpaperNames": {
+    "highlands": "ハイランド",
+    "lakeTahoe": "タホ湖",
+    "glenfinnanViaduct": "グレンフィナン高架橋",
+    "dolomites": "ドロミテ",
+    "vestrahorn": "ヴェストラホルン",
+    "annapurnaNight": "アンナプルナの夜",
+    "swissAlps": "スイスアルプス",
+    "curiousCat": "好奇心旺盛な猫",
+    "bigSur": "ビッグサー",
+    "aurora": "オーロラ",
+    "winterTrail": "冬の小道",
+    "canyonStars": "キャニオンの星空",
+    "vineyardHills": "ぶどう畑の丘",
+    "catalina": "カタリナ島",
+    "paintedValley": "彩りの谷",
+    "mountainLake": "山の湖",
+    "mistyValley": "霧の谷",
+    "winterForest": "冬の森"
+  }
+}

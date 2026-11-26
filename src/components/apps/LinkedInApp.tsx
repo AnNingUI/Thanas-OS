@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ThumbsUp, MessageSquare, Repeat2, ShieldCheck, Award, GraduationCap } from 'lucide-react';
 import { useMacOS } from '@/contexts/MacOSContext';
 import linkedinPhoto from '@/assets/linkedin-profile-new.jpg';
@@ -17,6 +18,7 @@ const openExternal = (url: string) => {
 };
 
 export const LinkedInApp = () => {
+  const { t: tr } = useTranslation('appsMedia');
   const { settings, openApp } = useMacOS();
   const dark = settings.theme === 'dark';
 
@@ -29,7 +31,7 @@ export const LinkedInApp = () => {
   );
 
   const skills = [
-    { name: 'Python (Programming Language)', endorse: 'Endorsed by 1 person in the last 6 months' },
+    { name: 'Python (Programming Language)', endorse: 1 },
     { name: 'Full-Stack Development' },
     { name: 'Artificial Intelligence (AI)' },
     { name: 'Team Leadership' },
@@ -44,9 +46,9 @@ export const LinkedInApp = () => {
   ];
 
   const languages = [
-    { lang: 'English', level: 'Native or bilingual proficiency' },
-    { lang: 'Hindi', level: 'Limited working proficiency' },
-    { lang: 'Kannada', level: 'Native or bilingual proficiency' },
+    { lang: 'English', levelKey: 'native' },
+    { lang: 'Hindi', levelKey: 'limited' },
+    { lang: 'Kannada', levelKey: 'native' },
   ];
 
 const A = ({
@@ -99,10 +101,10 @@ const A = ({
                     onClick={() => openApp('contact')}
                     className="hover:underline"
                     style={{ color: t.link }}
-                  >Contact info</button>
+                  >{tr('apps.linkedin.contactInfo')}</button>
                 </div>
 
-                <div className="text-[13px] font-semibold mt-2" style={{ color: t.link }}>132 connections</div>
+                <div className="text-[13px] font-semibold mt-2" style={{ color: t.link }}>{tr('apps.linkedin.connections', { count: 132 })}</div>
               </div>
 
              <div className="flex flex-col items-end gap-4 shrink-0 pt-1 translate-x-4">
@@ -141,17 +143,17 @@ const A = ({
         {/* About */}
         <Card>
           <div className="p-5">
-            <h2 className="text-[20px] font-semibold mb-2">About</h2>
+            <h2 className="text-[20px] font-semibold mb-2">{tr('apps.linkedin.sections.about')}</h2>
             <div className="text-[14px] leading-relaxed space-y-3" style={{ color: t.sub }}>
-              <p>I am a passionate learner who believes in growing a little every day. I'm genuinely interested in coding and problem-solving, and I enjoy turning complex challenges into simple, effective solutions.</p>
-              <p>While I take my work seriously, I also value creating a positive and cheerful environment. I believe a good laugh can go a long way in building strong, collaborative teams.</p>
-              <p>I strive to be honest, supportive, and reliable, taking responsibility or leading when needed while contributing and learning with the team.</p>
-              <p>More about me on: <A href="https://thanas.vercel.app">thanas.vercel.app</A></p>
+              <p>{tr('apps.linkedin.about.p1')}</p>
+              <p>{tr('apps.linkedin.about.p2')}</p>
+              <p>{tr('apps.linkedin.about.p3')}</p>
+              <p>{tr('apps.linkedin.about.more')} <A href="https://thanas.vercel.app">thanas.vercel.app</A></p>
             </div>
             <div className="mt-4 rounded-lg border p-4 flex items-center gap-3" style={{ borderColor: t.divider }}>
               <Award className="w-5 h-5" style={{ color: t.text }} />
               <div>
-                <div className="text-[14px] font-semibold">Top skills</div>
+                <div className="text-[14px] font-semibold">{tr('apps.linkedin.sections.topSkills')}</div>
                 <div className="text-[13px]" style={{ color: t.sub }}>Artificial Intelligence (AI) • Full-Stack Development • Team Leadership • Creative Problem Solving</div>
               </div>
             </div>
@@ -162,15 +164,15 @@ const A = ({
         <Card>
           <div className="p-5">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-[20px] font-semibold">Activity</h2>
-              <div className="text-[13px] font-semibold" style={{ color: t.link }}>140 followers</div>
+              <h2 className="text-[20px] font-semibold">{tr('apps.linkedin.sections.activity')}</h2>
+              <div className="text-[13px] font-semibold" style={{ color: t.link }}>{tr('apps.linkedin.followers', { count: 140 })}</div>
             </div>
             <div className="mt-4 rounded-lg border p-4" style={{ borderColor: t.divider }}>
               <div className="flex items-start gap-3">
                 <img src={linkedinPhoto} alt="" className="w-10 h-10 rounded-full object-cover" />
                 <div className="flex-1">
                   <div className="flex items-center gap-1 text-[14px] font-semibold">
-                    Thanas R <ShieldCheck className="w-3.5 h-3.5" style={{ color: t.link }} /> <span className="font-normal" style={{ color: t.sub }}>· You</span>
+                    Thanas R <ShieldCheck className="w-3.5 h-3.5" style={{ color: t.link }} /> <span className="font-normal" style={{ color: t.sub }}>· {tr('apps.linkedin.you')}</span>
                   </div>
                   <div className="text-[12px]" style={{ color: t.sub }}>B.Tech CSE [AIML] Student | PES University</div>
                 </div>
@@ -189,8 +191,8 @@ const A = ({
               </div>
               <div className="flex items-center gap-5 mt-3 text-[12.5px]" style={{ color: t.sub }}>
                 <span className="inline-flex items-center gap-1"><ThumbsUp className="w-3.5 h-3.5" />46</span>
-                <span className="inline-flex items-center gap-1"><MessageSquare className="w-3.5 h-3.5" />5 comments</span>
-                <span className="inline-flex items-center gap-1"><Repeat2 className="w-3.5 h-3.5" />1 repost</span>
+                <span className="inline-flex items-center gap-1"><MessageSquare className="w-3.5 h-3.5" />{tr('apps.linkedin.comments', { count: 5 })}</span>
+                <span className="inline-flex items-center gap-1"><Repeat2 className="w-3.5 h-3.5" />{tr('apps.linkedin.reposts', { count: 1 })}</span>
               </div>
             </div>
           </div>
@@ -199,7 +201,7 @@ const A = ({
         {/* Education */}
         <Card>
           <div className="p-5">
-            <h2 className="text-[20px] font-semibold mb-3">Education</h2>
+            <h2 className="text-[20px] font-semibold mb-3">{tr('apps.linkedin.sections.education')}</h2>
             <div className="space-y-4">
               {[
                 { title: 'PES University', sub: 'Bachelor of Technology, Computer Science and Engineering (AI&ML)', when: '2025 – 2029', logo: pesLogo },
@@ -226,12 +228,12 @@ const A = ({
         {/* Skills */}
         <Card>
           <div className="p-5">
-            <h2 className="text-[20px] font-semibold mb-3">Skills</h2>
+            <h2 className="text-[20px] font-semibold mb-3">{tr('apps.linkedin.sections.skills')}</h2>
             <div className="space-y-3">
               {skills.map((s, i) => (
                 <div key={s.name}>
                   <div className="text-[15px] font-semibold">{s.name}</div>
-                  {s.endorse && <div className="text-[12.5px] mt-0.5" style={{ color: t.sub }}>{s.endorse}</div>}
+                  {s.endorse && <div className="text-[12.5px] mt-0.5" style={{ color: t.sub }}>{tr('apps.linkedin.endorsed', { count: s.endorse })}</div>}
                   {i < skills.length - 1 && <div className="border-t mt-3" style={{ borderColor: t.divider }} />}
                 </div>
               ))}
@@ -242,12 +244,12 @@ const A = ({
         {/* Languages */}
         <Card>
           <div className="p-5">
-            <h2 className="text-[20px] font-semibold mb-3">Languages</h2>
+            <h2 className="text-[20px] font-semibold mb-3">{tr('apps.linkedin.sections.languages')}</h2>
             <div className="space-y-3">
               {languages.map((l, i) => (
                 <div key={l.lang}>
                   <div className="text-[15px] font-semibold">{l.lang}</div>
-                  <div className="text-[13px]" style={{ color: t.sub }}>{l.level}</div>
+                  <div className="text-[13px]" style={{ color: t.sub }}>{tr(`apps.linkedin.proficiency.${l.levelKey}`)}</div>
                   {i < languages.length - 1 && <div className="border-t mt-3" style={{ borderColor: t.divider }} />}
                 </div>
               ))}

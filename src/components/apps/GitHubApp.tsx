@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -43,6 +44,7 @@ const LANG_COLORS: Record<string, string> = {
 };
 
 export const GitHubApp = () => {
+  const { t } = useTranslation('appsMedia');
   const { settings } = useMacOS();
   const dark = settings.theme === 'dark';
 
@@ -127,15 +129,15 @@ export const GitHubApp = () => {
     onMouseEnter={(e) => (e.currentTarget.style.background = btnHover)}
     onMouseLeave={(e) => (e.currentTarget.style.background = btnBg)}
   >
-    Follow
+    {t('apps.github.follow')}
   </a>
 </div>
-          <p className="text-[14px] mb-4 leading-snug">Developer &amp; creative problem-solver. Building thoughtful digital experiences with code</p>
+          <p className="text-[14px] mb-4 leading-snug">{t('apps.github.bio')}</p>
 
           <div className="flex items-center gap-2 text-[14px] mb-3" style={{ color: muted }}>
             <Users className="w-4 h-4" />
             <span>
-              <b style={{ color: text }}>{user?.followers ?? 18}</b> followers · <b style={{ color: text }}>{user?.following ?? 24}</b> following
+              <b style={{ color: text }}>{user?.followers ?? 18}</b> {t('apps.github.followers')} · <b style={{ color: text }}>{user?.following ?? 24}</b> {t('apps.github.following')}
             </span>
           </div>
 
@@ -157,9 +159,9 @@ export const GitHubApp = () => {
           </div>
 
           <div className="mt-5 pt-4 border-t grid grid-cols-3 gap-2 text-center" style={{ borderColor: border }}>
-            <Stat icon={BookOpen} label="Repos" value={user?.public_repos ?? repos.length} />
-            <Stat icon={Star} label="Stars" value={repos.reduce((s, r) => s + r.stargazers_count, 0)} />
-            <Stat icon={Users} label="Followers" value={user?.followers ?? 18} />
+            <Stat icon={BookOpen} label={t('apps.github.stats.repos')} value={user?.public_repos ?? repos.length} />
+            <Stat icon={Star} label={t('apps.github.stats.stars')} value={repos.reduce((s, r) => s + r.stargazers_count, 0)} />
+            <Stat icon={Users} label={t('apps.github.stats.followers')} value={user?.followers ?? 18} />
           </div>
         </aside>
 
@@ -187,7 +189,7 @@ export const GitHubApp = () => {
 >
   <div className="mb-3">
     <div className="text-[14px] font-semibold">
-      Contribution Activity
+      {t('apps.github.contributionActivity')}
     </div>
   </div>
 
@@ -198,9 +200,9 @@ export const GitHubApp = () => {
           <div className="rounded-lg border p-5" style={{ borderColor: border, background: card }}>
             <div className="flex items-center justify-between mb-3">
               <div className="text-[14px] font-semibold  ml-2">
-  Public repositories
+  {t('apps.github.publicRepositories')}
 </div>
-              <div className="text-[12px]" style={{ color: muted }}>{repos.length} repos</div>
+              <div className="text-[12px]" style={{ color: muted }}>{t('apps.github.repoCount', { count: repos.length })}</div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {repos.map((r) => (
@@ -217,7 +219,7 @@ export const GitHubApp = () => {
                     <BookOpen className="w-4 h-4" style={{ color: muted }} />
                     <span className="text-[14px] font-semibold truncate" style={{ color: accent }}>{r.name}</span>
                     <span className="text-[10.5px] px-1.5 rounded-full border" style={{ color: muted, borderColor: border }}>
-                      {r.visibility ?? 'Public'}
+                      {r.visibility === 'Private' ? t('apps.github.visibilityPrivate') : t('apps.github.visibilityPublic')}
                     </span>
                   </div>
                   {r.description && (
@@ -240,7 +242,7 @@ export const GitHubApp = () => {
                 </a>
               ))}
               {repos.length === 0 && (
-                <div className="text-[13px]" style={{ color: muted }}>Loading repositories…</div>
+                <div className="text-[13px]" style={{ color: muted }}>{t('apps.github.loadingRepos')}</div>
               )}
             </div>
           </div>

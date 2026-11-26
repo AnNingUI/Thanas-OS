@@ -1,11 +1,13 @@
 // Floating now-playing controller — used inside the Apple Music app only.
 // Rounded square pill, working seek slider, synced system volume, centered over the main pane.
+import { useTranslation } from 'react-i18next';
 import { useMacOS } from '@/contexts/MacOSContext';
 import { useNowPlaying, togglePlay, nextTrack, prevTrack, seekTo } from '@/lib/nowPlaying';
 import { IoPlay, IoPlayForward, IoPlayBack, IoVolumeMedium } from 'react-icons/io5';
 import { Pause, Heart } from 'lucide-react';
 
 export const NowPlayingPill = ({ dark = false }: { dark?: boolean }) => {
+  const { t } = useTranslation('os');
   const { settings, updateSettings } = useMacOS();
   const np = useNowPlaying();
   const progress = Math.max(0, Math.min(100, (np.progress || 0) * 100));
@@ -46,16 +48,16 @@ export const NowPlayingPill = ({ dark = false }: { dark?: boolean }) => {
             min={0} max={1000} value={Math.round(progress * 10)}
             onChange={(e) => seekTo(Number(e.target.value) / 1000)}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            aria-label="Seek song"
+            aria-label={t('nowPlaying.seek')}
           />
         </div>
       </div>
       <div className="flex items-center gap-1">
-        <button onClick={prevTrack} className={`p-1.5 rounded-lg ${btnHover}`} aria-label="Previous song"><IoPlayBack className="w-4 h-4" /></button>
-        <button onClick={togglePlay} className={`p-2 rounded-lg ${btnHover}`} aria-label={np.playing ? 'Pause song' : 'Play song'}>
+        <button onClick={prevTrack} className={`p-1.5 rounded-lg ${btnHover}`} aria-label={t('nowPlaying.previous')}><IoPlayBack className="w-4 h-4" /></button>
+        <button onClick={togglePlay} className={`p-2 rounded-lg ${btnHover}`} aria-label={np.playing ? t('nowPlaying.pause') : t('nowPlaying.play')}>
           {np.playing ? <Pause className="w-4 h-4" fill="currentColor" /> : <IoPlay className="w-4 h-4" />}
         </button>
-        <button onClick={nextTrack} className={`p-1.5 rounded-lg ${btnHover}`} aria-label="Next song"><IoPlayForward className="w-4 h-4" /></button>
+        <button onClick={nextTrack} className={`p-1.5 rounded-lg ${btnHover}`} aria-label={t('nowPlaying.next')}><IoPlayForward className="w-4 h-4" /></button>
       </div>
       <div className="hidden md:flex items-center gap-2 w-[140px]">
         <IoVolumeMedium className="w-4 h-4 shrink-0" style={{ color: sub }} />
@@ -67,11 +69,11 @@ export const NowPlayingPill = ({ dark = false }: { dark?: boolean }) => {
             min={0} max={100} value={volume}
             onChange={(event) => updateSettings({ volume: Number(event.target.value) })}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            aria-label="Music volume"
+            aria-label={t('nowPlaying.volume')}
           />
         </div>
       </div>
-      <button className={`p-1.5 rounded-lg ${btnHover}`} aria-label="Love song"><Heart className="w-4 h-4" /></button>
+      <button className={`p-1.5 rounded-lg ${btnHover}`} aria-label={t('nowPlaying.love')}><Heart className="w-4 h-4" /></button>
     </div>
   );
 };

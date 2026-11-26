@@ -1,0 +1,249 @@
+{
+  "menu": {
+    "aboutThisMac": "About This Mac",
+    "forceQuitAll": "Force Quit All",
+    "sleep": "Sleep",
+    "restart": "Restart",
+    "lockScreen": "Lock Screen",
+    "file": "File",
+    "edit": "Edit",
+    "view": "View",
+    "window": "Window",
+    "help": "Help",
+    "aboutApp": "About {{app}}",
+    "hideApp": "Hide {{app}}",
+    "quitApp": "Quit {{app}}",
+    "newLaunchpad": "New Launchpad",
+    "closeWindow": "Close Window",
+    "minimize": "Minimize",
+    "print": "Print",
+    "undo": "Undo",
+    "redo": "Redo",
+    "cut": "Cut",
+    "copy": "Copy",
+    "paste": "Paste",
+    "selectAll": "Select All",
+    "showDesktop": "Show Desktop",
+    "openSpotlight": "Open Spotlight",
+    "noWindowsOpen": "No Windows Open",
+    "minimizeAll": "Minimize All",
+    "thanasHelp": "ThanasOS Help",
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "contactMe": "Contact Me",
+    "bluetooth": "Bluetooth",
+    "wifiOnline": "Online",
+    "wifiOffline": "Offline",
+    "battery": "Battery",
+    "spotlightShortcut": "Spotlight (⌘K)",
+    "controlCenter": "Control Center",
+    "devices": "Devices",
+    "networks": "Networks",
+    "turnBluetoothOn": "Turn Bluetooth On",
+    "turnBluetoothOff": "Turn Bluetooth Off",
+    "turnWifiOn": "Turn Wi-Fi On",
+    "turnWifiOff": "Turn Wi-Fi Off",
+    "bluetoothSettings": "Bluetooth Settings…",
+    "wifiSettings": "Wi-Fi Settings…",
+    "batterySettings": "Battery Settings…",
+    "lowPowerMode": "Low Power Mode",
+    "powerSource": "Power Source: {{source}}",
+    "powerAdapter": "Power Adapter",
+    "logoAlt": "ThanasOS logo"
+  },
+  "status": {
+    "on": "On",
+    "off": "Off",
+    "connected": "Connected"
+  },
+  "dock": {
+    "trash": "Trash"
+  },
+  "window": {
+    "maximizeDisabled": "Maximize disabled"
+  },
+  "spotlight": {
+    "placeholder": "Spotlight Search",
+    "shortcuts": {
+      "apps": "Apps",
+      "files": "Files",
+      "web": "Web",
+      "settings": "Settings"
+    },
+    "noResults": "No results for \"{{query}}\"",
+    "kinds": {
+      "app": "app",
+      "project": "project",
+      "note": "note",
+      "bookmark": "bookmark",
+      "appstore": "appstore",
+      "setting": "setting"
+    },
+    "application": "Application",
+    "sections": {
+      "wifi": "Wi-Fi",
+      "bluetooth": "Bluetooth",
+      "sound": "Sound",
+      "displays": "Displays",
+      "wallpaper": "Wallpaper",
+      "appearance": "Appearance",
+      "desktop": "Desktop & Dock",
+      "general": "General",
+      "accessibility": "Accessibility"
+    },
+    "getOnAppStore": "Get on App Store"
+  },
+  "controlCenter": {
+    "wifi": "Wi-Fi",
+    "bluetooth": "Bluetooth",
+    "airdrop": "AirDrop",
+    "contactsOnly": "Contacts",
+    "focus": "Focus",
+    "sponsor": "Sponsor",
+    "light": "Light",
+    "dark": "Dark",
+    "display": "Display",
+    "sound": "Sound"
+  },
+  "nowPlaying": {
+    "seek": "Seek song",
+    "previous": "Previous song",
+    "play": "Play song",
+    "pause": "Pause song",
+    "next": "Next song",
+    "volume": "Music volume",
+    "love": "Love song"
+  },
+  "notifications": {
+    "minutesAgo": "{{count}} min ago",
+    "today": "Today",
+    "items": {
+      "mail": {
+        "app": "Mail",
+        "title": "Parts Express",
+        "body": "Happy Memorial Day! Tiered Offer — Free shipping on US orders over $50."
+      },
+      "appleInsider": {
+        "app": "AppleInsider",
+        "title": "New Story",
+        "body": "Elgato intros Stream Deck Mobile app, turning iPhones into live broadcast controllers."
+      },
+      "updates": {
+        "app": "Updates",
+        "title": "App update available",
+        "body": "There is 1 App update available.",
+        "when": "9:19 AM"
+      },
+      "calendar": {
+        "title": "Lunch with team",
+        "body": "Today at 1:00 PM — Cubbon Park"
+      }
+    }
+  },
+  "lock": {
+    "enter": "Enter"
+  },
+  "welcome": {
+    "enter": "Enter",
+    "disclaimer": "Best viewed on desktop · Mobile not optimized",
+    "hint": "Click Enter to explore"
+  },
+  "help": {
+    "title": "ThanasOS Help",
+    "intro": "Welcome to <app>ThanasOS</app> — a macOS-themed interactive portfolio. Click any app in the Dock or open Launchpad to explore. Hit <kbd>⌘K</kbd> to summon Spotlight.",
+    "getInTouch": "Get in touch",
+    "easterEggs": "Easter eggs",
+    "eggTrash": "The <b>Trash</b> doesn't just delete things. Click it.",
+    "eggTerminal": "The Terminal has opinions about <i>sandwiches</i>. And cheat codes. And chai.",
+    "eggCommands": "Try <code>matrix</code>, <code>do a barrel roll</code>, or <code>42</code> in Terminal.",
+    "eggFinder": "Some Finder folders have <i>more</i> files than they look. Peek inside hidden ones.",
+    "eggCalendar": "The <b>Calendar</b> widget is clickable. So is everything else, basically.",
+    "eggRickroll": "Type <code>rickroll</code> if you trust me. (You shouldn't.)",
+    "eggSecrets": "There's a <code>.secrets</code> folder. Find it.",
+    "eggHack": "Run <code>{{cmd}}</code> in Terminal for instant l33t status.",
+    "eggCalculator": "Type 67 in the Calculator."
+  },
+  "shortcuts": {
+    "title": "Keyboard Shortcuts",
+    "tip": "Tip: Cmd on macOS · Ctrl on Windows.",
+    "items": {
+      "spotlight": "Open Spotlight Search",
+      "newWindow": "New Window (in supported apps)",
+      "newTab": "New Tab (Safari)",
+      "close": "Close Window / Tab",
+      "minimize": "Minimize Active Window",
+      "fullScreen": "Enter Full Screen",
+      "quit": "Quit Focused App",
+      "showDesktop": "Show Desktop",
+      "closeOverlay": "Close Spotlight / Modal",
+      "settings": "Open Settings"
+    }
+  },
+  "widgets": {
+    "weather": {
+      "city": "Bengaluru",
+      "conditions": {
+        "sunny": "Sunny",
+        "clear": "Clear",
+        "partlyCloudy": "Partly Cloudy",
+        "cloudy": "Cloudy",
+        "foggy": "Foggy",
+        "drizzle": "Drizzle",
+        "rain": "Rain",
+        "snow": "Snow",
+        "showers": "Showers",
+        "snowShowers": "Snow Showers",
+        "thunderstorm": "Thunderstorm"
+      },
+      "highLow": "H:{{high}}° L:{{low}}°",
+      "sunset": "Set",
+      "sunrise": "Rise"
+    },
+    "calendar": {
+      "months": {
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
+      },
+      "weekdays": {
+        "sun": "S",
+        "mon": "M",
+        "tue": "T",
+        "wed": "W",
+        "thu": "T",
+        "fri": "F",
+        "sat": "S"
+      }
+    },
+    "stats": {
+      "activities": {
+        "linkedin": {
+          "label": "LINKEDIN",
+          "unit": "FOLLOWERS"
+        },
+        "projects": {
+          "label": "PROJECTS",
+          "unit": "REPOS"
+        },
+        "stars": {
+          "label": "STARS",
+          "unit": "STARS"
+        }
+      }
+    }
+  },
+  "mobileFallback": {
+    "headlinePre": "the best web iteration of",
+    "headlineMain": "macOS online.",
+    "lead": "ThanasOS is a faithful, interactive recreation of macOS, rebuilt from the ground up for the browser.",
+    "openOnDesktop": "Open this site on a <mono>desktop</mono> for the full experience."
+  }
+}

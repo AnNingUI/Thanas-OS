@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search, BatteryCharging, Zap, Check } from 'lucide-react';
 import { IoIosWifi } from 'react-icons/io';
 import { IoBluetooth } from 'react-icons/io5';
@@ -100,6 +101,12 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
   const [online, setOnline] = useState<boolean>(typeof navigator !== 'undefined' ? navigator.onLine : true);
   const { focusedWindowId, apps, windows, minimizeAllWindows, openApp, closeWindow, focusWindow, settings, updateSettings } = useMacOS();
   const menuBarRef = useRef<HTMLDivElement>(null);
+  const { t, i18n } = useTranslation(['os', 'common']);
+
+  const appLabel = useCallback(
+    (id: string, fallback: string) => t(`apps.${id}`, { ns: 'common', defaultValue: fallback }),
+    [t]
+  );
 
   const [, force] = useState(0);
   useEffect(() => subscribeMenuRegistry(() => force(n => n + 1)), []);
@@ -146,7 +153,9 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
 
   const focusedWindow = windows.find(w => w.id === focusedWindowId && !w.isMinimized);
   const focusedApp = focusedWindow ? apps.find(a => a.id === focusedWindow.appId) : null;
-  const appName = focusedApp?.name || 'Finder';
+  const appName = focusedApp
+    ? appLabel(focusedApp.id, focusedApp.name)
+    : t('common:apps.finder');
   const customMenus: AppMenus | undefined = focusedApp ? getAppMenus(focusedApp.id) : undefined;
 
   const triggerLoader = (label: string) => {
@@ -168,78 +177,78 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
   };
 
   const appleMenu: MenuItem[] = [
-    { label: 'About This Mac', action: () => { openApp('settings'); setAppleOpen(false); } },
+    { label: t('menu.aboutThisMac'), action: () => { openApp('settings'); setAppleOpen(false); } },
     { separator: true },
-    { label: 'System Settings', action: () => { openApp('settings'); setAppleOpen(false); } },
-    { label: 'App Store', action: () => { openApp('appstore'); setAppleOpen(false); } },
+    { label: t('common:apps.settings'), action: () => { openApp('settings'); setAppleOpen(false); } },
+    { label: t('common:apps.appstore'), action: () => { openApp('appstore'); setAppleOpen(false); } },
     { separator: true },
-    { label: 'Force Quit All', shortcut: '⌥⌘⎋', action: () => { windows.forEach(w => closeWindow(w.id)); setAppleOpen(false); } },
+    { label: t('menu.forceQuitAll'), shortcut: '⌥⌘⎋', action: () => { windows.forEach(w => closeWindow(w.id)); setAppleOpen(false); } },
     { separator: true },
-    { label: 'Sleep', action: () => triggerLoader('Sleep') },
-    { label: 'Restart', action: () => triggerLoader('Restart') },
+    { label: t('menu.sleep'), action: () => triggerLoader('Sleep') },
+    { label: t('menu.restart'), action: () => triggerLoader('Restart') },
     { separator: true },
-    { label: 'Lock Screen', shortcut: '⌃⌘Q', action: () => triggerLoader('Lock Screen') },
+    { label: t('menu.lockScreen'), shortcut: '⌃⌘Q', action: () => triggerLoader('Lock Screen') },
   ];
 
   const focusActive = focusedWindow;
 
   const menus: MenuGroup[] = useMemo(() => {
     const defaultFile: MenuItem[] = [
-      { label: 'New Launchpad', shortcut: '⌘N', action: () => openApp('launchpad') },
+      { label: t('menu.newLaunchpad'), shortcut: '⌘N', action: () => openApp('launchpad') },
       { separator: true },
-      { label: 'Close Window', shortcut: '⌘W', action: () => focusActive && closeWindow(focusActive.id) },
-      { label: 'Minimize', shortcut: '⌘M', action: () => focusActive && minimizeAllWindows() },
+      { label: t('menu.closeWindow'), shortcut: '⌘W', action: () => focusActive && closeWindow(focusActive.id) },
+      { label: t('menu.minimize'), shortcut: '⌘M', action: () => focusActive && minimizeAllWindows() },
       { separator: true },
-      { label: 'Print', shortcut: '⌘P', action: () => window.print() },
+      { label: t('menu.print'), shortcut: '⌘P', action: () => window.print() },
     ];
     const defaultEdit: MenuItem[] = [
-      { label: 'Undo', shortcut: '⌘Z', action: () => document.execCommand('undo') },
-      { label: 'Redo', shortcut: '⇧⌘Z', action: () => document.execCommand('redo') },
+      { label: t('menu.undo'), shortcut: '⌘Z', action: () => document.execCommand('undo') },
+      { label: t('menu.redo'), shortcut: '⇧⌘Z', action: () => document.execCommand('redo') },
       { separator: true },
-      { label: 'Cut', shortcut: '⌘X', action: () => document.execCommand('cut') },
-      { label: 'Copy', shortcut: '⌘C', action: () => document.execCommand('copy') },
-      { label: 'Paste', shortcut: '⌘V', action: () => document.execCommand('paste') },
-      { label: 'Select All', shortcut: '⌘A', action: () => document.execCommand('selectAll') },
+      { label: t('menu.cut'), shortcut: '⌘X', action: () => document.execCommand('cut') },
+      { label: t('menu.copy'), shortcut: '⌘C', action: () => document.execCommand('copy') },
+      { label: t('menu.paste'), shortcut: '⌘V', action: () => document.execCommand('paste') },
+      { label: t('menu.selectAll'), shortcut: '⌘A', action: () => document.execCommand('selectAll') },
     ];
     const defaultView: MenuItem[] = [
-      { label: 'Show Desktop', action: () => minimizeAllWindows() },
-      { label: 'Open Spotlight', shortcut: '⌘K', action: () => onSpotlightClick?.() },
+      { label: t('menu.showDesktop'), action: () => minimizeAllWindows() },
+      { label: t('menu.openSpotlight'), shortcut: '⌘K', action: () => onSpotlightClick?.() },
     ];
     const defaultWindow: MenuItem[] = windows.length === 0
-      ? [{ label: 'No Windows Open' }]
+      ? [{ label: t('menu.noWindowsOpen') }]
       : [
-          { label: 'Minimize All', shortcut: '⌘M', action: () => minimizeAllWindows() },
+          { label: t('menu.minimizeAll'), shortcut: '⌘M', action: () => minimizeAllWindows() },
           { separator: true },
           ...windows.map(w => {
             const a = apps.find(app => app.id === w.appId);
-            return { label: a?.name || w.appId, action: () => focusWindow(w.id) };
+            return { label: a ? appLabel(a.id, a.name) : w.appId, action: () => focusWindow(w.id) };
           }),
         ];
     const helpMenu: MenuItem[] = [
-      { label: 'ThanasOS Help', action: () => setHelpOpen(true) },
-      { label: 'Keyboard Shortcuts', action: () => setShortcutsOpen(true) },
+      { label: t('menu.thanasHelp'), action: () => setHelpOpen(true) },
+      { label: t('menu.keyboardShortcuts'), action: () => setShortcutsOpen(true) },
       { separator: true },
-      { label: 'Contact Me', action: () => openApp('contact') },
+      { label: t('menu.contactMe'), action: () => openApp('contact') },
     ];
 
     return [
       {
         label: appName,
         items: [
-          { label: `About ${appName}`, action: () => openApp('settings') },
+          { label: t('menu.aboutApp', { app: appName }), action: () => openApp('settings') },
           { separator: true },
-          { label: `Hide ${appName}`, shortcut: '⌘H', action: () => focusActive && closeWindow(focusActive.id) },
+          { label: t('menu.hideApp', { app: appName }), shortcut: '⌘H', action: () => focusActive && closeWindow(focusActive.id) },
           { separator: true },
-          { label: `Quit ${appName}`, shortcut: '⌘Q', action: () => focusActive && closeWindow(focusActive.id) },
+          { label: t('menu.quitApp', { app: appName }), shortcut: '⌘Q', action: () => focusActive && closeWindow(focusActive.id) },
         ],
       },
-      { label: 'File', items: customMenus?.File ?? defaultFile },
-      { label: 'Edit', items: customMenus?.Edit ?? defaultEdit },
-      { label: 'View', items: customMenus?.View ?? defaultView },
-      { label: 'Window', items: customMenus?.Window ?? defaultWindow },
-      { label: 'Help', items: helpMenu },
+      { label: t('menu.file'), items: customMenus?.File ?? defaultFile },
+      { label: t('menu.edit'), items: customMenus?.Edit ?? defaultEdit },
+      { label: t('menu.view'), items: customMenus?.View ?? defaultView },
+      { label: t('menu.window'), items: customMenus?.Window ?? defaultWindow },
+      { label: t('menu.help'), items: helpMenu },
     ];
-  }, [appName, focusActive, windows, apps, openApp, closeWindow, minimizeAllWindows, focusWindow, onSpotlightClick, customMenus]);
+  }, [appName, focusActive, windows, apps, openApp, closeWindow, minimizeAllWindows, focusWindow, onSpotlightClick, customMenus, t, appLabel, i18n.language]);
 
   // Close any open status popover when another opens
   const openOnly = (which: 'battery' | 'wifi' | 'bt' | 'vol' | 'cc' | 'notif' | null) => {
@@ -292,7 +301,7 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
   }, [activeMenu, appleOpen, batteryOpen, wifiOpen, btOpen, volOpen]);
 
   const formatTime = (d: Date) =>
-    d.toLocaleTimeString('en-US', {
+    d.toLocaleTimeString(i18n.language, {
       weekday: 'short',
       month: 'short',
       day: 'numeric',
@@ -371,7 +380,7 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
               }}
               className={`px-2 py-0.5 rounded hover:bg-black/30 flex items-center ${appleOpen ? 'bg-black/40' : ''}`}
             >
-              <img src={turtleLogo} alt="Logo" className="h-[18px] w-auto object-contain" />
+              <img src={turtleLogo} alt={t('menu.logoAlt')} className="h-[18px] w-auto object-contain" />
             </button>
             {appleOpen && renderDropdown(appleMenu)}
           </div>
@@ -403,16 +412,16 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
             className="relative"
             onMouseEnter={() => openOnly('bt')}
           >
-            <StatusBtn onClick={() => openOnly(btOpen ? null : 'bt')} active={btOpen} title="Bluetooth">
+            <StatusBtn onClick={() => openOnly(btOpen ? null : 'bt')} active={btOpen} title={t('menu.bluetooth')}>
               <IoBluetooth style={{ width: 14, height: 14 }} />
             </StatusBtn>
 
             {btOpen && (
               <FrostedPanel width={260} align="right" offset={8}>
                 <div className="font-semibold mb-1 flex items-center justify-between">
-                  Bluetooth
+                  {t('menu.bluetooth')}
                   <span className={`text-[11px] ${settings.bluetooth ? 'text-[#32C14E]' : 'text-white/50'}`}>
-                    {settings.bluetooth ? 'On' : 'Off'}
+                    {settings.bluetooth ? t('status.on') : t('status.off')}
                   </span>
                 </div>
 
@@ -420,16 +429,16 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
                   onClick={() => updateSettings({ bluetooth: !settings.bluetooth })}
                   className="w-full text-left px-2 py-1.5 rounded hover:bg-black/40 text-[12.5px]"
                 >
-                  {settings.bluetooth ? 'Turn Bluetooth Off' : 'Turn Bluetooth On'}
+                  {settings.bluetooth ? t('menu.turnBluetoothOff') : t('menu.turnBluetoothOn')}
                 </button>
 
                 <div className="h-px bg-white/10 my-1" />
 
-                <div className="text-[11px] text-white/55 px-2 mb-1">Devices</div>
+                <div className="text-[11px] text-white/55 px-2 mb-1">{t('menu.devices')}</div>
                 {['Thanas\u2019 AirPods Pro', 'Magic Mouse', 'Magic Keyboard'].map(d => (
                   <div key={d} className="px-2 py-1 text-[12.5px] flex items-center justify-between">
                     <span>{d}</span>
-                    <span className="text-[10.5px] text-white/55">Connected</span>
+                    <span className="text-[10.5px] text-white/55">{t('status.connected')}</span>
                   </div>
                 ))}
 
@@ -441,7 +450,7 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
                   }}
                   className="w-full text-left px-2 py-1.5 rounded hover:bg-black/40 text-[12.5px]"
                 >
-                  Bluetooth Settings…
+                  {t('menu.bluetoothSettings')}
                 </button>
               </FrostedPanel>
             )}
@@ -454,7 +463,7 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
             <StatusBtn
               onClick={() => openOnly(wifiOpen ? null : 'wifi')}
               active={wifiOpen}
-              title={online ? 'Online' : 'Offline'}
+              title={online ? t('menu.wifiOnline') : t('menu.wifiOffline')}
               className={settings.wifi && online ? '' : 'opacity-60'}
             >
               <IoIosWifi style={{ width: 17.5, height: 17.5 }} />
@@ -463,9 +472,9 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
             {wifiOpen && (
               <FrostedPanel width={280} align="right" offset={8}>
                 <div className="font-semibold mb-1 flex items-center justify-between">
-                  Wi-Fi
+                  {t('controlCenter.wifi')}
                   <span className={`text-[11px] ${settings.wifi ? 'text-[#32C14E]' : 'text-white/50'}`}>
-                    {settings.wifi ? 'On' : 'Off'}
+                    {settings.wifi ? t('status.on') : t('status.off')}
                   </span>
                 </div>
 
@@ -473,12 +482,12 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
                   onClick={() => updateSettings({ wifi: !settings.wifi })}
                   className="w-full text-left px-2 py-1.5 rounded hover:bg-black/40 text-[12.5px]"
                 >
-                  {settings.wifi ? 'Turn Wi-Fi Off' : 'Turn Wi-Fi On'}
+                  {settings.wifi ? t('menu.turnWifiOff') : t('menu.turnWifiOn')}
                 </button>
 
                 <div className="h-px bg-white/10 my-1" />
 
-                <div className="text-[11px] text-white/55 px-2 mb-1">Networks</div>
+                <div className="text-[11px] text-white/55 px-2 mb-1">{t('menu.networks')}</div>
                 {[
                   { name: 'ThanasOS-Net', current: true },
                   { name: 'PESU-Wifi', current: false },
@@ -505,7 +514,7 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
                   }}
                   className="w-full text-left px-2 py-1.5 rounded hover:bg-black/40 text-[12.5px]"
                 >
-                  Wi-Fi Settings…
+                  {t('menu.wifiSettings')}
                 </button>
               </FrostedPanel>
             )}
@@ -515,7 +524,7 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
             className="relative"
             onMouseEnter={() => openOnly('battery')}
           >
-            <StatusBtn onClick={() => openOnly(batteryOpen ? null : 'battery')} active={batteryOpen} title="Battery">
+            <StatusBtn onClick={() => openOnly(batteryOpen ? null : 'battery')} active={batteryOpen} title={t('menu.battery')}>
               <IOSBattery level={batteryLevel} charging={batteryCharging} lowPower={settings.lowPowerMode} />
             </StatusBtn>
 
@@ -523,13 +532,13 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
               <FrostedPanel width={260} align="right" offset={8}>
                 <div className="flex items-center justify-between mb-2">
                   <div className="font-semibold flex items-center gap-1.5">
-                    Battery {batteryCharging && <BatteryCharging className="w-5 h-5" style={{ color: '#32C04E' }} />}
+                    {t('menu.battery')} {batteryCharging && <BatteryCharging className="w-5 h-5" style={{ color: '#32C04E' }} />}
                   </div>
                   <div className="text-[12px] text-white/70">{batteryLevel ?? 100}%</div>
                 </div>
 
                 <div className="text-[12px] text-white/70 mb-2">
-                  Power Source: {batteryCharging ? 'Power Adapter' : 'Battery'}
+                  {t('menu.powerSource', { source: batteryCharging ? t('menu.powerAdapter') : t('menu.battery') })}
                 </div>
 
                 <div className="h-px bg-white/10 my-1.5" />
@@ -537,7 +546,7 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
                   onClick={() => updateSettings({ lowPowerMode: !settings.lowPowerMode })}
                   className="w-full flex items-center justify-between px-2 py-1.5 rounded hover:bg-black/40 text-[12.5px]"
                 >
-                  <span>Low Power Mode</span>
+                  <span>{t('menu.lowPowerMode')}</span>
                   <span
                     className="relative inline-flex h-[18px] w-[30px] rounded-full transition-colors"
                     style={{ background: settings.lowPowerMode ? '#34c759' : 'rgba(255,255,255,0.22)' }}
@@ -556,20 +565,20 @@ export const MenuBar = ({ onSpotlightClick }: MenuBarProps) => {
                   }}
                   className="w-full text-left px-2 py-1.5 rounded hover:bg-black/40 text-[12.5px]"
                 >
-                  Battery Settings…
+                  {t('menu.batterySettings')}
                 </button>
               </FrostedPanel>
             )}
           </div>
 
-          <StatusBtn onClick={onSpotlightClick} title="Spotlight (⌘K)">
+          <StatusBtn onClick={onSpotlightClick} title={t('menu.spotlightShortcut')}>
             <Search style={{ width: 13, height: 13 }} />
           </StatusBtn>
 
-          <StatusBtn onClick={() => openOnly(ccOpen ? null : 'cc')} active={ccOpen} title="Control Center">
+          <StatusBtn onClick={() => openOnly(ccOpen ? null : 'cc')} active={ccOpen} title={t('menu.controlCenter')}>
             <img
               src={controlCenterIcon}
-              alt="Control Center"
+              alt={t('menu.controlCenter')}
               style={{ height: 13, width: 'auto', filter: 'brightness(0) invert(1)' }}
               className="object-contain"
             />

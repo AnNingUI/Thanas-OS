@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Loader2, ExternalLink } from 'lucide-react';
 
 // VS Code app: loads the project repo via the github1s VS Code-style web editor.
@@ -12,6 +13,7 @@ import { Loader2, ExternalLink } from 'lucide-react';
 const EDITOR_SRC = 'https://github1s.com/Thanas-R/thanas-OS';
 
 export const TechnologiesApp = () => {
+  const { t } = useTranslation('appsCore');
   const [loading, setLoading] = useState(true);
   const [blocked, setBlocked] = useState(false);
 
@@ -29,28 +31,27 @@ export const TechnologiesApp = () => {
         {loading && !blocked && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#1e1e1e] z-10">
             <Loader2 className="w-6 h-6 animate-spin text-[#3794ff]" />
-            <div className="text-[12px] text-neutral-400">Loading workspace…</div>
+            <div className="text-[12px] text-neutral-400">{t('apps.technologies.loadingWorkspace')}</div>
           </div>
         )}
 
         {blocked ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#1e1e1e] text-center px-6">
-            <div className="text-[15px] font-semibold">Editor blocked from embedding</div>
+            <div className="text-[15px] font-semibold">{t('apps.technologies.blockedTitle')}</div>
             <div className="text-[12.5px] text-neutral-400 max-w-md">
-              Your browser prevented the workspace from loading inside this window.
-              Open it in a new tab to continue.
+              {t('apps.technologies.blockedDesc')}
             </div>
             <button
               onClick={() => window.open(EDITOR_SRC, '_blank', 'noopener,noreferrer')}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#0e639c] hover:bg-[#1177bb] text-white text-[13px]"
             >
-              <ExternalLink className="w-4 h-4" /> Open Workspace
+              <ExternalLink className="w-4 h-4" /> {t('apps.technologies.openWorkspace')}
             </button>
           </div>
         ) : (
           <iframe
             src={EDITOR_SRC}
-            title="Workspace"
+            title={t('apps.technologies.workspaceTitle')}
             className="w-full h-full border-0"
             onLoad={() => { setLoading(false); setBlocked(false); }}
             referrerPolicy="no-referrer"

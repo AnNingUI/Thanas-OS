@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import { IoCloudDownloadOutline } from 'react-icons/io5';
 import { PROJECTS } from '@/lib/projects';
@@ -10,6 +11,7 @@ import {
 import { useMacOS } from '@/contexts/MacOSContext';
 
 export const AppStoreApp = () => {
+  const { t } = useTranslation('appsCore');
   const installed = useInstalledProjects();
   const { openApp } = useMacOS();
   const [query, setQuery] = useState('');
@@ -80,12 +82,12 @@ export const AppStoreApp = () => {
             }}
             className="shrink-0 px-4 py-1 rounded-full text-[12px] font-semibold bg-neutral-200/70 dark:bg-neutral-700/70 text-blue-600 dark:text-blue-400 hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors"
           >
-            Open
+            {t('apps.appstore.open')}
           </button>
         ) : (
           <button
             onClick={() => installProject(p.id)}
-            title="Get"
+            title={t('apps.appstore.get')}
             className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-500/10 transition-colors"
           >
             <IoCloudDownloadOutline className="w-[22px] h-[22px]" strokeWidth={18} />
@@ -105,14 +107,14 @@ export const AppStoreApp = () => {
             <input
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Search"
+              placeholder={t('apps.appstore.searchPlaceholder')}
               className="flex-1 bg-transparent outline-none text-sm min-w-0"
             />
           </div>
         </div>
         <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-auto thin-scrollbar text-[13px]">
           <div className="px-3 py-1.5 rounded-md bg-neutral-200 dark:bg-neutral-700/60 font-medium">
-            Discover
+            {t('apps.appstore.discover')}
           </div>
         </nav>
       </aside>
@@ -120,9 +122,9 @@ export const AppStoreApp = () => {
       {/* Main two-column list */}
       <div className="flex-1 overflow-auto thin-scrollbar">
         <div className="px-8 pt-8 pb-6">
-          <h1 className="text-[26px] font-bold tracking-tight">Discover</h1>
+          <h1 className="text-[26px] font-bold tracking-tight">{t('apps.appstore.discover')}</h1>
           <div className="text-[13px] text-neutral-500 dark:text-neutral-400 mt-1">
-            Browse and install Thanas's projects.
+            {t('apps.appstore.subtitle')}
           </div>
         </div>
         <div className="px-5 pb-10 grid grid-cols-1 md:grid-cols-2 gap-x-3">

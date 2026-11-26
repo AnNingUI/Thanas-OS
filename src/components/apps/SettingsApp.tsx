@@ -7,6 +7,8 @@ import {
 import { IoIosWifi } from 'react-icons/io';
 import airdropImg from '@/assets/airdrop-icon-new.png';
 import { useMacOS } from '@/contexts/MacOSContext';
+import { useTranslation } from 'react-i18next';
+import { LANGUAGE_LABELS, SUPPORTED_LANGUAGES, setLanguage } from '@/i18n';
 import { useGoogleInstalled } from '@/lib/installedApps';
 import { Switch } from '@/components/ui/switch';
 import { AppleSlider } from '@/components/ui/AppleSlider';
@@ -33,24 +35,24 @@ import googleIcon from '@/assets/google-icon-new.png';
 import profilePhoto from '@/assets/profile-photo-new.jpg';
 
 const wallpapers = [
-  { id: 'wallpaper-mountain', src: wallpaperMountain, name: 'Highlands' },
-  { id: 'wallpaper-tahoe', src: wallpaperTahoe, name: 'Lake Tahoe' },
-  { id: 'wallpaper-viaduct', src: wallpaperViaduct, name: 'Glenfinnan Viaduct' },
-  { id: 'wallpaper-dolomites', src: wallpaperDolomites, name: 'Dolomites' },
-  { id: 'wallpaper-vestrahorn', src: wallpaperVestrahorn, name: 'Vestrahorn' },
-  { id: 'wallpaper-annapurna', src: wallpaperAnnapurna, name: 'Annapurna Night' },
-  { id: 'wallpaper-alps', src: wallpaperAlps, name: 'Swiss Alps' },
-  { id: 'wallpaper-cat', src: wallpaperCat, name: 'Curious Cat' },
-  { id: 'wallpaper-bigsur', src: wallpaperBigsur, name: 'Big Sur' },
-  { id: 'wallpaper-aurora', src: wallpaperAurora, name: 'Aurora' },
-  { id: 'wallpaper-snow', src: wallpaperSnow, name: 'Winter Trail' },
-  { id: 'wallpaper-canyon', src: wallpaperCanyon, name: 'Canyon Stars' },
-  { id: 'wallpaper-vineyard', src: wallpaperVineyard, name: 'Vineyard Hills' },
-  { id: 'wallpaper-catalina', src: wallpaperCatalina, name: 'Catalina' },
-  { id: 'wallpaper-valley', src: wallpaperValley, name: 'Painted Valley' },
-  { id: 'wallpaper-1', src: wallpaper1, name: 'Mountain Lake' },
-  { id: 'wallpaper-2', src: wallpaper2, name: 'Misty Valley' },
-  { id: 'wallpaper-3', src: wallpaper3, name: 'Winter Forest' },
+  { id: 'wallpaper-mountain', src: wallpaperMountain, nameKey: 'wallpaperNames.highlands' },
+  { id: 'wallpaper-tahoe', src: wallpaperTahoe, nameKey: 'wallpaperNames.lakeTahoe' },
+  { id: 'wallpaper-viaduct', src: wallpaperViaduct, nameKey: 'wallpaperNames.glenfinnanViaduct' },
+  { id: 'wallpaper-dolomites', src: wallpaperDolomites, nameKey: 'wallpaperNames.dolomites' },
+  { id: 'wallpaper-vestrahorn', src: wallpaperVestrahorn, nameKey: 'wallpaperNames.vestrahorn' },
+  { id: 'wallpaper-annapurna', src: wallpaperAnnapurna, nameKey: 'wallpaperNames.annapurnaNight' },
+  { id: 'wallpaper-alps', src: wallpaperAlps, nameKey: 'wallpaperNames.swissAlps' },
+  { id: 'wallpaper-cat', src: wallpaperCat, nameKey: 'wallpaperNames.curiousCat' },
+  { id: 'wallpaper-bigsur', src: wallpaperBigsur, nameKey: 'wallpaperNames.bigSur' },
+  { id: 'wallpaper-aurora', src: wallpaperAurora, nameKey: 'wallpaperNames.aurora' },
+  { id: 'wallpaper-snow', src: wallpaperSnow, nameKey: 'wallpaperNames.winterTrail' },
+  { id: 'wallpaper-canyon', src: wallpaperCanyon, nameKey: 'wallpaperNames.canyonStars' },
+  { id: 'wallpaper-vineyard', src: wallpaperVineyard, nameKey: 'wallpaperNames.vineyardHills' },
+  { id: 'wallpaper-catalina', src: wallpaperCatalina, nameKey: 'wallpaperNames.catalina' },
+  { id: 'wallpaper-valley', src: wallpaperValley, nameKey: 'wallpaperNames.paintedValley' },
+  { id: 'wallpaper-1', src: wallpaper1, nameKey: 'wallpaperNames.mountainLake' },
+  { id: 'wallpaper-2', src: wallpaper2, nameKey: 'wallpaperNames.mistyValley' },
+  { id: 'wallpaper-3', src: wallpaper3, nameKey: 'wallpaperNames.winterForest' },
 ];
 
 type SectionId =
@@ -61,40 +63,42 @@ type SectionId =
 type GeneralSubsection = 'about' | 'software' | 'storage' | 'airdrop' | 'login' | 'language' | 'datetime' | 'sharing' | 'time-machine' | 'transfer' | 'startup';
 
 const SIDEBAR_TOP = [
-  { id: 'wifi', label: 'Wi-Fi', icon: IoIosWifi, tint: '#0a84ff' },
-  { id: 'bluetooth', label: 'Bluetooth', icon: Bluetooth, tint: '#0a84ff' },
-  { id: 'battery', label: 'Battery', icon: Battery, tint: '#34c759' },
+  { id: 'wifi', labelKey: 'sidebar.wifi', icon: IoIosWifi, tint: '#0a84ff' },
+  { id: 'bluetooth', labelKey: 'sidebar.bluetooth', icon: Bluetooth, tint: '#0a84ff' },
+  { id: 'battery', labelKey: 'sidebar.battery', icon: Battery, tint: '#34c759' },
 ] as const;
 const SIDEBAR_MID = [
-  { id: 'notifications', label: 'Notifications', icon: Bell, tint: '#ff453a' },
-  { id: 'sound', label: 'Sound', icon: Volume2, tint: '#ff375f' },
-  { id: 'focus', label: 'Focus', icon: Moon, tint: '#a855f7' },
+  { id: 'notifications', labelKey: 'sidebar.notifications', icon: Bell, tint: '#ff453a' },
+  { id: 'sound', labelKey: 'sidebar.sound', icon: Volume2, tint: '#ff375f' },
+  { id: 'focus', labelKey: 'sidebar.focus', icon: Moon, tint: '#a855f7' },
 ] as const;
 const SIDEBAR_BOTTOM = [
-  { id: 'general', label: 'General', icon: SettingsIcon, tint: '#8e8e93' },
-  { id: 'appearance', label: 'Appearance', icon: Palette, tint: '#1c1c1e' },
-  { id: 'privacy', label: 'Privacy & Security', icon: LockIcon, tint: '#0a84ff' },
-  { id: 'desktop', label: 'Desktop & Dock', icon: Layout, tint: '#8e8e93' },
-  { id: 'displays', label: 'Displays', icon: Sun, tint: '#0a84ff' },
-  { id: 'wallpaper', label: 'Wallpaper', icon: ArrowDownToLine, tint: '#06b6d4' },
-  { id: 'browser', label: 'Default Browser', icon: Compass, tint: '#0a84ff' },
+  { id: 'general', labelKey: 'sidebar.general', icon: SettingsIcon, tint: '#8e8e93' },
+  { id: 'appearance', labelKey: 'sidebar.appearance', icon: Palette, tint: '#1c1c1e' },
+  { id: 'privacy', labelKey: 'sidebar.privacy', icon: LockIcon, tint: '#0a84ff' },
+  { id: 'desktop', labelKey: 'sidebar.desktop', icon: Layout, tint: '#8e8e93' },
+  { id: 'displays', labelKey: 'sidebar.displays', icon: Sun, tint: '#0a84ff' },
+  { id: 'wallpaper', labelKey: 'sidebar.wallpaper', icon: ArrowDownToLine, tint: '#06b6d4' },
+  { id: 'browser', labelKey: 'sidebar.browser', icon: Compass, tint: '#0a84ff' },
 ] as const;
 
-const GENERAL_ITEMS: { id: GeneralSubsection; label: string; icon: LucideIcon; tint: string }[] = [
-  { id: 'about', label: 'About', icon: SettingsIcon, tint: '#0a84ff' },
-  { id: 'software', label: 'Software Update', icon: RefreshCw, tint: '#8e8e93' },
-  { id: 'storage', label: 'Storage', icon: HardDrive, tint: '#8e8e93' },
-  { id: 'airdrop', label: 'AirDrop & Handoff', icon: Share2, tint: '#0a84ff' },
-  { id: 'login', label: 'Login Items', icon: User, tint: '#34c759' },
-  { id: 'language', label: 'Language & Region', icon: Languages, tint: '#0a84ff' },
-  { id: 'datetime', label: 'Date & Time', icon: Clock, tint: '#0a84ff' },
-  { id: 'sharing', label: 'Sharing', icon: Share2, tint: '#34c759' },
-  { id: 'time-machine', label: 'Time Machine', icon: Database, tint: '#34c759' },
-  { id: 'transfer', label: 'Transfer or Reset', icon: ArrowDownToLine, tint: '#8e8e93' },
-  { id: 'startup', label: 'Startup Disk', icon: HardDrive, tint: '#8e8e93' },
+const GENERAL_ITEMS: { id: GeneralSubsection; labelKey: string; icon: LucideIcon; tint: string }[] = [
+  { id: 'about', labelKey: 'general.items.about', icon: SettingsIcon, tint: '#0a84ff' },
+  { id: 'software', labelKey: 'general.items.software', icon: RefreshCw, tint: '#8e8e93' },
+  { id: 'storage', labelKey: 'general.items.storage', icon: HardDrive, tint: '#8e8e93' },
+  { id: 'airdrop', labelKey: 'general.items.airdrop', icon: Share2, tint: '#0a84ff' },
+  { id: 'login', labelKey: 'general.items.login', icon: User, tint: '#34c759' },
+  { id: 'language', labelKey: 'general.items.language', icon: Languages, tint: '#0a84ff' },
+  { id: 'datetime', labelKey: 'general.items.datetime', icon: Clock, tint: '#0a84ff' },
+  { id: 'sharing', labelKey: 'general.items.sharing', icon: Share2, tint: '#34c759' },
+  { id: 'time-machine', labelKey: 'general.items.timeMachine', icon: Database, tint: '#34c759' },
+  { id: 'transfer', labelKey: 'general.items.transfer', icon: ArrowDownToLine, tint: '#8e8e93' },
+  { id: 'startup', labelKey: 'general.items.startup', icon: HardDrive, tint: '#8e8e93' },
 ];
 
 export const SettingsApp = () => {
+  const { t, i18n } = useTranslation('settings');
+  const { t: tCommon } = useTranslation('common');
   const { settings, updateSettings } = useMacOS();
   const googleInstalled = useGoogleInstalled();
   const [section, setSection] = useState<SectionId>('apple-account');
@@ -137,11 +141,12 @@ export const SettingsApp = () => {
 
   const allNav = useMemo(() => [...SIDEBAR_TOP, ...SIDEBAR_MID, ...SIDEBAR_BOTTOM], []);
   const filteredSidebar = useMemo(
-    () => allNav.filter(n => !query || n.label.toLowerCase().includes(query.toLowerCase())),
-    [query, allNav]
+    () => allNav.filter(n => !query || t(n.labelKey).toLowerCase().includes(query.toLowerCase())),
+    [query, allNav, t, i18n.language]
   );
 
-  const sectionLabel = allNav.find(n => n.id === section)?.label || 'Settings';
+  const activeNav = allNav.find(n => n.id === section);
+  const sectionLabel = activeNav ? t(activeNav.labelKey) : t('sidebar.settings');
 
   return (
     <div className="h-full w-full flex bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 text-[14px]">
@@ -156,7 +161,7 @@ export const SettingsApp = () => {
       <input
         value={query}
         onChange={e => setQuery(e.target.value)}
-        placeholder="Search"
+        placeholder={t('search.placeholder')}
         className="flex-1 bg-transparent outline-none text-[13px] min-w-0"
       />
     </div>
@@ -174,7 +179,7 @@ export const SettingsApp = () => {
           <img src={profilePhoto} alt="Thanas R" className="w-10 h-10 rounded-full object-cover ring-1 ring-black/10 dark:ring-white/10" />
           <div className="min-w-0">
             <div className="text-[13px] font-semibold truncate">Thanas R</div>
-            <div className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate">Apple Account</div>
+            <div className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate">{t('sidebar.appleAccount')}</div>
           </div>
         </button>
 
@@ -190,7 +195,7 @@ export const SettingsApp = () => {
             return (
               <div key={`nv-${n.id}`}>
                 {showSep && <div className="h-2" />}
-                <NavRow {...n} active={section === n.id} onClick={() => setSection(n.id as SectionId)} />
+                <NavRow label={t(n.labelKey)} icon={n.icon} tint={n.tint} active={section === n.id} onClick={() => setSection(n.id as SectionId)} />
               </div>
             );
           })}
@@ -213,34 +218,47 @@ export const SettingsApp = () => {
 
             {section === 'appearance' && (
               <Card>
-                <Row label="Appearance" desc="Choose your accent style.">
+                <Row label={t('rows.appearance.style.label')} desc={t('rows.appearance.style.desc')}>
                   <div className="flex gap-3">
                     {(['light', 'dark'] as const).map(opt => {
                       const active = settings.theme === opt;
                       return (
                         <button key={opt} onClick={() => updateSettings({ theme: opt })} className="flex flex-col items-center gap-1">
                           <div className={`w-16 h-10 rounded-md ring-2 ${active ? 'ring-blue-500' : 'ring-transparent'}`} style={{ background: opt === 'light' ? '#f5f5f7' : '#1c1c1e' }} />
-                          <div className="text-[11px] capitalize">{opt}</div>
+                          <div className="text-[11px] capitalize">{opt === 'light' ? t('rows.appearance.theme.light') : t('rows.appearance.theme.dark')}</div>
                         </button>
                       );
                     })}
                   </div>
                 </Row>
-                <Row label="Reduced Motion" desc="Minimize animations across the system.">
+                <Row label={t('rows.appearance.reducedMotion.label')} desc={t('rows.appearance.reducedMotion.desc')}>
                   <Switch checked={!!settings.reducedMotion} onCheckedChange={v => updateSettings({ reducedMotion: v })} />
+                </Row>
+                <Row label={tCommon('language.label')} desc={LANGUAGE_LABELS[i18n.language as keyof typeof LANGUAGE_LABELS] ?? 'English'}>
+                  <div className="flex gap-2">
+                    {SUPPORTED_LANGUAGES.map(l => (
+                      <button
+                        key={l}
+                        onClick={() => setLanguage(l)}
+                        className={`px-3 py-1.5 rounded-md text-[12px] border ${i18n.language === l ? 'bg-blue-500 text-white border-blue-500' : 'bg-secondary text-secondary-foreground border-border hover:bg-muted'}`}
+                      >
+                        {LANGUAGE_LABELS[l]}
+                      </button>
+                    ))}
+                  </div>
                 </Row>
               </Card>
             )}
 
             {section === 'wifi' && (
               <Card>
-                <Row label="Wi-Fi" desc={settings.wifi ? 'ThanasOS-Net' : 'Off'}>
+                <Row label={t('rows.wifi.toggle.label')} desc={settings.wifi ? t('rows.wifi.toggle.descOn') : t('rows.wifi.toggle.descOff')}>
                   <Switch checked={!!settings.wifi} onCheckedChange={v => updateSettings({ wifi: v })} />
                 </Row>
                 {settings.wifi && (
                   <>
-                    <Row label="Network Name" desc="ThanasOS-Net" />
-                    <Row label="Ask to join networks" desc="Known networks join automatically.">
+                    <Row label={t('rows.wifi.networkName.label')} desc={t('rows.wifi.networkName.desc')} />
+                    <Row label={t('rows.wifi.askToJoin.label')} desc={t('rows.wifi.askToJoin.desc')}>
                       <Switch checked defaultChecked />
                     </Row>
                   </>
@@ -250,7 +268,7 @@ export const SettingsApp = () => {
 
             {section === 'bluetooth' && (
               <Card>
-                <Row label="Bluetooth" desc={settings.bluetooth ? 'On' : 'Off'}>
+                <Row label={t('rows.bluetooth.toggle.label')} desc={settings.bluetooth ? t('values.on') : t('values.off')}>
                   <Switch checked={!!settings.bluetooth} onCheckedChange={v => updateSettings({ bluetooth: v })} />
                 </Row>
               </Card>
@@ -258,10 +276,10 @@ export const SettingsApp = () => {
 
             {section === 'sound' && (
               <Card>
-                <Row label="Output Volume" desc={`${settings.volume ?? 65}%`}>
+                <Row label={t('rows.sound.outputVolume.label')} desc={t('rows.sound.outputVolume.desc', { percent: settings.volume ?? 65 })}>
                   <div className="w-48"><AppleSlider value={settings.volume ?? 65} onChange={v => updateSettings({ volume: v })} /></div>
                 </Row>
-                <Row label="Mute" desc="Silence all sound output.">
+                <Row label={t('rows.sound.mute.label')} desc={t('rows.sound.mute.desc')}>
                   <Switch checked={(settings.volume ?? 65) === 0} onCheckedChange={v => updateSettings({ volume: v ? 0 : 65 })} />
                 </Row>
               </Card>
@@ -269,7 +287,7 @@ export const SettingsApp = () => {
 
             {section === 'focus' && (
               <Card>
-                <Row label="Do Not Disturb" desc="Silences notifications.">
+                <Row label={t('rows.focus.doNotDisturb.label')} desc={t('rows.focus.doNotDisturb.desc')}>
                   <Switch checked={!!settings.focus} onCheckedChange={v => updateSettings({ focus: v })} />
                 </Row>
               </Card>
@@ -277,16 +295,16 @@ export const SettingsApp = () => {
 
             {section === 'displays' && (
               <Card>
-                <Row label="Brightness" desc={`${settings.brightness ?? 80}%`}>
+                <Row label={t('rows.displays.brightness.label')} desc={t('rows.displays.brightness.desc', { percent: settings.brightness ?? 80 })}>
                   <div className="w-48"><AppleSlider value={settings.brightness ?? 80} min={20} onChange={v => updateSettings({ brightness: v })} /></div>
                 </Row>
-                <Row label="HTML-in-Canvas" desc="Draw the whole desktop through one WebGPU canvas (experimental).">
+                <Row label={t('rows.displays.htmlInCanvas.label')} desc={t('rows.displays.htmlInCanvas.desc')}>
                   <Switch checked={!!settings.htmlInCanvas} onCheckedChange={v => updateSettings({ htmlInCanvas: v })} />
                 </Row>
-                <Row label="Minimize Animation" desc={`${settings.genieDuration ?? 1000} ms · HTML-in-Canvas`}>
+                <Row label={t('rows.displays.minimizeAnimation.label')} desc={t('rows.displays.minimizeAnimation.desc', { ms: settings.genieDuration ?? 1000 })}>
                   <div className="w-48"><AppleSlider value={settings.genieDuration ?? 1000} min={200} max={2500} step={50} onChange={v => updateSettings({ genieDuration: v })} /></div>
                 </Row>
-                <Row label="Close Animation" desc={`${settings.closeDuration ?? 1600} ms · HTML-in-Canvas`}>
+                <Row label={t('rows.displays.closeAnimation.label')} desc={t('rows.displays.closeAnimation.desc', { ms: settings.closeDuration ?? 1600 })}>
                   <div className="w-48"><AppleSlider value={settings.closeDuration ?? 1600} min={300} max={3000} step={50} onChange={v => updateSettings({ closeDuration: v })} /></div>
                 </Row>
               </Card>
@@ -294,13 +312,13 @@ export const SettingsApp = () => {
 
             {section === 'desktop' && (
               <Card>
-                <Row label="Auto-hide Dock" desc="Show the dock only on hover.">
+                <Row label={t('rows.desktop.autoHideDock.label')} desc={t('rows.desktop.autoHideDock.desc')}>
                   <Switch checked={!!settings.dockAutoHide} onCheckedChange={v => updateSettings({ dockAutoHide: v })} />
                 </Row>
-                <Row label="Dock Magnification" desc={`${settings.dockMagnification}%`}>
+                <Row label={t('rows.desktop.magnification.label')} desc={t('rows.desktop.magnification.desc', { percent: settings.dockMagnification })}>
                   <div className="w-48"><AppleSlider value={settings.dockMagnification} max={150} onChange={v => updateSettings({ dockMagnification: v })} /></div>
                 </Row>
-                <Row label="Reduce Motion" desc="Disable dock and window animations.">
+                <Row label={t('rows.desktop.reduceMotion.label')} desc={t('rows.desktop.reduceMotion.desc')}>
                   <Switch checked={!!settings.reducedMotion} onCheckedChange={v => updateSettings({ reducedMotion: v })} />
                 </Row>
               </Card>
@@ -317,8 +335,8 @@ export const SettingsApp = () => {
                         settings.wallpaper === w.id ? 'ring-2 ring-blue-500' : 'hover:scale-[1.02] opacity-90'
                       }`}
                     >
-                      <img src={w.src} alt={w.name} className="w-full h-full object-cover" />
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-1.5 text-white text-[11px]">{w.name}</div>
+                      <img src={w.src} alt={t(w.nameKey)} className="w-full h-full object-cover" />
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-1.5 text-white text-[11px]">{t(w.nameKey)}</div>
                     </button>
                   ))}
                 </div>
@@ -328,7 +346,7 @@ export const SettingsApp = () => {
                     onClick={() => fileInputRef.current?.click()}
                     className="text-[12.5px] px-3.5 py-1.5 rounded-md bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-100 ring-1 ring-black/5 dark:ring-white/10 transition-colors"
                   >
-                    Choose Custom Image…
+                    {t('actions.chooseCustomImage')}
                   </button>
                   <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                 </div>
@@ -337,8 +355,8 @@ export const SettingsApp = () => {
 
             {section === 'battery' && (
               <Card>
-                <Row label="Battery Level" desc={batteryLevel !== null ? `${batteryLevel}%${batteryCharging ? ' (Charging)' : ''}` : 'Battery API unavailable'} />
-                <Row label="Low Power Mode" desc="Reduce energy use to extend battery life. Battery icon turns yellow.">
+                <Row label={t('rows.battery.level.label')} desc={batteryLevel !== null ? (batteryCharging ? t('rows.battery.level.descCharging', { percent: batteryLevel }) : t('rows.battery.level.desc', { percent: batteryLevel })) : t('rows.battery.level.descUnavailable')} />
+                <Row label={t('rows.battery.lowPowerMode.label')} desc={t('rows.battery.lowPowerMode.desc')}>
                   <Switch checked={!!settings.lowPowerMode} onCheckedChange={v => updateSettings({ lowPowerMode: v })} />
                 </Row>
               </Card>
@@ -346,7 +364,7 @@ export const SettingsApp = () => {
 
             {section === 'browser' && (
               <Card>
-                <Row label="Default web browser" desc={googleInstalled ? 'Pick which browser opens links by default.' : 'Install Google from the App Store to choose it.'}>
+                <Row label={t('rows.browser.defaultBrowser.label')} desc={googleInstalled ? t('rows.browser.defaultBrowser.desc') : t('rows.browser.defaultBrowser.descNoGoogle')}>
                   <div className="flex gap-3">
                     <BrowserChoice img={safariIcon} label="Safari" active={settings.defaultBrowser !== 'google' || !googleInstalled} onClick={() => updateSettings({ defaultBrowser: 'safari' })} />
                     <BrowserChoice img={googleIcon} label="Google" disabled={!googleInstalled} active={!!googleInstalled && settings.defaultBrowser === 'google'} onClick={() => updateSettings({ defaultBrowser: 'google' })} />
@@ -357,14 +375,14 @@ export const SettingsApp = () => {
 
             {section === 'privacy' && (
               <Card>
-                <Row label="Location Services" desc="Off"><Switch checked={false} onCheckedChange={() => {}} /></Row>
-                <Row label="Analytics & Improvements" desc="Help improve ThanasOS."><Switch checked={false} onCheckedChange={() => {}} /></Row>
+                <Row label={t('rows.privacy.locationServices.label')} desc={t('values.off')}><Switch checked={false} onCheckedChange={() => {}} /></Row>
+                <Row label={t('rows.privacy.analytics.label')} desc={t('rows.privacy.analytics.desc')}><Switch checked={false} onCheckedChange={() => {}} /></Row>
               </Card>
             )}
 
             {section === 'notifications' && (
               <Card>
-                <Row label={sectionLabel} desc="Pane reserved. Settings will appear here." />
+                <Row label={sectionLabel} desc={t('rows.notifications.reserved.desc')} />
               </Card>
             )}
           </div>
@@ -374,42 +392,49 @@ export const SettingsApp = () => {
   );
 };
 
-const AppleAccountPane = () => (
-  <div className="px-8 pt-5 pb-10 max-w-2xl mx-auto">
-    <div className="flex flex-col items-center pt-4 pb-6 text-center">
-      <img src={profilePhoto} alt="Thanas R" className="w-20 h-20 rounded-full object-cover ring-1 ring-black/10 dark:ring-white/10 mb-3" />
-      <div className="text-[22px] font-semibold text-center">Thanas R</div>
-      <div className="text-[13px] text-neutral-500 text-center">thanas5.rd@gmail.com</div>
-      <div className="text-[12px] text-neutral-500 mt-0.5 text-center">Apple Account</div>
+const AppleAccountPane = () => {
+  const { t } = useTranslation('settings');
+
+  return (
+    <div className="px-8 pt-5 pb-10 max-w-2xl mx-auto">
+      <div className="flex flex-col items-center pt-4 pb-6 text-center">
+        <img src={profilePhoto} alt="Thanas R" className="w-20 h-20 rounded-full object-cover ring-1 ring-black/10 dark:ring-white/10 mb-3" />
+        <div className="text-[22px] font-semibold text-center">Thanas R</div>
+        <div className="text-[13px] text-neutral-500 text-center">thanas5.rd@gmail.com</div>
+        <div className="text-[12px] text-neutral-500 mt-0.5 text-center">{t('appleAccount.title')}</div>
+      </div>
+      <Card>
+        <KV k={t('appleAccount.personalInformation')} v={t('values.manage')} />
+        <KV k={t('appleAccount.signInSecurity')} v={t('values.manage')} />
+        <KV k={t('appleAccount.paymentShipping')} v={t('values.none')} />
+      </Card>
+      <div className="text-[13px] font-semibold mt-6 mb-2">{t('appleAccount.icloud')}</div>
+      <Card>
+        <KV k={t('appleAccount.icloudPlus')} v={t('appleAccount.icloudPlan', { gb: 200 })} />
+        <KV k={t('appleAccount.icloudDrive')} v={t('values.on')} />
+        <KV k={t('appleAccount.photos')} v={t('values.on')} />
+      </Card>
+      <div className="text-[13px] font-semibold mt-6 mb-2">{t('appleAccount.devicesTitle')}</div>
+      <Card>
+        <KV k={t('appleAccount.devices.macbookAirM6.name')} v={t('appleAccount.devices.macbookAirM6.value')} />
+        <KV k={t('appleAccount.devices.thanasIphone17.name')} v={t('appleAccount.devices.thanasIphone17.value')} />
+        <KV k={t('appleAccount.devices.thanasIphone.name')} v={t('appleAccount.devices.thanasIphone.value')} />
+        <KV k={t('appleAccount.devices.ipad.name')} v={t('appleAccount.devices.ipad.value')} />
+        <KV k={t('appleAccount.devices.iphone5.name')} v={t('appleAccount.devices.iphone5.value')} />
+        <KV k={t('appleAccount.devices.iphone8Plus.name')} v={t('appleAccount.devices.iphone8Plus.value')} />
+        <KV k={t('appleAccount.devices.thanasLaptop.name')} v={t('appleAccount.devices.thanasLaptop.value')} />
+        <KV k={t('appleAccount.devices.thanasIpad.name')} v={t('appleAccount.devices.thanasIpad.value')} />
+        <KV k={t('appleAccount.devices.thanasIphone13ProMax.name')} v={t('appleAccount.devices.thanasIphone13ProMax.value')} />
+        <KV k={t('appleAccount.devices.thanasIphoneXr.name')} v={t('appleAccount.devices.thanasIphoneXr.value')} />
+      </Card>
     </div>
-    <Card>
-      <KV k="Personal Information" v="Manage" />
-      <KV k="Sign-In & Security" v="Manage" />
-      <KV k="Payment & Shipping" v="None" />
-    </Card>
-    <div className="text-[13px] font-semibold mt-6 mb-2">iCloud</div>
-    <Card>
-      <KV k="iCloud+" v="200 GB Plan" />
-      <KV k="iCloud Drive" v="On" />
-      <KV k="Photos" v="On" />
-    </Card>
-    <div className="text-[13px] font-semibold mt-6 mb-2">Devices</div>
-    <Card>
-      <KV k="MacBook Air M6 (this device)" v="Online" />
-      <KV k="Thanas's iPhone 17" v="This iPhone 17" />
-      <KV k="Thanas's iPhone" v="iPhone 6" />
-      <KV k="iPad" v="iPad Air" />
-      <KV k="iPhone 5" v="iPhone 5" />
-      <KV k="iPhone 8 Plus" v="iPhone 8 Plus" />
-      <KV k="THANAS-LAPTOP" v="Windows" />
-      <KV k="Thanas's iPad" v="iPad" />
-      <KV k="Thanas's iPhone 13 Pro Max" v="iPhone 13 Pro Max" />
-      <KV k="Thanas's iPhone XR" v="iPhone XR" />
-    </Card>
-  </div>
-);
+  );
+};
 
 const GeneralPane = ({ sub, setSub, batteryLevel, batteryCharging }: { sub: GeneralSubsection; setSub: (s: GeneralSubsection) => void; batteryLevel: number | null; batteryCharging: boolean }) => {
+  const { t } = useTranslation('settings');
+  const activeItem = GENERAL_ITEMS.find(g => g.id === sub);
+
   const renderAbout = () => (
     <div className="px-8 pt-5 pb-10 max-w-2xl">
       <div className="flex flex-col items-center pb-6">
@@ -418,19 +443,19 @@ const GeneralPane = ({ sub, setSub, batteryLevel, batteryCharging }: { sub: Gene
         <div className="text-[13px] text-neutral-500">2026</div>
       </div>
       <Card>
-        <KV k="Model Name" v="MacBook Air" />
-        <KV k="Model Identifier" v="MacBookAir2026,1" />
-        <KV k="Chip" v="Apple M5" />
-        <KV k="Total Number of Cores" v="10 (4 performance and 6 efficiency)" />
-        <KV k="Memory" v="24 GB Unified Memory" />
-        <KV k="Storage" v="512 GB SSD" />
-        <KV k="Display" v="13.6-inch Liquid Retina, 2560×1664" />
-        <KV k="Serial Number" v="THANAS-OS-2026" />
-        <KV k="Battery" v={batteryLevel !== null ? `${batteryLevel}%${batteryCharging ? ' Charging' : ''}` : 'Unavailable'} />
+        <KV k={t('about.modelName')} v="MacBook Air" />
+        <KV k={t('about.modelIdentifier')} v="MacBookAir2026,1" />
+        <KV k={t('about.chip')} v="Apple M5" />
+        <KV k={t('about.cores')} v={t('about.coresValue', { total: 10, performance: 4, efficiency: 6 })} />
+        <KV k={t('about.memory')} v={t('about.memoryValue', { gb: 24 })} />
+        <KV k={t('about.storage')} v={t('about.storageValue', { gb: 512 })} />
+        <KV k={t('about.display')} v={t('about.displayValue', { size: 13.6, width: 2560, height: 1664 })} />
+        <KV k={t('about.serialNumber')} v="THANAS-OS-2026" />
+        <KV k={t('about.battery')} v={batteryLevel !== null ? (batteryCharging ? t('about.batteryChargingValue', { percent: batteryLevel }) : t('about.batteryValue', { percent: batteryLevel })) : t('values.unavailable')} />
       </Card>
-      <div className="text-[13px] font-semibold mt-6 mb-2">macOS</div>
+      <div className="text-[13px] font-semibold mt-6 mb-2">{t('about.macos')}</div>
       <Card>
-        <KV k="ThanasOS" v="Version 1.0 (Build 2026.05)" />
+        <KV k="ThanasOS" v={t('about.version', { version: '1.0', build: '2026.05' })} />
       </Card>
     </div>
   );
@@ -439,7 +464,7 @@ const GeneralPane = ({ sub, setSub, batteryLevel, batteryCharging }: { sub: Gene
     <div className="flex h-full">
       {/* macOS-style General sub-sidebar */}
       <div className="w-[220px] shrink-0 border-r border-black/5 dark:border-white/5 overflow-auto thin-scrollbar p-2 space-y-0.5 bg-neutral-100/40 dark:bg-neutral-900/40">
-        <div className="px-2 py-1 text-[11px] uppercase tracking-wider text-neutral-500">General</div>
+        <div className="px-2 py-1 text-[11px] uppercase tracking-wider text-neutral-500">{t('general.title')}</div>
         {GENERAL_ITEMS.map((g) => {
           const I = g.icon;
           const active = g.id === sub;
@@ -455,7 +480,7 @@ const GeneralPane = ({ sub, setSub, batteryLevel, batteryCharging }: { sub: Gene
               <span className="w-6 h-6 rounded-[6px] flex items-center justify-center text-white" style={{ background: g.tint }}>
                 <I className="w-4 h-4" />
               </span>
-              <span className="truncate">{g.label}</span>
+              <span className="truncate">{t(g.labelKey)}</span>
               <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-40" />
             </button>
           );
@@ -464,8 +489,8 @@ const GeneralPane = ({ sub, setSub, batteryLevel, batteryCharging }: { sub: Gene
       <div className="flex-1 overflow-auto thin-scrollbar">
         {sub === 'about' ? renderAbout() : (
           <div className="px-8 pt-5 pb-10 max-w-2xl">
-            <h1 className="text-[20px] font-semibold mb-5">{GENERAL_ITEMS.find(g => g.id === sub)?.label}</h1>
-            <Card><Row label="Section" desc="Reserved." /></Card>
+            <h1 className="text-[20px] font-semibold mb-5">{activeItem ? t(activeItem.labelKey) : ''}</h1>
+            <Card><Row label={t('general.reserved.label')} desc={t('general.reserved.desc')} /></Card>
           </div>
         )}
       </div>

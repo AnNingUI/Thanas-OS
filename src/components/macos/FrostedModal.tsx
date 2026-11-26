@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const FrostedModal = ({ open, onClose, title, children, width = 520 }: Props) => {
+  const { t } = useTranslation('common');
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
@@ -36,7 +38,7 @@ export const FrostedModal = ({ open, onClose, title, children, width = 520 }: Pr
       >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">{title}</h2>
-          <button onClick={onClose} className="p-1.5 rounded-full hover:bg-white/10"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} aria-label={t('actions.close')} className="p-1.5 rounded-full hover:bg-white/10"><X className="w-4 h-4" /></button>
         </div>
         {children}
       </div>

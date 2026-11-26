@@ -1,0 +1,95 @@
+{
+  "apps": {
+    "about": {
+      "tagline": "開発者であり、創造的に課題を解決する人。コードで心のこもったデジタル体験を形にします。",
+      "age": "{{age}}歳",
+      "education": "PES大学 コンピュータサイエンス工学（AI/ML）学士課程",
+      "location": "インド・ベンガルール",
+      "aboutMe": "私について",
+      "bio1": "毎日少しずつ成長することを大切にしている、学ぶことが好きな開発者です。プログラミングと課題解決に強い関心があり、複雑な課題をシンプルで効果的な解決策に変えることにやりがいを感じています。仕事には真摯に向き合いながら、明るく前向きな環境づくりも心がけています。",
+      "bio2": "誠実で、支え合い、信頼される人間でありたいと考えています。技術力とUI/UXの知見を組み合わせ、直感的で力強いアプリケーションをつくります。現在はPES大学でコンピュータサイエンス工学（AI/ML専攻）の学士課程に在籍しています。",
+      "stats": {
+        "yearsCoding": "コーディング歴",
+        "projectsBuilt": "制作プロジェクト",
+        "learningGoals": "学習目標"
+      },
+      "portfolioCta": "メインのポートフォリオを見る",
+      "portfolioDesc": "thanas.vercel.app — 最新の完全版",
+      "techStack": "技術スタック",
+      "techGroups": {
+        "languages": "言語",
+        "frameworks": "フレームワーク",
+        "aiMl": "AI / ML",
+        "tooling": "ツール"
+      }
+    },
+    "finder": {
+      "favorites": "よく使う項目",
+      "locations": "場所",
+      "documents": "書類",
+      "downloads": "ダウンロード",
+      "desktop": "デスクトップ",
+      "pictures": "ピクチャ",
+      "music": "ミュージック",
+      "movies": "ムービー",
+      "folder": "フォルダ",
+      "file": "ファイル",
+      "emptyFile": "（空のファイル）"
+    },
+    "notes": {
+      "searchPlaceholder": "検索"
+    },
+    "calculator": {
+      "menuCopy": "コピー",
+      "menuClear": "クリア",
+      "backspace": "バックスペース",
+      "percent": "パーセント",
+      "divide": "除算",
+      "multiply": "乗算",
+      "minus": "減算",
+      "plus": "加算",
+      "toggleSign": "符号を切り替える",
+      "equals": "イコール",
+      "error": "エラー"
+    },
+    "safari": {
+      "favorites": "お気に入り",
+      "searchPlaceholder": "検索または Web サイト名を入力",
+      "tabs": "タブ",
+      "bookmarks": "ブックマーク",
+      "newTab": "新規タブ",
+      "closeTab": "タブを閉じる",
+      "cut": "カット",
+      "copy": "コピー",
+      "paste": "ペースト",
+      "reloadPage": "ページを再読み込み",
+      "showBookmarksBar": "ブックマークバーを表示",
+      "hideBookmarksBar": "ブックマークバーを隠す",
+      "showSidebar": "サイドバーを表示",
+      "hideSidebar": "サイドバーを隠す",
+      "home": "ホーム"
+    },
+    "appstore": {
+      "searchPlaceholder": "検索",
+      "discover": "見つける",
+      "subtitle": "Thanas のプロジェクトを閲覧してインストールできます。",
+      "open": "開く",
+      "get": "入手"
+    },
+    "contact": {
+      "mobile": "携帯",
+      "email": "メール",
+      "portfolio": "ポートフォリオ"
+    },
+    "technologies": {
+      "loadingWorkspace": "ワークスペースを読み込み中…",
+      "blockedTitle": "エディタを埋め込めません",
+      "blockedDesc": "ブラウザがこのウインドウ内でのワークスペースの読み込みをブロックしました。続行するには新しいタブで開いてください。",
+      "openWorkspace": "ワークスペースを開く",
+      "workspaceTitle": "ワークスペース"
+    },
+    "launchpad": {
+      "searchPlaceholder": "検索"
+    }
+  }
+}

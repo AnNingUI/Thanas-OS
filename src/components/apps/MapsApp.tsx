@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Search, Pin, Bookmark, BookOpen, Route as RouteIcon, MapPin, Clock, X, Navigation, Plus, Minus, Car, PersonStanding, Bike, Bus } from 'lucide-react';
@@ -36,6 +37,7 @@ const saveRecent = (list: Suggestion[]) =>
   localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 8)));
 
 export const MapsApp = () => {
+  const { t } = useTranslation('appsMedia');
   const { settings } = useMacOS();
   const dark = settings.theme === 'dark';
 
@@ -249,9 +251,9 @@ export const MapsApp = () => {
         >
           <div className="max-w-md">
             <MapPin className="w-10 h-10 mx-auto mb-3" style={{ color: '#fa2d48' }} />
-            <h2 className="text-lg font-semibold mb-2">Add your Mapbox token</h2>
+            <h2 className="text-lg font-semibold mb-2">{t('apps.maps.token.title')}</h2>
             <p className="text-sm opacity-70">
-              Set the env var <code className="px-1.5 py-0.5 rounded bg-black/20">VITE_MAPBOX_TOKEN</code> in Vercel and redeploy.
+              {t('apps.maps.token.prefix')} <code className="px-1.5 py-0.5 rounded bg-black/20">VITE_MAPBOX_TOKEN</code> {t('apps.maps.token.suffix')}
             </p>
           </div>
         </div>
@@ -310,7 +312,7 @@ export const MapsApp = () => {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search Maps"
+              placeholder={t('apps.maps.searchPlaceholder')}
               className="bg-transparent flex-1 text-[13px] outline-none"
               style={{ color: text }}
             />
@@ -352,21 +354,21 @@ export const MapsApp = () => {
           {suggestions.length === 0 && (
             <>
               <div className="text-[10.5px] uppercase tracking-wider mt-2 mb-1 px-3" style={{ color: sub }}>
-                Places
+                {t('apps.maps.places')}
               </div>
-              <SidebarItem icon={<Pin className="w-4 h-4" />} label="Pinned" hover={itemHover} text={text} />
-              <SidebarItem icon={<Bookmark className="w-4 h-4" />} label="Saved Places" hover={itemHover} text={text} />
-              <SidebarItem icon={<BookOpen className="w-4 h-4" />} label="Guides" hover={itemHover} text={text} />
-              <SidebarItem icon={<RouteIcon className="w-4 h-4" />} label="Routes" hover={itemHover} text={text} />
-              <SidebarItem icon={<MapPin className="w-4 h-4" />} label="Visited Places" hover={itemHover} text={text} />
-              <SidebarItem icon={<Clock className="w-4 h-4" />} label="Recently Added" hover={itemHover} text={text} />
+              <SidebarItem icon={<Pin className="w-4 h-4" />} label={t('apps.maps.pinned')} hover={itemHover} text={text} />
+              <SidebarItem icon={<Bookmark className="w-4 h-4" />} label={t('apps.maps.savedPlaces')} hover={itemHover} text={text} />
+              <SidebarItem icon={<BookOpen className="w-4 h-4" />} label={t('apps.maps.guides')} hover={itemHover} text={text} />
+              <SidebarItem icon={<RouteIcon className="w-4 h-4" />} label={t('apps.maps.routes')} hover={itemHover} text={text} />
+              <SidebarItem icon={<MapPin className="w-4 h-4" />} label={t('apps.maps.visitedPlaces')} hover={itemHover} text={text} />
+              <SidebarItem icon={<Clock className="w-4 h-4" />} label={t('apps.maps.recentlyAdded')} hover={itemHover} text={text} />
 
               <div className="text-[10.5px] uppercase tracking-wider mt-3 mb-1 px-3" style={{ color: sub }}>
-                Recents
+                {t('apps.maps.recents')}
               </div>
               {recent.length === 0 ? (
                 <div className="px-3 py-2 text-[12px]" style={{ color: sub }}>
-                  No recent searches.
+                  {t('apps.maps.noRecent')}
                 </div>
               ) : (
                 recent.map((s) => (
@@ -473,10 +475,10 @@ export const MapsApp = () => {
           {/* Travel-mode segmented control */}
           <div className="mt-3 flex items-center gap-1 p-1 rounded-xl" style={{ background: dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)' }}>
             {([
-              { id: 'driving' as const, icon: <Car className="w-3.5 h-3.5" />, label: 'Drive' },
-              { id: 'walking' as const, icon: <PersonStanding className="w-3.5 h-3.5" />, label: 'Walk' },
-              { id: 'cycling' as const, icon: <Bike className="w-3.5 h-3.5" />, label: 'Cycle' },
-              { id: 'transit' as const, icon: <Bus className="w-3.5 h-3.5 opacity-40" />, label: 'Transit' },
+              { id: 'driving' as const, icon: <Car className="w-3.5 h-3.5" />, label: t('apps.maps.modes.drive') },
+              { id: 'walking' as const, icon: <PersonStanding className="w-3.5 h-3.5" />, label: t('apps.maps.modes.walk') },
+              { id: 'cycling' as const, icon: <Bike className="w-3.5 h-3.5" />, label: t('apps.maps.modes.cycle') },
+              { id: 'transit' as const, icon: <Bus className="w-3.5 h-3.5 opacity-40" />, label: t('apps.maps.modes.transit') },
             ]).map((m) => {
               const active = travelMode === m.id;
               const disabled = m.id === 'transit';
@@ -503,14 +505,17 @@ export const MapsApp = () => {
               {routeInfo ? (
                 <div className="leading-tight">
                   <div className="text-[15px] font-semibold" style={{ color: '#2f7df7' }}>
-                    {Math.max(1, Math.round(routeInfo.duration / 60))} min
+                    {t('apps.maps.route.minutes', { count: Math.max(1, Math.round(routeInfo.duration / 60)) })}
                   </div>
                   <div className="text-[11px]" style={{ color: sub }}>
-                    {(routeInfo.distance / 1000).toFixed(1)} km · {routeInfo.steps} step{routeInfo.steps === 1 ? '' : 's'} · via fastest route
+                    {t('apps.maps.route.summary', {
+                      distance: (routeInfo.distance / 1000).toFixed(1),
+                      steps: t('apps.maps.route.steps', { count: routeInfo.steps }),
+                    })}
                   </div>
                 </div>
               ) : (
-                <div className="text-[11.5px]" style={{ color: sub }}>Get turn-by-turn directions from your location.</div>
+                <div className="text-[11.5px]" style={{ color: sub }}>{t('apps.maps.route.hint')}</div>
               )}
             </div>
             <button
@@ -519,7 +524,7 @@ export const MapsApp = () => {
               className="px-4 h-9 rounded-full text-[12.5px] font-semibold text-white disabled:opacity-50 flex items-center gap-1.5"
               style={{ background: '#2f7df7' }}
             >
-              <RouteIcon className="w-3.5 h-3.5" /> {routeInfo ? 'Go' : 'Directions'}
+              <RouteIcon className="w-3.5 h-3.5" /> {routeInfo ? t('apps.maps.route.go') : t('apps.maps.route.directions')}
             </button>
           </div>
         </div>

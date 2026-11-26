@@ -1,4 +1,5 @@
 import type { TargetAndTransition } from "motion/react";
+import { useTranslation } from 'react-i18next';
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +24,7 @@ function AppleHelloEffect({
   onAnimationComplete,
   ...props
 }: Props) {
+  const { t } = useTranslation('common');
   const calc = (x: number) => x * speed;
 
   // Lazy warm-up: kick off dynamic imports of every app while the Hello plays so
@@ -64,7 +66,7 @@ function AppleHelloEffect({
       transition={{ duration: 0.5 }}
       {...props}
     >
-      <title>hello</title>
+      <title>{t('hello')}</title>
 
       {/* h1 */}
       <motion.path

@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMacOS } from '@/contexts/MacOSContext';
 import { WindowState } from '@/types/macos';
 import { X, Minus, Square } from 'lucide-react';
@@ -8,6 +9,7 @@ interface WindowProps {
 }
 
 export const Window = ({ window }: WindowProps) => {
+  const { t } = useTranslation(['os', 'common']);
   const {
     apps,
     closeWindow,
@@ -139,7 +141,7 @@ newWidth = Math.min(newWidth, usableWidth - resizeStart.posX);
         onClick={(e) => { e.stopPropagation(); closeWindow(window.id); }}
         className={`w-3 h-3 rounded-full flex items-center justify-center group ${settings.reducedMotion ? '' : 'transition-all hover:scale-110'}`}
         style={{ background: isFocused ? '#FF5F57' : '#555' }}
-        aria-label="Close"
+        aria-label={t('common:window.closeWindow')}
       >
         {isFocused && <X className={`w-2 h-2 text-[#9f0000] opacity-0 group-hover:opacity-100 ${settings.reducedMotion ? '' : 'transition-opacity'}`} strokeWidth={2.5} />}
       </button>
@@ -151,7 +153,7 @@ newWidth = Math.min(newWidth, usableWidth - resizeStart.posX);
         }}
         className={`w-3 h-3 rounded-full flex items-center justify-center group ${settings.reducedMotion ? '' : 'transition-all hover:scale-110'}`}
         style={{ background: isFocused ? '#FFBD2E' : '#555' }}
-        aria-label="Minimize"
+        aria-label={t('common:window.minimize')}
       >
         {isFocused && <Minus className={`w-2 h-2 text-[#995700] opacity-0 group-hover:opacity-100 ${settings.reducedMotion ? '' : 'transition-opacity'}`} strokeWidth={2.5} />}
       </button>
@@ -159,14 +161,14 @@ newWidth = Math.min(newWidth, usableWidth - resizeStart.posX);
         <div
           className="w-3 h-3 rounded-full"
           style={{ background: '#464B4E' }}
-          aria-label="Maximize disabled"
+          aria-label={t('window.maximizeDisabled')}
         />
       ) : (
         <button
           onClick={(e) => { e.stopPropagation(); maximizeWindow(window.id); }}
           className={`w-3 h-3 rounded-full flex items-center justify-center group ${settings.reducedMotion ? '' : 'transition-all hover:scale-110'}`}
           style={{ background: isFocused ? '#28C840' : '#555' }}
-          aria-label="Maximize"
+          aria-label={t('common:window.maximize')}
         >
           {isFocused && <Square className={`w-2 h-2 text-[#006400] opacity-0 group-hover:opacity-100 ${settings.reducedMotion ? '' : 'transition-opacity'}`} strokeWidth={2.5} />}
         </button>
@@ -228,7 +230,7 @@ newWidth = Math.min(newWidth, usableWidth - resizeStart.posX);
           {TrafficLights}
           {!transparent && (
             <div className="absolute left-1/2 -translate-x-1/2 text-sm font-medium text-foreground">
-              {app.name}
+              {t(`apps.${app.id}`, { ns: 'common', defaultValue: app.name })}
             </div>
           )}
         </div>

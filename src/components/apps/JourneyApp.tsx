@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMacOS } from '@/contexts/MacOSContext';
 
 const SITE_URL = 'https://thanas.vercel.app/';
 
 export const JourneyApp = () => {
+  const { t } = useTranslation('common');
   const [loading, setLoading] = useState(true);
   const { settings } = useMacOS();
 
@@ -41,7 +43,7 @@ export const JourneyApp = () => {
       <iframe
         key={iframeSrc}
         src={iframeSrc}
-        title="Journey"
+        title={t('apps.journey')}
         className="absolute inset-0 w-full h-full border-0"
         style={{ colorScheme: isDark ? 'dark' : 'light' }}
         onLoad={() => setLoading(false)}

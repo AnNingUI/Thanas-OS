@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { IoCloudySharp, IoPartlySunny, IoSunny, IoMoon, IoRainy, IoThunderstorm } from 'react-icons/io5';
 import {
@@ -29,17 +30,17 @@ interface HourSlot {
   isSunrise?: boolean;
 }
 
-const conditionLabel = (code: number, isDay: number) => {
-  if (code === 0) return isDay ? 'Sunny' : 'Clear';
-  if (code <= 2) return 'Partly Cloudy';
-  if (code === 3) return 'Cloudy';
-  if (code <= 49) return 'Foggy';
-  if (code <= 57) return 'Drizzle';
-  if (code <= 67) return 'Rain';
-  if (code <= 77) return 'Snow';
-  if (code <= 82) return 'Showers';
-  if (code <= 86) return 'Snow Showers';
-  return 'Thunderstorm';
+const conditionKey = (code: number, isDay: number) => {
+  if (code === 0) return isDay ? 'widgets.weather.conditions.sunny' : 'widgets.weather.conditions.clear';
+  if (code <= 2) return 'widgets.weather.conditions.partlyCloudy';
+  if (code === 3) return 'widgets.weather.conditions.cloudy';
+  if (code <= 49) return 'widgets.weather.conditions.foggy';
+  if (code <= 57) return 'widgets.weather.conditions.drizzle';
+  if (code <= 67) return 'widgets.weather.conditions.rain';
+  if (code <= 77) return 'widgets.weather.conditions.snow';
+  if (code <= 82) return 'widgets.weather.conditions.showers';
+  if (code <= 86) return 'widgets.weather.conditions.snowShowers';
+  return 'widgets.weather.conditions.thunderstorm';
 };
 
 const WeatherGlyph = ({
@@ -72,6 +73,7 @@ const WeatherGlyph = ({
 };
 
 export const BengaluruWeatherWidget = ({ className }: { className?: string }) => {
+  const { t } = useTranslation('os');
   const [current, setCurrent] = useState<CurrentWeather | null>(null);
   const [hours, setHours] = useState<HourSlot[]>([]);
 
@@ -142,7 +144,7 @@ export const BengaluruWeatherWidget = ({ className }: { className?: string }) =>
         <div className="flex items-start justify-between">
           <div>
             <div className="text-[14px]" style={{ fontWeight: 500, letterSpacing: '0.01em' }}>
-              Bengaluru
+              {t('widgets.weather.city')}
             </div>
 
             <div
@@ -159,11 +161,11 @@ export const BengaluruWeatherWidget = ({ className }: { className?: string }) =>
             {current && (
               <>
                 <div className="text-[13px]" style={{ fontWeight: 400, letterSpacing: '0.01em' }}>
-                  {conditionLabel(current.weather_code, current.is_day)}
+                  {t(conditionKey(current.weather_code, current.is_day))}
                 </div>
 
                 <div className="text-[12px] text-white/75" style={{ fontWeight: 300 }}>
-                  H:{current.high}° L:{current.low}°
+                  {t('widgets.weather.highLow', { high: current.high, low: current.low })}
                 </div>
               </>
             )}
@@ -185,7 +187,7 @@ export const BengaluruWeatherWidget = ({ className }: { className?: string }) =>
                 </div>
               ) : (
                 <div className="text-[11px] text-white/75" style={{ fontWeight: 400 }}>
-                  {h.isSunset ? 'Set' : 'Rise'}
+                  {h.isSunset ? t('widgets.weather.sunset') : t('widgets.weather.sunrise')}
                 </div>
               )}
             </div>

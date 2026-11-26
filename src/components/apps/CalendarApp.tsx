@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, Plus, Calendar as CalIcon, Clock, Grid3x3, List, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useMacOS } from '@/contexts/MacOSContext';
@@ -12,9 +13,19 @@ interface CalEvent {
   color: 'red' | 'gray' | 'green' | 'blue' | 'orange';
 }
 
-const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const WEEKDAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
+
+/** 当前语言对应的日期区域设置（与 i18next 语言同步）。 */
+const localeFor = (lang?: string) =>
+  lang?.startsWith('zh') ? 'zh-CN' : lang?.startsWith('ja') ? 'ja-JP' : 'en-US';
+
+const useDateLocale = () => {
+  const { i18n } = useTranslation('appsMedia');
+  return localeFor(i18n.resolvedLanguage || i18n.language);
+};
+
+const formatHour = (locale: string, hour: number) =>
+  new Intl.DateTimeFormat(locale, { hour: 'numeric' }).format(new Date(2024, 0, 1, hour));
 
 // Holidays (India = royal green, US = whitish gray)
 const INDIAN_HOLIDAYS: Record<string, string> = {
@@ -195,6 +206,8 @@ const seedEvents = (): CalEvent[] => {
 type View = 'month' | 'week' | 'day' | 'list';
 
 export const CalendarApp = () => {
+  const { t, i18n } = useTranslation('appsMedia');
+  const locale = localeFor(i18n.resolvedLanguage || i18n.language);
   const { settings } = useMacOS();
   const dark = settings.theme === 'dark';
   const tone = getTone(dark);
@@ -221,15 +234,21 @@ export const CalendarApp = () => {
   };
 
   const headerLabel = useMemo(() => {
-    if (view === 'month') return `${MONTHS[current.getMonth()]} ${current.getFullYear()}`;
-    if (view === 'day') return current.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    if (view === 'month') {
+      return new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(current);
+    }
+    if (view === 'day') {
+      return new Intl.DateTimeFormat(locale, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).format(current);
+    }
     if (view === 'week') {
       const ws = startOfWeek(current);
       const we = new Date(ws); we.setDate(ws.getDate() + 6);
-      return `${ws.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${we.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+      const shortDay = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric' });
+      const shortDayYear = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', year: 'numeric' });
+      return `${shortDay.format(ws)} – ${shortDayYear.format(we)}`;
     }
-    return 'All Events';
-  }, [view, current]);
+    return t('apps.calendar.allEvents');
+  }, [view, current, locale, t]);
 
   const openCreate = (date: Date, hour?: number) => {
     const h = hour ?? 9;
@@ -270,7 +289,7 @@ export const CalendarApp = () => {
             className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[12.5px] font-medium text-white shadow-sm"
             style={{ background: 'linear-gradient(180deg,#ff5366,#fa2d48)' }}
           >
-            <Plus className="w-3.5 h-3.5" /> New Event
+            <Plus className="w-3.5 h-3.5" /> {t('apps.calendar.newEvent')}
           </button>
         </div>
       </div>
@@ -295,34 +314,34 @@ export const CalendarApp = () => {
       {selected && (
         <Modal tone={tone} onClose={() => setSelected(null)} title={selected.title} accent={COLORS_HEX[selected.color]}>
           <div className="text-[13px]" style={{ color: tone.text }}>
-            {selected.startTime.toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+            {new Intl.DateTimeFormat(locale, { weekday: 'long', month: 'long', day: 'numeric' }).format(selected.startTime)}
           </div>
           <div className="text-[13px] mt-0.5" style={{ color: tone.sub }}>
-            {selected.startTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} – {selected.endTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+            {selected.startTime.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' })} – {selected.endTime.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' })}
           </div>
           <div className="mt-4 flex items-center justify-end gap-2">
             <button
               onClick={() => { setEvents((p) => p.filter((e) => e.id !== selected.id)); setSelected(null); }}
               className="h-8 px-3 rounded-md text-[12.5px] border"
               style={{ borderColor: tone.border, color: tone.text }}
-            >Delete</button>
-            <button onClick={() => setSelected(null)} className="h-8 px-3 rounded-md text-[12.5px] text-white" style={{ background: '#fa2d48' }}>Close</button>
+            >{t('apps.calendar.actions.delete')}</button>
+            <button onClick={() => setSelected(null)} className="h-8 px-3 rounded-md text-[12.5px] text-white" style={{ background: '#fa2d48' }}>{t('apps.calendar.actions.close')}</button>
           </div>
         </Modal>
       )}
 
       {creating && (
-        <Modal tone={tone} onClose={() => setCreating(false)} title="New Event" accent="#fa2d48">
+        <Modal tone={tone} onClose={() => setCreating(false)} title={t('apps.calendar.newEvent')} accent="#fa2d48">
           <input
             autoFocus
             value={draft.title}
             onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
-            placeholder="Event title"
+            placeholder={t('apps.calendar.fields.title')}
             className="w-full h-9 px-3 rounded-md border text-[13px] outline-none"
             style={{ background: tone.input, borderColor: tone.inputBorder, color: tone.text }}
           />
 
-          <div className="text-[11px] uppercase tracking-wider mt-4 mb-1" style={{ color: tone.sub }}>Date</div>
+          <div className="text-[11px] uppercase tracking-wider mt-4 mb-1" style={{ color: tone.sub }}>{t('apps.calendar.fields.date')}</div>
           <input
             type="date"
             value={draft.date}
@@ -333,7 +352,7 @@ export const CalendarApp = () => {
 
           <div className="grid grid-cols-2 gap-3 mt-3">
             <div>
-              <div className="text-[11px] uppercase tracking-wider mb-1" style={{ color: tone.sub }}>Start</div>
+              <div className="text-[11px] uppercase tracking-wider mb-1" style={{ color: tone.sub }}>{t('apps.calendar.fields.start')}</div>
               <input
                 type="time"
                 value={`${String(draft.startH).padStart(2,'0')}:${String(draft.startM).padStart(2,'0')}`}
@@ -346,7 +365,7 @@ export const CalendarApp = () => {
               />
             </div>
             <div>
-              <div className="text-[11px] uppercase tracking-wider mb-1" style={{ color: tone.sub }}>End</div>
+              <div className="text-[11px] uppercase tracking-wider mb-1" style={{ color: tone.sub }}>{t('apps.calendar.fields.end')}</div>
               <input
                 type="time"
                 value={`${String(draft.endH).padStart(2,'0')}:${String(draft.endM).padStart(2,'0')}`}
@@ -360,7 +379,7 @@ export const CalendarApp = () => {
             </div>
           </div>
 
-          <div className="text-[11px] uppercase tracking-wider mt-4 mb-1" style={{ color: tone.sub }}>Color</div>
+          <div className="text-[11px] uppercase tracking-wider mt-4 mb-1" style={{ color: tone.sub }}>{t('apps.calendar.fields.color')}</div>
           <div className="flex items-center gap-2">
             {(['red','gray','green','blue','orange'] as const).map((c) => (
               <button
@@ -377,8 +396,8 @@ export const CalendarApp = () => {
           </div>
 
           <div className="mt-5 flex items-center justify-end gap-2">
-            <button onClick={() => setCreating(false)} className="h-8 px-3 rounded-md text-[12.5px] border" style={{ borderColor: tone.border, color: tone.text }}>Cancel</button>
-            <button onClick={submitCreate} className="h-8 px-3 rounded-md text-[12.5px] text-white" style={{ background: '#fa2d48' }}>Add</button>
+            <button onClick={() => setCreating(false)} className="h-8 px-3 rounded-md text-[12.5px] border" style={{ borderColor: tone.border, color: tone.text }}>{t('apps.calendar.actions.cancel')}</button>
+            <button onClick={submitCreate} className="h-8 px-3 rounded-md text-[12.5px] text-white" style={{ background: '#fa2d48' }}>{t('apps.calendar.actions.add')}</button>
           </div>
         </Modal>
       )}
@@ -401,11 +420,12 @@ const IconBtn = ({ children, onClick, tone }: { children: React.ReactNode; onCli
 );
 
 const Segmented = ({ value, onChange, tone }: { value: View; onChange: (v: View) => void; tone: Tone }) => {
+  const { t } = useTranslation('appsMedia');
   const items: { v: View; icon: React.ReactNode; label: string }[] = [
-    { v: 'month', icon: <CalIcon className="w-3.5 h-3.5" />, label: 'Month' },
-    { v: 'week', icon: <Grid3x3 className="w-3.5 h-3.5" />, label: 'Week' },
-    { v: 'day', icon: <Clock className="w-3.5 h-3.5" />, label: 'Day' },
-    { v: 'list', icon: <List className="w-3.5 h-3.5" />, label: 'List' },
+    { v: 'month', icon: <CalIcon className="w-3.5 h-3.5" />, label: t('apps.calendar.views.month') },
+    { v: 'week', icon: <Grid3x3 className="w-3.5 h-3.5" />, label: t('apps.calendar.views.week') },
+    { v: 'day', icon: <Clock className="w-3.5 h-3.5" />, label: t('apps.calendar.views.day') },
+    { v: 'list', icon: <List className="w-3.5 h-3.5" />, label: t('apps.calendar.views.list') },
   ];
   return (
     <div className="flex items-center gap-0.5 p-0.5 rounded-lg border" style={{ borderColor: tone.border }}>
@@ -453,6 +473,7 @@ const MonthView = ({ current, today, events, onCellClick, onEventClick, tone, da
   current: Date; today: Date; events: CalEvent[];
   onCellClick: (d: Date) => void; onEventClick: (e: CalEvent) => void; tone: Tone; dark: boolean;
 }) => {
+  const locale = useDateLocale();
   const cells = useMemo(() => {
     const first = new Date(current.getFullYear(), current.getMonth(), 1);
     const offset = (first.getDay() + 6) % 7;
@@ -468,10 +489,15 @@ const MonthView = ({ current, today, events, onCellClick, onEventClick, tone, da
     return out;
   }, [current]);
 
+  const weekdayLabels = useMemo(
+    () => Array.from({ length: 7 }, (_, i) => new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(new Date(2024, 0, 1 + i))),
+    [locale],
+  );
+
   return (
     <div className="h-full flex flex-col">
       <div className="grid grid-cols-7">
-        {WEEKDAYS.map((w) => (
+        {weekdayLabels.map((w) => (
           <div key={w} className="px-3 py-1.5 text-[10.5px] uppercase tracking-wider text-right border-b" style={{ color: tone.sub, borderColor: tone.border }}>{w}</div>
         ))}
       </div>
@@ -525,7 +551,7 @@ const MonthView = ({ current, today, events, onCellClick, onEventClick, tone, da
                     className="text-[10.5px] truncate px-1.5 py-px rounded cursor-pointer"
                     style={evChip(COLORS_HEX[e.color], dark)}
                   >
-                    {e.startTime.toLocaleTimeString('en-US', { hour: 'numeric' })} {e.title}
+                    {e.startTime.toLocaleTimeString(locale, { hour: 'numeric' })} {e.title}
                   </div>
                 ))}
               </div>
@@ -541,6 +567,7 @@ const WeekView = ({ current, today, events, onSlotClick, onEventClick, tone, dar
   current: Date; today: Date; events: CalEvent[];
   onSlotClick: (d: Date, h: number) => void; onEventClick: (e: CalEvent) => void; tone: Tone; dark: boolean;
 }) => {
+  const locale = useDateLocale();
   const start = startOfWeek(current);
   const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(start); d.setDate(start.getDate() + i); return d; });
   return (
@@ -551,7 +578,7 @@ const WeekView = ({ current, today, events, onSlotClick, onEventClick, tone, dar
           const isToday = sameDay(d, today);
           return (
             <div key={i} className="text-center py-2">
-              <div className="text-[10.5px] uppercase tracking-wider" style={{ color: tone.sub }}>{WEEKDAYS[i]}</div>
+              <div className="text-[10.5px] uppercase tracking-wider" style={{ color: tone.sub }}>{new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(d)}</div>
               <div className="text-[18px] font-semibold mt-0.5" style={{ color: isToday ? '#fa2d48' : tone.text }}>{d.getDate()}</div>
             </div>
           );
@@ -561,7 +588,7 @@ const WeekView = ({ current, today, events, onSlotClick, onEventClick, tone, dar
         <div className="grid" style={{ gridTemplateColumns: '60px repeat(7, 1fr)' }}>
           {HOURS.map((h) => (
             <div key={h} className="contents">
-              <div className="text-[10.5px] text-right pr-2 pt-1 border-t h-12" style={{ color: tone.sub, borderColor: tone.border }}>{h === 0 ? '12 AM' : h < 12 ? `${h} AM` : h === 12 ? '12 PM' : `${h - 12} PM`}</div>
+              <div className="text-[10.5px] text-right pr-2 pt-1 border-t h-12" style={{ color: tone.sub, borderColor: tone.border }}>{formatHour(locale, h)}</div>
               {days.map((d, di) => {
                 const evs = events.filter((e) => sameDay(e.startTime, d) && e.startTime.getHours() === h);
                 return (
@@ -591,13 +618,14 @@ const DayView = ({ current, today, events, onSlotClick, onEventClick, tone, dark
   current: Date; today: Date; events: CalEvent[];
   onSlotClick: (d: Date, h: number) => void; onEventClick: (e: CalEvent) => void; tone: Tone; dark: boolean;
 }) => {
+  const locale = useDateLocale();
   const isToday = sameDay(current, today);
   return (
     <div className="h-full flex flex-col">
       <div className="px-4 py-2 border-b text-[12px] flex items-center gap-2" style={{ borderColor: tone.border }}>
         <CalIcon className="w-4 h-4" style={isToday ? { color: '#fa2d48' } : undefined} />
         <span style={isToday ? { color: '#fa2d48', fontWeight: 600 } : undefined}>
-          {current.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+          {new Intl.DateTimeFormat(locale, { weekday: 'long', month: 'long', day: 'numeric' }).format(current)}
         </span>
       </div>
       <div className="flex-1 overflow-auto thin-scrollbar">
@@ -605,7 +633,7 @@ const DayView = ({ current, today, events, onSlotClick, onEventClick, tone, dark
           const evs = events.filter((e) => sameDay(e.startTime, current) && e.startTime.getHours() === h);
           return (
             <button key={h} onClick={() => onSlotClick(current, h)} className="w-full grid border-b text-left" style={{ gridTemplateColumns: '80px 1fr', borderColor: tone.border }}>
-              <div className="text-[11px] text-right pr-3 pt-2" style={{ color: tone.sub }}>{h === 0 ? '12 AM' : h < 12 ? `${h} AM` : h === 12 ? '12 PM' : `${h - 12} PM`}</div>
+              <div className="text-[11px] text-right pr-3 pt-2" style={{ color: tone.sub }}>{formatHour(locale, h)}</div>
               <div className="min-h-[56px] py-1 pr-3 space-y-1">
                 {evs.map((e) => (
                   <div
@@ -616,7 +644,7 @@ const DayView = ({ current, today, events, onSlotClick, onEventClick, tone, dark
                   >
                     <div className="font-medium">{e.title}</div>
                     <div className="text-[10.5px] opacity-75">
-                      {e.startTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} – {e.endTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                      {e.startTime.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' })} – {e.endTime.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' })}
                     </div>
                   </div>
                 ))}
@@ -630,13 +658,15 @@ const DayView = ({ current, today, events, onSlotClick, onEventClick, tone, dark
 };
 
 const ListView = ({ current, events, onEventClick, tone }: { current: Date; events: CalEvent[]; onEventClick: (e: CalEvent) => void; tone: Tone }) => {
+  const { t } = useTranslation('appsMedia');
+  const locale = useDateLocale();
   const list = events
     .filter((e) => e.startTime.getMonth() === current.getMonth() && e.startTime.getFullYear() === current.getFullYear())
     .sort((a, b) => +a.startTime - +b.startTime);
   return (
     <div className="h-full overflow-auto thin-scrollbar p-4">
       {list.length === 0 ? (
-        <div className="text-center mt-10 text-[13px]" style={{ color: tone.sub }}>No events this month.</div>
+        <div className="text-center mt-10 text-[13px]" style={{ color: tone.sub }}>{t('apps.calendar.empty')}</div>
       ) : (
         <div className="space-y-1.5">
           {list.map((e) => (
@@ -648,11 +678,11 @@ const ListView = ({ current, events, onEventClick, tone }: { current: Date; even
             >
               <div className="w-2.5 h-2.5 rounded-full" style={{ background: COLORS_HEX[e.color] }} />
               <div className="w-24 text-[12px]" style={{ color: tone.sub }}>
-                {e.startTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                {e.startTime.toLocaleDateString(locale, { month: 'short', day: 'numeric' })}
               </div>
               <div className="flex-1 text-[13px] font-medium truncate">{e.title}</div>
               <div className="text-[11.5px]" style={{ color: tone.sub }}>
-                {e.startTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                {e.startTime.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' })}
               </div>
             </button>
           ))}

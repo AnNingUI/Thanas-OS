@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft, ArrowRight, RotateCw, Plus, Lock, X, Home,
   Loader2,
@@ -25,11 +26,6 @@ const SEARCH_PAGE = 'https://duckduckgo.com/?q=';
 
 const isUrlLike = (s: string) => /^[a-z]+:\/\//i.test(s) || /^[\w-]+(\.[\w-]+)+(\/.*)?$/i.test(s);
 
-const newTab = (url = START_PAGE, title = 'Favorites'): Tab => ({
-  id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-  url, title, loading: false, history: [url], histIdx: 0,
-});
-
 const faviconFor = (url: string): string | undefined => {
   try {
     const u = new URL(url);
@@ -38,12 +34,20 @@ const faviconFor = (url: string): string | undefined => {
 };
 
 export const SafariApp = () => {
+  const { t } = useTranslation('appsCore');
+  const favoritesLabel = t('apps.safari.favorites');
+
+  const createTab = (url = START_PAGE, title = favoritesLabel): Tab => ({
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    url, title, loading: false, history: [url], histIdx: 0,
+  });
+
   const initial = useRef<Tab | null>(null);
   if (!initial.current) {
     const pending = consumePendingSafariUrl();
     initial.current = pending
-      ? newTab(pending, (() => { try { return new URL(pending).hostname; } catch { return pending; } })())
-      : newTab();
+      ? createTab(pending, (() => { try { return new URL(pending).hostname; } catch { return pending; } })())
+      : createTab();
   }
   const { bookmarks } = useBookmarks();
   const [tabs, setTabs] = useState<Tab[]>([initial.current]);
@@ -70,7 +74,7 @@ export const SafariApp = () => {
   const navigate = (raw: string) => {
     const input = raw.trim();
     if (!input) return;
-    if (input === 'favorites' || input === START_PAGE) { goTo(START_PAGE, 'Favorites'); return; }
+    if (input === 'favorites' || input === START_PAGE) { goTo(START_PAGE, favoritesLabel); return; }
     let url: string;
     if (isUrlLike(input)) url = /^https?:\/\//.test(input) ? input : 'https://' + input;
     else url = SEARCH_PAGE + encodeURIComponent(input);
@@ -94,11 +98,11 @@ export const SafariApp = () => {
     }
   };
 
-  const addTab = () => { const t = newTab(); setTabs(p => [...p, t]); setActiveId(t.id); };
+  const addTab = () => { const tab = createTab(); setTabs(p => [...p, tab]); setActiveId(tab.id); };
   const closeTab = (id: string) => {
     setTabs(prev => {
-      const next = prev.filter(t => t.id !== id);
-      if (next.length === 0) { const t = newTab(); setActiveId(t.id); return [t]; }
+      const next = prev.filter(tab => tab.id !== id);
+      if (next.length === 0) { const tab = createTab(); setActiveId(tab.id); return [tab]; }
       if (id === activeId) setActiveId(next[next.length - 1].id);
       return next;
     });
@@ -112,26 +116,26 @@ export const SafariApp = () => {
   useEffect(() => {
     registerAppMenus('safari', {
       File: [
-        { label: 'New Tab', shortcut: '⌘T', action: addTab },
-        { label: 'Close Tab', shortcut: '⌘W', action: () => closeTab(activeId) },
+        { label: t('apps.safari.newTab'), shortcut: '⌘T', action: addTab },
+        { label: t('apps.safari.closeTab'), shortcut: '⌘W', action: () => closeTab(activeId) },
       ],
       Edit: [
-        { label: 'Cut', shortcut: '⌘X', action: () => document.execCommand('cut') },
-        { label: 'Copy', shortcut: '⌘C', action: () => document.execCommand('copy') },
-        { label: 'Paste', shortcut: '⌘V', action: () => document.execCommand('paste') },
+        { label: t('apps.safari.cut'), shortcut: '⌘X', action: () => document.execCommand('cut') },
+        { label: t('apps.safari.copy'), shortcut: '⌘C', action: () => document.execCommand('copy') },
+        { label: t('apps.safari.paste'), shortcut: '⌘V', action: () => document.execCommand('paste') },
       ],
       View: [
-        { label: 'Reload Page', shortcut: '⌘R', action: () => navigate(active.url) },
-        { label: showBookmarksBar ? 'Hide Bookmarks Bar' : 'Show Bookmarks Bar', action: () => setShowBookmarksBar(s => !s) },
-        { label: showSidebar ? 'Hide Sidebar' : 'Show Sidebar', action: () => setShowSidebar(s => !s) },
+        { label: t('apps.safari.reloadPage'), shortcut: '⌘R', action: () => navigate(active.url) },
+        { label: showBookmarksBar ? t('apps.safari.hideBookmarksBar') : t('apps.safari.showBookmarksBar'), action: () => setShowBookmarksBar(s => !s) },
+        { label: showSidebar ? t('apps.safari.hideSidebar') : t('apps.safari.showSidebar'), action: () => setShowSidebar(s => !s) },
       ],
       Window: [
-        { label: 'Home', action: () => goTo(START_PAGE, 'Favorites') },
+        { label: t('apps.safari.home'), action: () => goTo(START_PAGE, favoritesLabel) },
       ],
     });
     return () => registerAppMenus('safari', null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeId, active.url, showBookmarksBar, showSidebar]);
+  }, [activeId, active.url, showBookmarksBar, showSidebar, t]);
 
   return (
     <div className="h-full w-full flex flex-col bg-background text-foreground">
@@ -140,7 +144,7 @@ export const SafariApp = () => {
         <ToolbarBtn onClick={back} disabled={active.histIdx === 0}><ArrowLeft className="w-4 h-4" /></ToolbarBtn>
         <ToolbarBtn onClick={forward} disabled={active.histIdx >= active.history.length - 1}><ArrowRight className="w-4 h-4" /></ToolbarBtn>
         <ToolbarBtn onClick={() => navigate(active.url)}><RotateCw className="w-4 h-4" /></ToolbarBtn>
-        <ToolbarBtn onClick={() => goTo(START_PAGE, 'Favorites')}><Home className="w-4 h-4" /></ToolbarBtn>
+        <ToolbarBtn onClick={() => goTo(START_PAGE, favoritesLabel)}><Home className="w-4 h-4" /></ToolbarBtn>
 
         <form
           onSubmit={(e) => { e.preventDefault(); navigate(addressBar); }}
@@ -151,7 +155,7 @@ export const SafariApp = () => {
             value={addressBar}
             onChange={(e) => setAddressBar(e.target.value)}
             className="flex-1 bg-transparent outline-none text-[13px] text-neutral-800 dark:text-neutral-100 min-w-0"
-            placeholder="Search or enter website name"
+            placeholder={t('apps.safari.searchPlaceholder')}
           />
         </form>
       </div>
@@ -162,32 +166,32 @@ export const SafariApp = () => {
           <aside className="w-56 shrink-0 bg-neutral-100/80 dark:bg-neutral-900/60 border-r border-black/10 dark:border-white/10 p-2 pt-[34px] overflow-auto flex flex-col gap-3">
             <div>
               <div className="flex items-center justify-between px-2 py-1">
-                <div className="text-[12px] font-semibold uppercase tracking-wider text-neutral-500">Tabs</div>
+                <div className="text-[12px] font-semibold uppercase tracking-wider text-neutral-500">{t('apps.safari.tabs')}</div>
                 <button onClick={addTab} className="p-0.5 hover:bg-black/10 dark:hover:bg-white/10 rounded">
                   <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
-              {tabs.map(t => (
+              {tabs.map(tab => (
                 <div
-                  key={t.id}
-                  onClick={() => setActiveId(t.id)}
+                  key={tab.id}
+                  onClick={() => setActiveId(tab.id)}
                   className={`group flex items-center gap-2 px-2 py-1.5 rounded-md text-[14.5px] cursor-pointer ${
-                    t.id === activeId
+                    tab.id === activeId
                       ? 'bg-white dark:bg-neutral-800 shadow-sm text-neutral-900 dark:text-neutral-100'
                       : 'text-neutral-600 dark:text-neutral-400 hover:bg-white/50 dark:hover:bg-neutral-800/50'
                   }`}
                 >
-                  {t.loading ? (
+                  {tab.loading ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-blue-500" />
-                  ) : t.favicon ? (
-                    <img src={t.favicon} alt="" className="w-4 h-4 shrink-0" />
+                  ) : tab.favicon ? (
+                    <img src={tab.favicon} alt="" className="w-4 h-4 shrink-0" />
                   ) : (
                     <div className="w-4 h-4 rounded-sm bg-neutral-400/30 shrink-0" />
                   )}
-                  <span className="truncate flex-1">{t.title}</span>
+                  <span className="truncate flex-1">{tab.url === START_PAGE ? favoritesLabel : tab.title}</span>
                   {tabs.length > 1 && (
                     <button
-                      onClick={(e) => { e.stopPropagation(); closeTab(t.id); }}
+                      onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
                       className="opacity-0 group-hover:opacity-100 hover:bg-black/10 dark:hover:bg-white/10 rounded p-0.5"
                     >
                       <X className="w-3 h-3" />
@@ -198,7 +202,7 @@ export const SafariApp = () => {
             </div>
 
             <div>
-              <div className="text-[12px] font-semibold uppercase tracking-wider text-neutral-500 px-2 py-1">Bookmarks</div>
+              <div className="text-[12px] font-semibold uppercase tracking-wider text-neutral-500 px-2 py-1">{t('apps.safari.bookmarks')}</div>
               {bookmarks.map(b => (
                 <button
                   key={b.url}
@@ -216,7 +220,7 @@ export const SafariApp = () => {
         <div className="flex-1 overflow-hidden bg-white dark:bg-neutral-950">
           {isFavorites ? (
             <div className="h-full overflow-auto py-12 px-6 flex flex-col items-center">
-              <h1 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mb-8 text-center">Favorites</h1>
+              <h1 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mb-8 text-center">{t('apps.safari.favorites')}</h1>
               <div className="grid grid-cols-4 gap-x-8 gap-y-6 mb-12 mx-auto place-items-center">
                 {PROJECTS.map(p => (
                   <button key={p.id} onClick={() => goTo(p.liveUrl, p.name)} className="flex flex-col items-center gap-2 group w-24">

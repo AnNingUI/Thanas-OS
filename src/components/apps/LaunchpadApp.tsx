@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMacOS } from '@/contexts/MacOSContext';
 import { useInstalledProjects, useGoogleInstalled } from '@/lib/installedApps';
 import { getProject } from '@/lib/projects';
@@ -48,6 +49,8 @@ export const APP_ICONS: Record<string, string> = {
 const PAGE_SIZE = 28; // 7 cols x 4 rows
 
 export const LaunchpadApp = () => {
+  const { t } = useTranslation('appsCore');
+  const { t: tCommon } = useTranslation('common');
   const { apps, openApp, closeWindow, windows } = useMacOS();
   const installed = useInstalledProjects();
   const googleInstalled = useGoogleInstalled();
@@ -58,7 +61,7 @@ export const LaunchpadApp = () => {
     const core = apps
       .filter(a => a.id !== 'launchpad')
       .filter(a => a.id !== 'google' || googleInstalled)
-      .map(a => ({ id: a.id, name: a.name, icon: APP_ICONS[a.id], kind: 'app' as const, url: '' }));
+      .map(a => ({ id: a.id, name: tCommon(`apps.${a.id}`, { defaultValue: a.name }), icon: APP_ICONS[a.id], kind: 'app' as const, url: '' }));
     const projects = installed
       .map(getProject)
       .filter(Boolean)
@@ -66,7 +69,7 @@ export const LaunchpadApp = () => {
     return [...core, ...projects].filter(i =>
       i.name.toLowerCase().includes(query.toLowerCase())
     );
-  }, [apps, installed, googleInstalled, query]);
+  }, [apps, installed, googleInstalled, query, tCommon]);
 
   const pages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
   const pageItems = items.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
@@ -116,7 +119,7 @@ export const LaunchpadApp = () => {
           autoFocus
           value={query}
           onChange={e => { setQuery(e.target.value); setPage(0); }}
-          placeholder="Search"
+          placeholder={t('apps.launchpad.searchPlaceholder')}
           className="w-80 px-5 py-2 rounded-full liquid-glass-dark text-white placeholder-white/50 text-center outline-none text-sm"
         />
       </div>

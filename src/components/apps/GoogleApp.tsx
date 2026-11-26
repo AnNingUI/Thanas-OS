@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, RotateCw, Home, Lock, Star, Bookmark as BookmarkIcon, MoreVertical, Plus, Mic, Search } from 'lucide-react';
 import { registerAppMenus } from '@/types/macos';
 import { useMacOS } from '@/contexts/MacOSContext';
@@ -84,12 +85,13 @@ const getFavicon = (url: string): string => {
 
 const newTab = (url = HOMEPAGE): Tab => ({
   id: 't-' + Math.random().toString(36).slice(2, 9),
-  url, title: 'New Tab', loading: false, history: [url], histIdx: 0,
+  url, title: '', loading: false, history: [url], histIdx: 0,
 });
 
 import { useBookmarks } from '@/lib/bookmarks';
 
 export const GoogleApp = () => {
+  const { t } = useTranslation('appsMedia');
   const { settings, updateSettings } = useMacOS();
   const { bookmarks, has: hasBookmark, toggle: toggleBookmark } = useBookmarks();
   const [tabs, setTabs] = useState<Tab[]>(() => {
@@ -114,20 +116,20 @@ export const GoogleApp = () => {
 
   const navigate = useCallback((id: string, url: string, pushHistory = true) => {
     const norm = normalizeUrl(url);
-    setTabs(prev => prev.map(t => {
-      if (t.id !== id) return t;
-      let title = norm === HOMEPAGE ? 'New Tab' : 'Loading…';
+    setTabs(prev => prev.map(tab => {
+      if (tab.id !== id) return tab;
+      let title = norm === HOMEPAGE ? '' : t('apps.google.loading');
       if (norm !== HOMEPAGE && norm !== PRANK_URL) {
         try { title = new URL(norm).hostname.replace(/^www\./, ''); } catch { /* ignore */ }
       }
       const content = norm === PRANK_URL ? PRANK_DOC : undefined;
       if (pushHistory) {
-        const hist = t.history.slice(0, t.histIdx + 1).concat(norm);
-        return { ...t, url: norm, loading: false, history: hist, histIdx: hist.length - 1, content, title };
+        const hist = tab.history.slice(0, tab.histIdx + 1).concat(norm);
+        return { ...tab, url: norm, loading: false, history: hist, histIdx: hist.length - 1, content, title };
       }
-      return { ...t, url: norm, loading: false, content, title };
+      return { ...tab, url: norm, loading: false, content, title };
     }));
-  }, []);
+  }, [t]);
 
   // Listen for nav messages from iframe
   useEffect(() => {
@@ -186,27 +188,27 @@ export const GoogleApp = () => {
   useEffect(() => {
     registerAppMenus('google', {
       File: [
-        { label: 'New Tab', shortcut: '⌘T', action: addTab },
-        { label: 'Close Tab', shortcut: '⌘W', action: () => closeTab(active.id) },
+        { label: t('apps.google.newTab'), shortcut: '⌘T', action: addTab },
+        { label: t('apps.google.menu.closeTab'), shortcut: '⌘W', action: () => closeTab(active.id) },
         { separator: true },
-        { label: 'Reload', shortcut: '⌘R', action: reload },
+        { label: t('apps.google.menu.reload'), shortcut: '⌘R', action: reload },
       ],
       Edit: [
-        { label: 'Cut', shortcut: '⌘X', action: () => document.execCommand('cut') },
-        { label: 'Copy', shortcut: '⌘C', action: () => document.execCommand('copy') },
-        { label: 'Paste', shortcut: '⌘V', action: () => document.execCommand('paste') },
+        { label: t('apps.google.menu.cut'), shortcut: '⌘X', action: () => document.execCommand('cut') },
+        { label: t('apps.google.menu.copy'), shortcut: '⌘C', action: () => document.execCommand('copy') },
+        { label: t('apps.google.menu.paste'), shortcut: '⌘V', action: () => document.execCommand('paste') },
       ],
       View: [
-        { label: light ? 'Switch to Dark' : 'Switch to Light', action: () => setLight(l => !l) },
-        { label: showBookmarks ? 'Hide Bookmarks Bar' : 'Show Bookmarks Bar', action: () => setShowBookmarks(s => !s) },
+        { label: light ? t('apps.google.menu.switchToDark') : t('apps.google.menu.switchToLight'), action: () => setLight(l => !l) },
+        { label: showBookmarks ? t('apps.google.menu.hideBookmarksBar') : t('apps.google.menu.showBookmarksBar'), action: () => setShowBookmarks(s => !s) },
       ],
       Window: [
-        { label: 'Make Default Browser', action: () => updateSettings({ defaultBrowser: 'google' }) },
-        { label: 'Use Safari as Default', action: () => updateSettings({ defaultBrowser: 'safari' }) },
+        { label: t('apps.google.menu.makeDefaultBrowser'), action: () => updateSettings({ defaultBrowser: 'google' }) },
+        { label: t('apps.google.menu.useSafariAsDefault'), action: () => updateSettings({ defaultBrowser: 'safari' }) },
       ],
     });
     return () => registerAppMenus('google', null);
-  }, [active.id, light, showBookmarks, updateSettings, closeTab, reload]);
+  }, [active.id, light, showBookmarks, updateSettings, closeTab, reload, t]);
 
   // Theme tokens (Chrome dark default)
   const tk = light ? {
@@ -223,14 +225,14 @@ export const GoogleApp = () => {
     <div className="h-full w-full flex flex-col overflow-hidden" style={{ background: tk.bg, color: tk.tabText, fontFamily: 'Roboto, system-ui, sans-serif' }}>
       {/* TAB STRIP */}
       <div className="flex items-end gap-1.5 pl-20 pr-3 pt-2 shrink-0" style={{ background: tk.frame, height: 42 }}>
-        {tabs.map(t => {
-          const isActive = t.id === activeId;
-          let fav = getFavicon(t.url);
-          if (t.url === HOMEPAGE) fav = 'https://www.google.com/favicon.ico';
+        {tabs.map(tab => {
+          const isActive = tab.id === activeId;
+          let fav = getFavicon(tab.url);
+          if (tab.url === HOMEPAGE) fav = 'https://www.google.com/favicon.ico';
           return (
             <div
-              key={t.id}
-              onClick={() => setActiveId(t.id)}
+              key={tab.id}
+              onClick={() => setActiveId(tab.id)}
               className="flex items-center gap-2.5 px-3 cursor-default flex-1 max-w-[240px] min-w-[140px]"
               style={{
                 height: 34, background: isActive ? tk.toolbar : 'transparent',
@@ -241,19 +243,19 @@ export const GoogleApp = () => {
               onMouseEnter={(e) => { if (!isActive) (e.currentTarget as HTMLDivElement).style.background = tk.tabHover; }}
               onMouseLeave={(e) => { if (!isActive) (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
             >
-              {t.loading
+              {tab.loading
                 ? <div className="w-3.5 h-3.5 rounded-full border-2 border-transparent animate-spin" style={{ borderTopColor: tk.accent, borderRightColor: tk.accent, borderBottomColor: 'rgba(128,128,128,0.2)', borderLeftColor: 'rgba(128,128,128,0.2)' }} />
                 : fav ? <img src={fav} alt="" className="w-4 h-4 rounded-full object-contain" /> : <div className="w-4 h-4" />}
-              <span className="flex-1 truncate" style={{ fontSize: 12 }}>{t.title}</span>
+              <span className="flex-1 truncate" style={{ fontSize: 12 }}>{tab.url === HOMEPAGE ? t('apps.google.newTab') : tab.title}</span>
               {tabs.length > 1 && (
-                <button onClick={(e) => { e.stopPropagation(); closeTab(t.id); }} className="w-4 h-4 rounded-full flex items-center justify-center text-sm hover:bg-black/20 dark:hover:bg-white/20" style={{ opacity: 0.7 }}>×</button>
+                <button onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }} className="w-4 h-4 rounded-full flex items-center justify-center text-sm hover:bg-black/20 dark:hover:bg-white/20" style={{ opacity: 0.7 }}>×</button>
               )}
             </div>
           );
         })}
         <button
           onClick={addTab}
-          title="New tab"
+          title={t('apps.google.newTab')}
           className="w-7 h-7 mb-1 rounded-full flex items-center justify-center hover:bg-white/10"
           style={{ color: tk.tabText }}
         ><Plus className="w-4 h-4" /></button>
@@ -283,7 +285,7 @@ export const GoogleApp = () => {
             <input
               value={addressBar}
               onChange={(e) => setAddressBar(e.target.value)}
-              placeholder="Search Google or type a URL"
+              placeholder={t('apps.google.searchPlaceholder')}
               className="flex-1 bg-transparent border-none outline-none mx-2 text-[14px]"
               style={{ color: tk.urlText, fontFamily: 'inherit' }}
             />
@@ -296,7 +298,7 @@ export const GoogleApp = () => {
               }}
               className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-black/10"
               style={{ color: hasBookmark(active.url) ? '#f59e0b' : tk.icon, opacity: hasBookmark(active.url) ? 1 : 0.7 }}
-              title={hasBookmark(active.url) ? 'Remove bookmark' : 'Add bookmark'}
+              title={hasBookmark(active.url) ? t('apps.google.removeBookmark') : t('apps.google.addBookmark')}
             >
               <Star className="w-4 h-4" fill={hasBookmark(active.url) ? 'currentColor' : 'none'} />
             </button>
@@ -312,15 +314,15 @@ export const GoogleApp = () => {
               style={{ background: tk.menuBg, color: tk.tabText }}
               onMouseLeave={() => setShowMenu(false)}
             >
-              <MenuRow label="New tab" onClick={() => { setShowMenu(false); addTab(); }} />
-              <MenuRow label="New window" disabled />
+              <MenuRow label={t('apps.google.newTab')} onClick={() => { setShowMenu(false); addTab(); }} />
+              <MenuRow label={t('apps.google.menu.newWindow')} disabled />
               <div style={{ height: 1, background: tk.border, opacity: 0.3, margin: '8px 0' }} />
-              <MenuRow label="Bookmarks" onClick={() => { setShowMenu(false); setShowBookmarks(true); }} />
-              <MenuRow label="History" disabled />
+              <MenuRow label={t('apps.google.menu.bookmarks')} onClick={() => { setShowMenu(false); setShowBookmarks(true); }} />
+              <MenuRow label={t('apps.google.menu.history')} disabled />
               <div style={{ height: 1, background: tk.border, opacity: 0.3, margin: '8px 0' }} />
-              <MenuRow label={light ? 'Switch to Dark Mode' : 'Switch to Light Mode'} onClick={() => { setLight(l => !l); setShowMenu(false); }} />
+              <MenuRow label={light ? t('apps.google.menu.switchToDarkMode') : t('apps.google.menu.switchToLightMode')} onClick={() => { setLight(l => !l); setShowMenu(false); }} />
               <MenuRow
-                label={settings.defaultBrowser === 'google' ? 'Default browser: Google' : 'Make Default Browser'}
+                label={settings.defaultBrowser === 'google' ? t('apps.google.menu.defaultBrowserGoogle') : t('apps.google.menu.makeDefaultBrowser')}
                 onClick={() => { updateSettings({ defaultBrowser: settings.defaultBrowser === 'google' ? 'safari' : 'google' }); setShowMenu(false); }}
               />
             </div>
@@ -401,6 +403,7 @@ const MenuRow = ({ label, onClick, disabled }: { label: string; onClick?: () => 
 );
 
 const NewTabPage = ({ tk, onNavigate }: { tk: ReturnType<typeof Object> & Record<string, string>; light: boolean; onNavigate: (u: string) => void }) => {
+  const { t } = useTranslation('appsMedia');
   const [q, setQ] = useState('');
   const tiles = PROJECTS.slice(0, 8).map(p => ({ title: p.name, url: p.liveUrl, icon: p.favicon }));
   return (
@@ -420,7 +423,7 @@ const NewTabPage = ({ tk, onNavigate }: { tk: ReturnType<typeof Object> & Record
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search Google or type a URL"
+          placeholder={t('apps.google.searchPlaceholder')}
           className="flex-1 bg-transparent border-none outline-none mx-3 text-[16px]"
           style={{ color: tk.tabText }}
         />

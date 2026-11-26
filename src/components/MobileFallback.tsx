@@ -1,7 +1,10 @@
+import { Trans, useTranslation } from 'react-i18next';
 import desktopShot from '@/assets/desktop-screenshot.png';
 import { Mac } from '@/components/Mac';
 
 export const MobileFallback = () => {
+  const { t } = useTranslation('os');
+
   return (
     <div className="mobile-fallback">
       <style>{`
@@ -54,12 +57,12 @@ export const MobileFallback = () => {
       <div className="fade" />
       <main>
         <h1>
-          <span className="ital">the best web iteration of</span>{' '}
-          <span>macOS online.</span>
+          <span className="ital">{t('mobileFallback.headlinePre')}</span>{' '}
+          <span>{t('mobileFallback.headlineMain')}</span>
         </h1>
 
         <p className="lead">
-          ThanasOS is a faithful, interactive recreation of macOS, rebuilt from the ground up for the browser.
+          {t('mobileFallback.lead')}
         </p>
 
         <div className="mac-wrap">
@@ -67,7 +70,7 @@ export const MobileFallback = () => {
         </div>
 
         <p className="desktop-cta">
-          Open this site on a <span className="mono">desktop</span> for the full experience.
+          <Trans i18nKey="mobileFallback.openOnDesktop" ns="os" components={{ mono: <span className="mono" /> }} />
         </p>
       </main>
     </div>

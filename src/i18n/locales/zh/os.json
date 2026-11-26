@@ -1,0 +1,249 @@
+{
+  "menu": {
+    "aboutThisMac": "关于本机",
+    "forceQuitAll": "强制退出所有应用",
+    "sleep": "睡眠",
+    "restart": "重新启动",
+    "lockScreen": "锁定屏幕",
+    "file": "文件",
+    "edit": "编辑",
+    "view": "显示",
+    "window": "窗口",
+    "help": "帮助",
+    "aboutApp": "关于 {{app}}",
+    "hideApp": "隐藏 {{app}}",
+    "quitApp": "退出 {{app}}",
+    "newLaunchpad": "打开启动台",
+    "closeWindow": "关闭窗口",
+    "minimize": "最小化",
+    "print": "打印",
+    "undo": "撤销",
+    "redo": "重做",
+    "cut": "剪切",
+    "copy": "拷贝",
+    "paste": "粘贴",
+    "selectAll": "全选",
+    "showDesktop": "显示桌面",
+    "openSpotlight": "打开聚焦",
+    "noWindowsOpen": "没有打开的窗口",
+    "minimizeAll": "全部最小化",
+    "thanasHelp": "ThanasOS 帮助",
+    "keyboardShortcuts": "键盘快捷键",
+    "contactMe": "联系我",
+    "bluetooth": "蓝牙",
+    "wifiOnline": "在线",
+    "wifiOffline": "离线",
+    "battery": "电池",
+    "spotlightShortcut": "聚焦 (⌘K)",
+    "controlCenter": "控制中心",
+    "devices": "设备",
+    "networks": "网络",
+    "turnBluetoothOn": "打开蓝牙",
+    "turnBluetoothOff": "关闭蓝牙",
+    "turnWifiOn": "打开 Wi-Fi",
+    "turnWifiOff": "关闭 Wi-Fi",
+    "bluetoothSettings": "蓝牙设置…",
+    "wifiSettings": "Wi-Fi 设置…",
+    "batterySettings": "电池设置…",
+    "lowPowerMode": "低电量模式",
+    "powerSource": "电源：{{source}}",
+    "powerAdapter": "电源适配器",
+    "logoAlt": "ThanasOS 标志"
+  },
+  "status": {
+    "on": "开",
+    "off": "关",
+    "connected": "已连接"
+  },
+  "dock": {
+    "trash": "废纸篓"
+  },
+  "window": {
+    "maximizeDisabled": "最大化已停用"
+  },
+  "spotlight": {
+    "placeholder": "聚焦搜索",
+    "shortcuts": {
+      "apps": "应用",
+      "files": "文件",
+      "web": "网页",
+      "settings": "设置"
+    },
+    "noResults": "没有找到“{{query}}”的结果",
+    "kinds": {
+      "app": "应用",
+      "project": "项目",
+      "note": "备忘录",
+      "bookmark": "书签",
+      "appstore": "App Store",
+      "setting": "设置"
+    },
+    "application": "应用程序",
+    "sections": {
+      "wifi": "Wi-Fi",
+      "bluetooth": "蓝牙",
+      "sound": "声音",
+      "displays": "显示器",
+      "wallpaper": "墙纸",
+      "appearance": "外观",
+      "desktop": "桌面与程序坞",
+      "general": "通用",
+      "accessibility": "辅助功能"
+    },
+    "getOnAppStore": "前往 App Store 获取"
+  },
+  "controlCenter": {
+    "wifi": "Wi-Fi",
+    "bluetooth": "蓝牙",
+    "airdrop": "AirDrop",
+    "contactsOnly": "仅限联系人",
+    "focus": "专注模式",
+    "sponsor": "赞助",
+    "light": "浅色",
+    "dark": "深色",
+    "display": "显示器",
+    "sound": "声音"
+  },
+  "nowPlaying": {
+    "seek": "拖动以调整播放进度",
+    "previous": "上一首",
+    "play": "播放歌曲",
+    "pause": "暂停歌曲",
+    "next": "下一首",
+    "volume": "音乐音量",
+    "love": "喜欢这首歌"
+  },
+  "notifications": {
+    "minutesAgo": "{{count}} 分钟前",
+    "today": "今天",
+    "items": {
+      "mail": {
+        "app": "邮件",
+        "title": "Parts Express",
+        "body": "阵亡将士纪念日快乐！阶梯优惠——美国订单满 $50 免运费。"
+      },
+      "appleInsider": {
+        "app": "AppleInsider",
+        "title": "新报道",
+        "body": "Elgato 推出 Stream Deck Mobile 应用，让 iPhone 变身直播控制台。"
+      },
+      "updates": {
+        "app": "更新",
+        "title": "有 App 更新可用",
+        "body": "有 1 个 App 更新可用。",
+        "when": "上午 9:19"
+      },
+      "calendar": {
+        "title": "与团队共进午餐",
+        "body": "今天下午 1:00 — 库本公园"
+      }
+    }
+  },
+  "lock": {
+    "enter": "进入"
+  },
+  "welcome": {
+    "enter": "进入",
+    "disclaimer": "建议在桌面端浏览 · 移动端尚未优化",
+    "hint": "点击“进入”开始探索"
+  },
+  "help": {
+    "title": "ThanasOS 帮助",
+    "intro": "欢迎来到 <app>ThanasOS</app>——一个以 macOS 为主题的互动作品集。点击程序坞中的任意应用，或打开启动台开始探索。按 <kbd>⌘K</kbd> 唤起聚焦。",
+    "getInTouch": "联系我",
+    "easterEggs": "彩蛋",
+    "eggTrash": "<b>废纸篓</b>可不只是删除东西。点一下试试。",
+    "eggTerminal": "终端对<i>三明治</i>很有意见。还有作弊码。还有印度奶茶。",
+    "eggCommands": "在终端里试试 <code>matrix</code>、<code>do a barrel roll</code> 或 <code>42</code>。",
+    "eggFinder": "访达里有些文件夹藏着比看上去<i>更多</i>的文件。翻翻隐藏的那些。",
+    "eggCalendar": "<b>日历</b>小组件可以点击。基本上其他东西也都可以。",
+    "eggRickroll": "如果你信我，就输入 <code>rickroll</code>。（你不该信。）",
+    "eggSecrets": "有一个 <code>.secrets</code> 文件夹。找到它。",
+    "eggHack": "在终端运行 <code>{{cmd}}</code>，立刻获得 l33t 身份。",
+    "eggCalculator": "在计算器里输入 67。"
+  },
+  "shortcuts": {
+    "title": "键盘快捷键",
+    "tip": "提示：macOS 使用 Cmd，Windows 使用 Ctrl。",
+    "items": {
+      "spotlight": "打开聚焦搜索",
+      "newWindow": "新建窗口（支持的应用）",
+      "newTab": "新建标签页（Safari）",
+      "close": "关闭窗口 / 标签页",
+      "minimize": "最小化当前窗口",
+      "fullScreen": "进入全屏幕",
+      "quit": "退出当前应用",
+      "showDesktop": "显示桌面",
+      "closeOverlay": "关闭聚焦 / 弹窗",
+      "settings": "打开设置"
+    }
+  },
+  "widgets": {
+    "weather": {
+      "city": "班加罗尔",
+      "conditions": {
+        "sunny": "晴",
+        "clear": "晴朗",
+        "partlyCloudy": "局部多云",
+        "cloudy": "多云",
+        "foggy": "有雾",
+        "drizzle": "毛毛雨",
+        "rain": "雨",
+        "snow": "雪",
+        "showers": "阵雨",
+        "snowShowers": "阵雪",
+        "thunderstorm": "雷雨"
+      },
+      "highLow": "最高 {{high}}° 最低 {{low}}°",
+      "sunset": "日落",
+      "sunrise": "日出"
+    },
+    "calendar": {
+      "months": {
+        "january": "一月",
+        "february": "二月",
+        "march": "三月",
+        "april": "四月",
+        "may": "五月",
+        "june": "六月",
+        "july": "七月",
+        "august": "八月",
+        "september": "九月",
+        "october": "十月",
+        "november": "十一月",
+        "december": "十二月"
+      },
+      "weekdays": {
+        "sun": "日",
+        "mon": "一",
+        "tue": "二",
+        "wed": "三",
+        "thu": "四",
+        "fri": "五",
+        "sat": "六"
+      }
+    },
+    "stats": {
+      "activities": {
+        "linkedin": {
+          "label": "LINKEDIN",
+          "unit": "关注者"
+        },
+        "projects": {
+          "label": "项目",
+          "unit": "仓库"
+        },
+        "stars": {
+          "label": "星标",
+          "unit": "星标"
+        }
+      }
+    }
+  },
+  "mobileFallback": {
+    "headlinePre": "迄今为止最出色的",
+    "headlineMain": "网页版 macOS。",
+    "lead": "ThanasOS 忠实而生动地重现了 macOS，并为浏览器从零打造。",
+    "openOnDesktop": "请在<mono>桌面端</mono>打开本网站，畅享完整体验。"
+  }
+}

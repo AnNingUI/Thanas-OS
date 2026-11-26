@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, ArrowRight, LayoutGrid, Folder, Globe, Settings as Cog, FileText, Star, Download, Compass,
@@ -15,11 +16,11 @@ interface SpotlightProps {
 
 type ShortcutId = 'apps' | 'files' | 'web' | 'settings';
 
-const SHORTCUTS: { id: ShortcutId; label: string; icon: React.ReactNode }[] = [
-  { id: 'apps', label: 'Apps', icon: <LayoutGrid className="w-5 h-5" /> },
-  { id: 'files', label: 'Files', icon: <Folder className="w-5 h-5" /> },
-  { id: 'web', label: 'Web', icon: <Globe className="w-5 h-5" /> },
-  { id: 'settings', label: 'Settings', icon: <Cog className="w-5 h-5" /> },
+const SHORTCUTS: { id: ShortcutId; labelKey: string; icon: React.ReactNode }[] = [
+  { id: 'apps', labelKey: 'spotlight.shortcuts.apps', icon: <LayoutGrid className="w-5 h-5" /> },
+  { id: 'files', labelKey: 'spotlight.shortcuts.files', icon: <Folder className="w-5 h-5" /> },
+  { id: 'web', labelKey: 'spotlight.shortcuts.web', icon: <Globe className="w-5 h-5" /> },
+  { id: 'settings', labelKey: 'spotlight.shortcuts.settings', icon: <Cog className="w-5 h-5" /> },
 ];
 
 const KIND_ICON: Record<SpotlightEntry['kind'], React.ReactNode> = {
@@ -32,6 +33,7 @@ const KIND_ICON: Record<SpotlightEntry['kind'], React.ReactNode> = {
 };
 
 export const Spotlight = ({ isOpen, onClose }: SpotlightProps) => {
+  const { t } = useTranslation(['os', 'common']);
   const { apps, openApp } = useMacOS();
   const installed = useInstalledProjects();
   const [query, setQuery] = useState('');
@@ -62,6 +64,25 @@ export const Spotlight = ({ isOpen, onClose }: SpotlightProps) => {
       setTimeout(() => dispatchSpotlightOpen({ appId: r.appId!, payload: r.payload, url: r.url }), 30);
     }
     onClose();
+  };
+
+  const entryTitle = (r: SpotlightEntry) => {
+    if (r.kind === 'app' && r.appId) {
+      return t(`apps.${r.appId}`, { ns: 'common', defaultValue: r.title });
+    }
+    if (r.kind === 'setting' && r.payload?.section) {
+      return t(`spotlight.sections.${r.payload.section}`, { defaultValue: r.title });
+    }
+    return r.title;
+  };
+
+  const entrySubtitle = (r: SpotlightEntry) => {
+    if (r.kind === 'app') return t('spotlight.application');
+    if (r.kind === 'setting') return t('common:apps.settings');
+    if (r.kind === 'appstore') {
+      return r.subtitle.replace(/ - Get on App Store$/, ` - ${t('spotlight.getOnAppStore')}`);
+    }
+    return r.subtitle;
   };
 
   const handleShortcut = (id: ShortcutId) => {
@@ -126,7 +147,7 @@ export const Spotlight = ({ isOpen, onClose }: SpotlightProps) => {
                   ref={inputRef}
                   value={query}
                   onChange={e => setQuery(e.target.value)}
-                  placeholder="Spotlight Search"
+                  placeholder={t('spotlight.placeholder')}
                   className="flex-1 bg-transparent outline-none text-white text-lg placeholder-white/40"
                 />
               </div>
@@ -140,7 +161,7 @@ export const Spotlight = ({ isOpen, onClose }: SpotlightProps) => {
                       className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/12 text-white/85 text-sm transition-colors"
                     >
                       {s.icon}
-                      <span>{s.label}</span>
+                      <span>{t(s.labelKey)}</span>
                     </button>
                   ))}
                 </div>
@@ -165,12 +186,12 @@ export const Spotlight = ({ isOpen, onClose }: SpotlightProps) => {
                         )}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="text-sm font-medium truncate">{r.title}</div>
+                        <div className="text-sm font-medium truncate">{entryTitle(r)}</div>
                         <div className={`text-xs truncate ${i === activeIdx ? 'text-white/75' : 'text-white/50'}`}>
-                          {r.subtitle}
+                          {entrySubtitle(r)}
                         </div>
                       </div>
-                      <span className="text-[10px] uppercase tracking-wider text-white/40 mr-2">{r.kind}</span>
+                      <span className="text-[10px] uppercase tracking-wider text-white/40 mr-2">{t(`spotlight.kinds.${r.kind}`)}</span>
                       <ArrowRight className={`w-4 h-4 ${i === activeIdx ? 'opacity-100' : 'opacity-0'}`} />
                     </button>
                   ))}
@@ -179,7 +200,7 @@ export const Spotlight = ({ isOpen, onClose }: SpotlightProps) => {
 
               {query && results.length === 0 && (
                 <div className="border-t border-white/10 px-5 py-6 text-white/50 text-sm">
-                  No results for "{query}"
+                  {t('spotlight.noResults', { query })}
                 </div>
               )}
             </div>

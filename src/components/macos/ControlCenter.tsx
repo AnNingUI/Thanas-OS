@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Moon, Airplay, Pause } from 'lucide-react';
 import { HiSun } from 'react-icons/hi';
@@ -18,6 +19,7 @@ const AirdropSvg = ({ className = '' }: { className?: string }) => (
 interface Props { open: boolean; onClose: () => void; }
 
 export const ControlCenter = ({ open, onClose }: Props) => {
+  const { t } = useTranslation('os');
   const ref = useRef<HTMLDivElement>(null);
   const { settings, updateSettings } = useMacOS();
   const [airplayOn, setAirplayOn] = useState(false);
@@ -57,12 +59,12 @@ export const ControlCenter = ({ open, onClose }: Props) => {
             {/* LEFT: connectivity stack */}
             <div className="rounded-2xl bg-white/10 p-2.5 flex flex-col gap-1.5">
               <ConnRow active={settings.wifi} onClick={() => updateSettings({ wifi: !settings.wifi })}
-                icon={<IoIosWifi className="w-[24px] h-[24px]" />} label="Wi-Fi" sub={settings.wifi ? 'ThanasOS-Net' : 'Off'} />
+                icon={<IoIosWifi className="w-[24px] h-[24px]" />} label={t('controlCenter.wifi')} sub={settings.wifi ? 'ThanasOS-Net' : t('status.off')} />
               <ConnRow active={settings.bluetooth} onClick={() => updateSettings({ bluetooth: !settings.bluetooth })}
-                icon={<IoBluetooth className="w-[22px] h-[22px]" />} label="Bluetooth" sub={settings.bluetooth ? 'On' : 'Off'} />
+                icon={<IoBluetooth className="w-[22px] h-[22px]" />} label={t('controlCenter.bluetooth')} sub={settings.bluetooth ? t('status.on') : t('status.off')} />
               <ConnRow active={settings.airdrop} onClick={() => updateSettings({ airdrop: !settings.airdrop })}
                 icon={<AirdropSvg className="w-[22px] h-[22px]" />}
-                label="AirDrop" sub="Contacts" />
+                label={t('controlCenter.airdrop')} sub={t('controlCenter.contactsOnly')} />
             </div>
 
             {/* RIGHT: focus on top, two squares on bottom */}
@@ -80,9 +82,9 @@ export const ControlCenter = ({ open, onClose }: Props) => {
   </div>
 
   <div className="leading-tight">
-    <div className="text-[12.5px] font-semibold">Focus</div>
+    <div className="text-[12.5px] font-semibold">{t('controlCenter.focus')}</div>
     <div className="text-[10.5px] text-white/55">
-      {settings.focus ? 'On' : 'Off'}
+      {settings.focus ? t('status.on') : t('status.off')}
     </div>
   </div>
 </button>
@@ -91,14 +93,14 @@ export const ControlCenter = ({ open, onClose }: Props) => {
                   active={airplayOn}
                   onClick={() => { setAirplayOn(true); window.open('https://github.com/sponsors/Thanas-R', '_blank', 'noopener,noreferrer'); }}
                   icon={<FaApplePay className="w-5 h-5" />}
-                  label="Sponsor"
+                  label={t('controlCenter.sponsor')}
                   accent="bg-blue-500"
                 />
                 <SquareTile
                   active={!isDark}
                   onClick={() => updateSettings({ theme: isDark ? 'light' : 'dark' })}
                   icon={<CgDarkMode className="w-4 h-4" />}
-                  label={isDark ? 'Light' : 'Dark'}
+                  label={isDark ? t('controlCenter.light') : t('controlCenter.dark')}
                   accent="bg-amber-500"
                 />
               </div>
@@ -106,14 +108,14 @@ export const ControlCenter = ({ open, onClose }: Props) => {
           </div>
 
           <SliderModule
-  label="Display"
+  label={t('controlCenter.display')}
   value={settings.brightness ?? 80}
   onChange={(v) => updateSettings({ brightness: v })}
   icon={<HiSun className="w-[15px] h-[15px] text-neutral-700 opacity-50" />}
 />
 
 <SliderModule
-  label="Sound"
+  label={t('controlCenter.sound')}
   value={settings.volume ?? 65}
   onChange={(v) => updateSettings({ volume: v })}
   icon={<IoVolumeMedium className="w-[16px] h-[16px] text-neutral-700 opacity-50" />}

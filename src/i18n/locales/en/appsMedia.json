@@ -1,0 +1,191 @@
+{
+  "apps": {
+    "applemusic": {
+      "nav": {
+        "home": "Home",
+        "charts": "Charts",
+        "new": "New",
+        "radio": "Radio",
+        "library": "Library",
+        "playlists": "Playlists",
+        "allSongs": "All Songs",
+        "recentlyAdded": "Recently Added",
+        "artists": "Artists",
+        "albums": "Albums",
+        "favoriteSongs": "Favorite Songs"
+      },
+      "playlists": {
+        "englishHits": "English Hits",
+        "animeSongs": "Anime Songs",
+        "hindiHits": "Hindi Hits",
+        "indieRock": "Indie & Rock",
+        "hipHop": "Hip-Hop",
+        "electronic": "Electronic",
+        "sportsAnthems": "Sports Anthems",
+        "movieThemes": "Movie Themes"
+      },
+      "categories": {
+        "englishMix": "English Mix",
+        "anime": "Anime",
+        "hindi": "Hindi",
+        "indieRock": "Indie / Rock",
+        "hipHop": "Hip-Hop",
+        "electronic": "Electronic",
+        "sportsAnthems": "Sports / Anthems",
+        "movieThemes": "Movie Themes"
+      },
+      "searchPlaceholder": "Search songs, artists, albums",
+      "loadingLibrary": "Loading library…",
+      "fetching": "Fetching previews from iTunes…",
+      "featured": "Featured",
+      "homeSub": "{{count}} playable previews · {{playlists}} curated playlists",
+      "chartsSub": "{{count}} trending now",
+      "recentSub": "{{count}} most recent",
+      "songsSub": "{{count}} songs in your library",
+      "favoritesSub": "Your most-loved tracks",
+      "artistsSub": "{{count}} artists",
+      "albumsSub": "{{count}} albums",
+      "play": "Play",
+      "yourPlaylist": "Your Playlist",
+      "playlistSub": "The best of {{name}} — auto-curated.",
+      "playlistStats": "{{count}} songs · {{minutes}} min",
+      "songCount_one": "{{count}} song",
+      "songCount_other": "{{count}} songs",
+      "single": "Single",
+      "loading": "loading",
+      "noSongs": "No songs found"
+    },
+    "calendar": {
+      "allEvents": "All Events",
+      "newEvent": "New Event",
+      "views": {
+        "month": "Month",
+        "week": "Week",
+        "day": "Day",
+        "list": "List"
+      },
+      "fields": {
+        "title": "Event title",
+        "date": "Date",
+        "start": "Start",
+        "end": "End",
+        "color": "Color"
+      },
+      "actions": {
+        "delete": "Delete",
+        "close": "Close",
+        "cancel": "Cancel",
+        "add": "Add"
+      },
+      "empty": "No events this month."
+    },
+    "maps": {
+      "searchPlaceholder": "Search Maps",
+      "token": {
+        "title": "Add your Mapbox token",
+        "prefix": "Set the env var",
+        "suffix": "in Vercel and redeploy."
+      },
+      "places": "Places",
+      "pinned": "Pinned",
+      "savedPlaces": "Saved Places",
+      "guides": "Guides",
+      "routes": "Routes",
+      "visitedPlaces": "Visited Places",
+      "recentlyAdded": "Recently Added",
+      "recents": "Recents",
+      "noRecent": "No recent searches.",
+      "modes": {
+        "drive": "Drive",
+        "walk": "Walk",
+        "cycle": "Cycle",
+        "transit": "Transit"
+      },
+      "route": {
+        "minutes": "{{count}} min",
+        "steps_one": "{{count}} step",
+        "steps_other": "{{count}} steps",
+        "summary": "{{distance}} km · {{steps}} · via fastest route",
+        "hint": "Get turn-by-turn directions from your location.",
+        "go": "Go",
+        "directions": "Directions"
+      }
+    },
+    "google": {
+      "newTab": "New Tab",
+      "loading": "Loading…",
+      "searchPlaceholder": "Search Google or type a URL",
+      "addBookmark": "Add bookmark",
+      "removeBookmark": "Remove bookmark",
+      "menu": {
+        "closeTab": "Close Tab",
+        "reload": "Reload",
+        "cut": "Cut",
+        "copy": "Copy",
+        "paste": "Paste",
+        "switchToDark": "Switch to Dark",
+        "switchToLight": "Switch to Light",
+        "showBookmarksBar": "Show Bookmarks Bar",
+        "hideBookmarksBar": "Hide Bookmarks Bar",
+        "makeDefaultBrowser": "Make Default Browser",
+        "useSafariAsDefault": "Use Safari as Default",
+        "newWindow": "New window",
+        "bookmarks": "Bookmarks",
+        "history": "History",
+        "switchToDarkMode": "Switch to Dark Mode",
+        "switchToLightMode": "Switch to Light Mode",
+        "defaultBrowserGoogle": "Default browser: Google"
+      }
+    },
+    "github": {
+      "follow": "Follow",
+      "bio": "Developer & creative problem-solver. Building thoughtful digital experiences with code",
+      "followers": "followers",
+      "following": "following",
+      "contributionActivity": "Contribution Activity",
+      "publicRepositories": "Public repositories",
+      "repoCount_one": "{{count}} repo",
+      "repoCount_other": "{{count}} repos",
+      "visibilityPublic": "Public",
+      "visibilityPrivate": "Private",
+      "loadingRepos": "Loading repositories…",
+      "stats": {
+        "repos": "Repos",
+        "stars": "Stars",
+        "followers": "Followers"
+      }
+    },
+    "linkedin": {
+      "contactInfo": "Contact info",
+      "connections_one": "{{count}} connection",
+      "connections_other": "{{count}} connections",
+      "followers_one": "{{count}} follower",
+      "followers_other": "{{count}} followers",
+      "you": "You",
+      "sections": {
+        "about": "About",
+        "activity": "Activity",
+        "education": "Education",
+        "skills": "Skills",
+        "languages": "Languages",
+        "topSkills": "Top skills"
+      },
+      "about": {
+        "p1": "I am a passionate learner who believes in growing a little every day. I'm genuinely interested in coding and problem-solving, and I enjoy turning complex challenges into simple, effective solutions.",
+        "p2": "While I take my work seriously, I also value creating a positive and cheerful environment. I believe a good laugh can go a long way in building strong, collaborative teams.",
+        "p3": "I strive to be honest, supportive, and reliable, taking responsibility or leading when needed while contributing and learning with the team.",
+        "more": "More about me on:"
+      },
+      "comments_one": "{{count}} comment",
+      "comments_other": "{{count}} comments",
+      "reposts_one": "{{count}} repost",
+      "reposts_other": "{{count}} reposts",
+      "endorsed_one": "Endorsed by {{count}} person in the last 6 months",
+      "endorsed_other": "Endorsed by {{count}} people in the last 6 months",
+      "proficiency": {
+        "native": "Native or bilingual proficiency",
+        "limited": "Limited working proficiency"
+      }
+    }
+  }
+}

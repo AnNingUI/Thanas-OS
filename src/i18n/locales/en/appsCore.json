@@ -1,0 +1,95 @@
+{
+  "apps": {
+    "about": {
+      "tagline": "Developer and creative problem-solver. Building thoughtful digital experiences with code.",
+      "age": "{{age}} years old",
+      "education": "B.Tech CSE (AI/ML) at PES University",
+      "location": "Bangalore, India",
+      "aboutMe": "About Me",
+      "bio1": "I am a passionate learner who believes in growing a little every day. I'm genuinely interested in coding and problem-solving, and I enjoy turning complex challenges into simple, effective solutions. While I take my work seriously, I also value creating a positive and cheerful environment.",
+      "bio2": "I strive to be honest, supportive, and reliable. I combine technical skills with UI/UX knowledge to create intuitive, powerful applications. Currently pursuing B.Tech in Computer Science Engineering with a specialization in AI/ML at PES University.",
+      "stats": {
+        "yearsCoding": "Years Coding",
+        "projectsBuilt": "Projects Built",
+        "learningGoals": "Learning Goals"
+      },
+      "portfolioCta": "Visit my main portfolio",
+      "portfolioDesc": "thanas.vercel.app — the latest and fully functional version",
+      "techStack": "Tech Stack",
+      "techGroups": {
+        "languages": "Languages",
+        "frameworks": "Frameworks",
+        "aiMl": "AI / ML",
+        "tooling": "Tooling"
+      }
+    },
+    "finder": {
+      "favorites": "Favorites",
+      "locations": "Locations",
+      "documents": "Documents",
+      "downloads": "Downloads",
+      "desktop": "Desktop",
+      "pictures": "Pictures",
+      "music": "Music",
+      "movies": "Movies",
+      "folder": "folder",
+      "file": "file",
+      "emptyFile": "(empty file)"
+    },
+    "notes": {
+      "searchPlaceholder": "Search"
+    },
+    "calculator": {
+      "menuCopy": "Copy",
+      "menuClear": "Clear",
+      "backspace": "Backspace",
+      "percent": "Percent",
+      "divide": "Divide",
+      "multiply": "Multiply",
+      "minus": "Minus",
+      "plus": "Plus",
+      "toggleSign": "Toggle sign",
+      "equals": "Equals",
+      "error": "Error"
+    },
+    "safari": {
+      "favorites": "Favorites",
+      "searchPlaceholder": "Search or enter website name",
+      "tabs": "Tabs",
+      "bookmarks": "Bookmarks",
+      "newTab": "New Tab",
+      "closeTab": "Close Tab",
+      "cut": "Cut",
+      "copy": "Copy",
+      "paste": "Paste",
+      "reloadPage": "Reload Page",
+      "showBookmarksBar": "Show Bookmarks Bar",
+      "hideBookmarksBar": "Hide Bookmarks Bar",
+      "showSidebar": "Show Sidebar",
+      "hideSidebar": "Hide Sidebar",
+      "home": "Home"
+    },
+    "appstore": {
+      "searchPlaceholder": "Search",
+      "discover": "Discover",
+      "subtitle": "Browse and install Thanas's projects.",
+      "open": "Open",
+      "get": "Get"
+    },
+    "contact": {
+      "mobile": "mobile",
+      "email": "email",
+      "portfolio": "portfolio"
+    },
+    "technologies": {
+      "loadingWorkspace": "Loading workspace…",
+      "blockedTitle": "Editor blocked from embedding",
+      "blockedDesc": "Your browser prevented the workspace from loading inside this window. Open it in a new tab to continue.",
+      "openWorkspace": "Open Workspace",
+      "workspaceTitle": "Workspace"
+    },
+    "launchpad": {
+      "searchPlaceholder": "Search"
+    }
+  }
+}

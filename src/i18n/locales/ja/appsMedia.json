@@ -1,0 +1,183 @@
+{
+  "apps": {
+    "applemusic": {
+      "nav": {
+        "home": "ホーム",
+        "charts": "チャート",
+        "new": "新着",
+        "radio": "ラジオ",
+        "library": "ライブラリ",
+        "playlists": "プレイリスト",
+        "allSongs": "すべての曲",
+        "recentlyAdded": "最近追加した項目",
+        "artists": "アーティスト",
+        "albums": "アルバム",
+        "favoriteSongs": "お気に入りの曲"
+      },
+      "playlists": {
+        "englishHits": "洋楽ヒット",
+        "animeSongs": "アニソン",
+        "hindiHits": "ヒンディー・ヒット",
+        "indieRock": "インディー＆ロック",
+        "hipHop": "ヒップホップ",
+        "electronic": "エレクトロニック",
+        "sportsAnthems": "スポーツ・アンセム",
+        "movieThemes": "映画主題歌"
+      },
+      "categories": {
+        "englishMix": "洋楽ミックス",
+        "anime": "アニメ",
+        "hindi": "ヒンディー",
+        "indieRock": "インディー / ロック",
+        "hipHop": "ヒップホップ",
+        "electronic": "エレクトロニック",
+        "sportsAnthems": "スポーツ / アンセム",
+        "movieThemes": "映画主題歌"
+      },
+      "searchPlaceholder": "曲、アーティスト、アルバムを検索",
+      "loadingLibrary": "ライブラリを読み込み中…",
+      "fetching": "iTunes から試聴を取得中…",
+      "featured": "注目",
+      "homeSub": "{{count}} 曲の試聴 · {{playlists}} 個の厳選プレイリスト",
+      "chartsSub": "{{count}} 曲がトレンド",
+      "recentSub": "最近の {{count}} 曲",
+      "songsSub": "ライブラリ内の {{count}} 曲",
+      "favoritesSub": "いちばん好きな曲",
+      "artistsSub": "{{count}} アーティスト",
+      "albumsSub": "{{count}} 枚のアルバム",
+      "play": "再生",
+      "yourPlaylist": "あなたのプレイリスト",
+      "playlistSub": "{{name}}のベストを自動選曲。",
+      "playlistStats": "{{count}} 曲・{{minutes}} 分",
+      "songCount_other": "{{count}} 曲",
+      "single": "シングル",
+      "loading": "読み込み中",
+      "noSongs": "曲が見つかりません"
+    },
+    "calendar": {
+      "allEvents": "すべての予定",
+      "newEvent": "新規予定",
+      "views": {
+        "month": "月",
+        "week": "週",
+        "day": "日",
+        "list": "リスト"
+      },
+      "fields": {
+        "title": "予定のタイトル",
+        "date": "日付",
+        "start": "開始",
+        "end": "終了",
+        "color": "カラー"
+      },
+      "actions": {
+        "delete": "削除",
+        "close": "閉じる",
+        "cancel": "キャンセル",
+        "add": "追加"
+      },
+      "empty": "今月の予定はありません。"
+    },
+    "maps": {
+      "searchPlaceholder": "マップを検索",
+      "token": {
+        "title": "Mapbox トークンを追加",
+        "prefix": "Vercel で環境変数",
+        "suffix": "を設定して再デプロイしてください。"
+      },
+      "places": "スポット",
+      "pinned": "ピン留め",
+      "savedPlaces": "保存した場所",
+      "guides": "ガイド",
+      "routes": "ルート",
+      "visitedPlaces": "訪問した場所",
+      "recentlyAdded": "最近追加した項目",
+      "recents": "最近",
+      "noRecent": "最近の検索はありません。",
+      "modes": {
+        "drive": "ドライブ",
+        "walk": "徒歩",
+        "cycle": "自転車",
+        "transit": "公共交通"
+      },
+      "route": {
+        "minutes": "{{count}} 分",
+        "steps_other": "{{count}} ステップ",
+        "summary": "{{distance}} km・{{steps}}・最速ルート",
+        "hint": "現在地からのターンバイターン案内を取得します。",
+        "go": "出発",
+        "directions": "経路"
+      }
+    },
+    "google": {
+      "newTab": "新しいタブ",
+      "loading": "読み込み中…",
+      "searchPlaceholder": "Google で検索または URL を入力",
+      "addBookmark": "ブックマークを追加",
+      "removeBookmark": "ブックマークを削除",
+      "menu": {
+        "closeTab": "タブを閉じる",
+        "reload": "再読み込み",
+        "cut": "切り取り",
+        "copy": "コピー",
+        "paste": "貼り付け",
+        "switchToDark": "ダークに切り替え",
+        "switchToLight": "ライトに切り替え",
+        "showBookmarksBar": "ブックマークバーを表示",
+        "hideBookmarksBar": "ブックマークバーを隠す",
+        "makeDefaultBrowser": "デフォルトブラウザにする",
+        "useSafariAsDefault": "Safari をデフォルトにする",
+        "newWindow": "新しいウインドウ",
+        "bookmarks": "ブックマーク",
+        "history": "履歴",
+        "switchToDarkMode": "ダークモードに切り替え",
+        "switchToLightMode": "ライトモードに切り替え",
+        "defaultBrowserGoogle": "デフォルトブラウザ：Google"
+      }
+    },
+    "github": {
+      "follow": "フォロー",
+      "bio": "開発者であり、創造的な問題解決者。コードで心のこもったデジタル体験をつくります。",
+      "followers": "フォロワー",
+      "following": "フォロー中",
+      "contributionActivity": "コントリビューション",
+      "publicRepositories": "公開リポジトリ",
+      "repoCount_other": "{{count}} リポジトリ",
+      "visibilityPublic": "公開",
+      "visibilityPrivate": "非公開",
+      "loadingRepos": "リポジトリを読み込み中…",
+      "stats": {
+        "repos": "リポジトリ",
+        "stars": "スター",
+        "followers": "フォロワー"
+      }
+    },
+    "linkedin": {
+      "contactInfo": "連絡先情報",
+      "connections_other": "{{count}} 件のつながり",
+      "followers_other": "{{count}} フォロワー",
+      "you": "あなた",
+      "sections": {
+        "about": "概要",
+        "activity": "アクティビティ",
+        "education": "学歴",
+        "skills": "スキル",
+        "languages": "言語",
+        "topSkills": "主なスキル"
+      },
+      "about": {
+        "p1": "毎日少しずつ成長することを大切にしている学習者です。コーディングと問題解決に強い関心があり、複雑な課題をシンプルで効果的な解決策に変えることが好きです。",
+        "p2": "仕事には真剣に取り組みながら、明るく前向きな雰囲気づくりも大切にしています。笑顔はチームの結束を強めると思います。",
+        "p3": "誠実で、周囲を支え、信頼される存在でありたいと考えています。必要に応じて責任を負い、リードしながら、チームとともに学び成長していきます。",
+        "more": "詳しくはこちら："
+      },
+      "comments_other": "{{count}} 件のコメント",
+      "reposts_other": "{{count}} 件のリポスト",
+      "endorsed_other": "過去 6 か月間に {{count}} 人がこのスキルを推薦しました",
+      "proficiency": {
+        "native": "ネイティブまたはバイリンガル",
+        "limited": "限定的な業務レベル"
+      }
+    }
+  }
+}

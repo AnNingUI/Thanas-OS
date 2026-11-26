@@ -1,7 +1,16 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useMacOS } from "@/contexts/MacOSContext";
 
+const MONTH_KEYS = [
+  "january", "february", "march", "april", "may", "june",
+  "july", "august", "september", "october", "november", "december",
+] as const;
+
+const WEEKDAY_KEYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const;
+
 export const CalendarWidget = () => {
+  const { t } = useTranslation("os");
   const { openApp } = useMacOS();
   const istOffset = 5.5 * 60 * 60 * 1000;
   const utc = Date.now() + new Date().getTimezoneOffset() * 60000;
@@ -11,8 +20,8 @@ export const CalendarWidget = () => {
   const todayMonth = istNow.getMonth();
   const todayYear = istNow.getFullYear();
 
-  const monthName = istNow.toLocaleString("en-US", { month: "long" }).toUpperCase();
-  const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
+  const monthName = t(`widgets.calendar.months.${MONTH_KEYS[todayMonth]}`).toUpperCase();
+  const weekdays = WEEKDAY_KEYS.map((key) => t(`widgets.calendar.weekdays.${key}`));
 
   const calendarDays = useMemo(() => {
     const firstDay = new Date(todayYear, todayMonth, 1).getDay();

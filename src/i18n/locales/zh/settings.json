@@ -1,0 +1,262 @@
+{
+  "sidebar": {
+    "wifi": "Wi-Fi",
+    "bluetooth": "蓝牙",
+    "battery": "电池",
+    "notifications": "通知",
+    "sound": "声音",
+    "focus": "专注模式",
+    "general": "通用",
+    "appearance": "外观",
+    "privacy": "隐私与安全性",
+    "desktop": "桌面与程序坞",
+    "displays": "显示器",
+    "wallpaper": "墙纸",
+    "browser": "默认浏览器",
+    "appleAccount": "Apple 账户",
+    "settings": "设置"
+  },
+  "search": {
+    "placeholder": "搜索"
+  },
+  "values": {
+    "on": "开启",
+    "off": "关闭",
+    "manage": "管理",
+    "none": "无",
+    "unavailable": "不可用"
+  },
+  "actions": {
+    "chooseCustomImage": "选择自定义图像…"
+  },
+  "rows": {
+    "appearance": {
+      "style": {
+        "label": "外观",
+        "desc": "选择你的强调色风格。"
+      },
+      "theme": {
+        "light": "浅色",
+        "dark": "深色"
+      },
+      "reducedMotion": {
+        "label": "减弱动态效果",
+        "desc": "尽可能减少系统中的动画效果。"
+      }
+    },
+    "wifi": {
+      "toggle": {
+        "label": "Wi-Fi",
+        "descOn": "ThanasOS-Net",
+        "descOff": "关闭"
+      },
+      "networkName": {
+        "label": "网络名称",
+        "desc": "ThanasOS-Net"
+      },
+      "askToJoin": {
+        "label": "询问是否加入网络",
+        "desc": "已知网络会自动加入。"
+      }
+    },
+    "bluetooth": {
+      "toggle": {
+        "label": "蓝牙"
+      }
+    },
+    "sound": {
+      "outputVolume": {
+        "label": "输出音量",
+        "desc": "{{percent}}%"
+      },
+      "mute": {
+        "label": "静音",
+        "desc": "关闭所有声音输出。"
+      }
+    },
+    "focus": {
+      "doNotDisturb": {
+        "label": "勿扰模式",
+        "desc": "静音所有通知。"
+      }
+    },
+    "displays": {
+      "brightness": {
+        "label": "亮度",
+        "desc": "{{percent}}%"
+      },
+      "htmlInCanvas": {
+        "label": "HTML-in-Canvas",
+        "desc": "通过一个 WebGPU 画布绘制整个桌面（实验性）。"
+      },
+      "minimizeAnimation": {
+        "label": "最小化动画",
+        "desc": "{{ms}} ms · HTML-in-Canvas"
+      },
+      "closeAnimation": {
+        "label": "关闭动画",
+        "desc": "{{ms}} ms · HTML-in-Canvas"
+      }
+    },
+    "desktop": {
+      "autoHideDock": {
+        "label": "自动隐藏程序坞",
+        "desc": "仅在指针悬停时显示程序坞。"
+      },
+      "magnification": {
+        "label": "程序坞放大",
+        "desc": "{{percent}}%"
+      },
+      "reduceMotion": {
+        "label": "减弱动态效果",
+        "desc": "关闭程序坞和窗口动画。"
+      }
+    },
+    "battery": {
+      "level": {
+        "label": "电池电量",
+        "desc": "{{percent}}%",
+        "descCharging": "{{percent}}%（充电中）",
+        "descUnavailable": "电池 API 不可用"
+      },
+      "lowPowerMode": {
+        "label": "低电量模式",
+        "desc": "减少能耗以延长电池续航。电池图标会变为黄色。"
+      }
+    },
+    "browser": {
+      "defaultBrowser": {
+        "label": "默认网页浏览器",
+        "desc": "选择默认用于打开链接的浏览器。",
+        "descNoGoogle": "从 App Store 安装 Google 后即可选择。"
+      }
+    },
+    "privacy": {
+      "locationServices": {
+        "label": "定位服务"
+      },
+      "analytics": {
+        "label": "分析与改进",
+        "desc": "帮助改进 ThanasOS。"
+      }
+    },
+    "notifications": {
+      "reserved": {
+        "desc": "面板已预留，设置项将显示在此处。"
+      }
+    }
+  },
+  "general": {
+    "title": "通用",
+    "items": {
+      "about": "关于",
+      "software": "软件更新",
+      "storage": "存储空间",
+      "airdrop": "隔空投送与接力",
+      "login": "登录项",
+      "language": "语言与地区",
+      "datetime": "日期与时间",
+      "sharing": "共享",
+      "timeMachine": "时间机器",
+      "transfer": "传输或还原",
+      "startup": "启动磁盘"
+    },
+    "reserved": {
+      "label": "区块",
+      "desc": "预留。"
+    }
+  },
+  "about": {
+    "modelName": "型号名称",
+    "modelIdentifier": "型号标识符",
+    "chip": "芯片",
+    "cores": "总核心数",
+    "coresValue": "{{total}} 个（{{performance}} 个性能核心和 {{efficiency}} 个能效核心）",
+    "memory": "内存",
+    "memoryValue": "{{gb}} GB 统一内存",
+    "storage": "存储空间",
+    "storageValue": "{{gb}} GB 固态硬盘",
+    "display": "显示器",
+    "displayValue": "{{size}} 英寸 Liquid Retina，{{width}}×{{height}}",
+    "serialNumber": "序列号",
+    "battery": "电池",
+    "batteryValue": "{{percent}}%",
+    "batteryChargingValue": "{{percent}}% 充电中",
+    "macos": "macOS",
+    "version": "版本 {{version}}（构建版本 {{build}}）"
+  },
+  "appleAccount": {
+    "title": "Apple 账户",
+    "personalInformation": "个人信息",
+    "signInSecurity": "登录与安全性",
+    "paymentShipping": "付款与配送",
+    "icloud": "iCloud",
+    "icloudPlus": "iCloud+",
+    "icloudPlan": "{{gb}} GB 方案",
+    "icloudDrive": "iCloud 云盘",
+    "photos": "照片",
+    "devicesTitle": "设备",
+    "devices": {
+      "macbookAirM6": {
+        "name": "MacBook Air M6（此设备）",
+        "value": "在线"
+      },
+      "thanasIphone17": {
+        "name": "Thanas 的 iPhone 17",
+        "value": "此 iPhone 17"
+      },
+      "thanasIphone": {
+        "name": "Thanas 的 iPhone",
+        "value": "iPhone 6"
+      },
+      "ipad": {
+        "name": "iPad",
+        "value": "iPad Air"
+      },
+      "iphone5": {
+        "name": "iPhone 5",
+        "value": "iPhone 5"
+      },
+      "iphone8Plus": {
+        "name": "iPhone 8 Plus",
+        "value": "iPhone 8 Plus"
+      },
+      "thanasLaptop": {
+        "name": "THANAS-LAPTOP",
+        "value": "Windows"
+      },
+      "thanasIpad": {
+        "name": "Thanas 的 iPad",
+        "value": "iPad"
+      },
+      "thanasIphone13ProMax": {
+        "name": "Thanas 的 iPhone 13 Pro Max",
+        "value": "iPhone 13 Pro Max"
+      },
+      "thanasIphoneXr": {
+        "name": "Thanas 的 iPhone XR",
+        "value": "iPhone XR"
+      }
+    }
+  },
+  "wallpaperNames": {
+    "highlands": "高地",
+    "lakeTahoe": "太浩湖",
+    "glenfinnanViaduct": "格伦芬南高架桥",
+    "dolomites": "多洛米蒂",
+    "vestrahorn": "西角山",
+    "annapurnaNight": "安纳普尔纳之夜",
+    "swissAlps": "瑞士阿尔卑斯",
+    "curiousCat": "好奇的猫",
+    "bigSur": "大苏尔",
+    "aurora": "极光",
+    "winterTrail": "冬日小径",
+    "canyonStars": "峡谷星空",
+    "vineyardHills": "葡萄园山丘",
+    "catalina": "卡塔利娜岛",
+    "paintedValley": "彩绘山谷",
+    "mountainLake": "山间湖泊",
+    "mistyValley": "雾中山谷",
+    "winterForest": "冬日森林"
+  }
+}

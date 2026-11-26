@@ -1,0 +1,183 @@
+{
+  "apps": {
+    "applemusic": {
+      "nav": {
+        "home": "首页",
+        "charts": "排行榜",
+        "new": "新发现",
+        "radio": "广播",
+        "library": "资料库",
+        "playlists": "播放列表",
+        "allSongs": "所有歌曲",
+        "recentlyAdded": "最近添加",
+        "artists": "艺人",
+        "albums": "专辑",
+        "favoriteSongs": "喜爱的歌曲"
+      },
+      "playlists": {
+        "englishHits": "英文金曲",
+        "animeSongs": "动漫歌曲",
+        "hindiHits": "印地语金曲",
+        "indieRock": "独立与摇滚",
+        "hipHop": "嘻哈",
+        "electronic": "电子",
+        "sportsAnthems": "体育赞歌",
+        "movieThemes": "电影主题曲"
+      },
+      "categories": {
+        "englishMix": "英文精选",
+        "anime": "动漫",
+        "hindi": "印地语",
+        "indieRock": "独立 / 摇滚",
+        "hipHop": "嘻哈",
+        "electronic": "电子",
+        "sportsAnthems": "体育 / 赞歌",
+        "movieThemes": "电影主题曲"
+      },
+      "searchPlaceholder": "搜索歌曲、艺人和专辑",
+      "loadingLibrary": "正在载入资料库…",
+      "fetching": "正在从 iTunes 获取试听…",
+      "featured": "精选",
+      "homeSub": "{{count}} 首可试听 · {{playlists}} 个精选播放列表",
+      "chartsSub": "当前热播 {{count}} 首",
+      "recentSub": "最近 {{count}} 首",
+      "songsSub": "资料库中共 {{count}} 首歌曲",
+      "favoritesSub": "你最爱的曲目",
+      "artistsSub": "{{count}} 位艺人",
+      "albumsSub": "{{count}} 张专辑",
+      "play": "播放",
+      "yourPlaylist": "你的播放列表",
+      "playlistSub": "自动为你策展的{{name}}。",
+      "playlistStats": "{{count}} 首歌曲 · {{minutes}} 分钟",
+      "songCount_other": "{{count}} 首歌曲",
+      "single": "单曲",
+      "loading": "载入中",
+      "noSongs": "未找到歌曲"
+    },
+    "calendar": {
+      "allEvents": "所有日程",
+      "newEvent": "新建日程",
+      "views": {
+        "month": "月",
+        "week": "周",
+        "day": "日",
+        "list": "列表"
+      },
+      "fields": {
+        "title": "日程标题",
+        "date": "日期",
+        "start": "开始",
+        "end": "结束",
+        "color": "颜色"
+      },
+      "actions": {
+        "delete": "删除",
+        "close": "关闭",
+        "cancel": "取消",
+        "add": "添加"
+      },
+      "empty": "本月暂无日程。"
+    },
+    "maps": {
+      "searchPlaceholder": "搜索地图",
+      "token": {
+        "title": "添加 Mapbox 令牌",
+        "prefix": "在 Vercel 中设置环境变量",
+        "suffix": "并重新部署。"
+      },
+      "places": "地点",
+      "pinned": "已固定",
+      "savedPlaces": "已保存的地点",
+      "guides": "指南",
+      "routes": "路线",
+      "visitedPlaces": "去过的地点",
+      "recentlyAdded": "最近添加",
+      "recents": "最近",
+      "noRecent": "暂无最近搜索。",
+      "modes": {
+        "drive": "驾车",
+        "walk": "步行",
+        "cycle": "骑行",
+        "transit": "公交"
+      },
+      "route": {
+        "minutes": "{{count}} 分钟",
+        "steps_other": "{{count}} 步",
+        "summary": "{{distance}} 公里 · {{steps}} · 最快路线",
+        "hint": "从当前位置获取逐向导航。",
+        "go": "出发",
+        "directions": "路线"
+      }
+    },
+    "google": {
+      "newTab": "新标签页",
+      "loading": "正在加载…",
+      "searchPlaceholder": "在 Google 中搜索或输入网址",
+      "addBookmark": "添加书签",
+      "removeBookmark": "移除书签",
+      "menu": {
+        "closeTab": "关闭标签页",
+        "reload": "重新载入",
+        "cut": "剪切",
+        "copy": "复制",
+        "paste": "粘贴",
+        "switchToDark": "切换到深色",
+        "switchToLight": "切换到浅色",
+        "showBookmarksBar": "显示书签栏",
+        "hideBookmarksBar": "隐藏书签栏",
+        "makeDefaultBrowser": "设为默认浏览器",
+        "useSafariAsDefault": "将 Safari 设为默认浏览器",
+        "newWindow": "新建窗口",
+        "bookmarks": "书签",
+        "history": "历史记录",
+        "switchToDarkMode": "切换到深色模式",
+        "switchToLightMode": "切换到浅色模式",
+        "defaultBrowserGoogle": "默认浏览器：Google"
+      }
+    },
+    "github": {
+      "follow": "关注",
+      "bio": "开发者，也是富有创造力的解题者。用代码打造用心的数字体验。",
+      "followers": "位关注者",
+      "following": "正在关注",
+      "contributionActivity": "贡献活动",
+      "publicRepositories": "公开仓库",
+      "repoCount_other": "{{count}} 个仓库",
+      "visibilityPublic": "公开",
+      "visibilityPrivate": "私有",
+      "loadingRepos": "正在载入仓库…",
+      "stats": {
+        "repos": "仓库",
+        "stars": "星标",
+        "followers": "关注者"
+      }
+    },
+    "linkedin": {
+      "contactInfo": "联系信息",
+      "connections_other": "{{count}} 位联系人",
+      "followers_other": "{{count}} 位关注者",
+      "you": "你",
+      "sections": {
+        "about": "关于",
+        "activity": "动态",
+        "education": "教育经历",
+        "skills": "技能",
+        "languages": "语言",
+        "topSkills": "核心技能"
+      },
+      "about": {
+        "p1": "我是一个热爱学习的人，相信每天都能进步一点点。我对编程和解决问题充满热情，也乐于把复杂的挑战转化为简单、有效的方案。",
+        "p2": "认真对待工作的同时，我也很看重积极愉快的氛围。我相信，笑声能为团队带来更强的凝聚力。",
+        "p3": "我努力做到诚实、支持他人、值得信赖，在需要时承担责任或带头前行，同时与团队一起贡献和成长。",
+        "more": "更多关于我："
+      },
+      "comments_other": "{{count}} 条评论",
+      "reposts_other": "{{count}} 次转发",
+      "endorsed_other": "过去 6 个月内有 {{count}} 人认可该技能",
+      "proficiency": {
+        "native": "母语或双语水平",
+        "limited": "有限工作水平"
+      }
+    }
+  }
+}
