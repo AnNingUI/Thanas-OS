@@ -93,7 +93,7 @@ texture is needed. Dock magnification therefore stays visible above smoke and ge
 DOM stays fully interactive and accessible: hit-testing follows the original layout,
 so drag, resize, inputs and dock magnification keep working.
 
-## Six traps that cost the most time
+## Seven traps that cost the most time
 
 1. **The captured element must be a direct child of the canvas and carry `drawable`.**
    `drawElementImageToTexture` rejects anything else with
@@ -111,7 +111,13 @@ so drag, resize, inputs and dock magnification keep working.
    `snapUv = (rect.xy + localUv * rect.zw) / cssSize`. Using `localUv` directly
    stretches the whole desktop into the window rectangle (visible as duplicated widgets).
 
-6. **Drawable children do not take pointer events until their geometry is registered.**
+6. **Cross-origin images vanish from the capture.** `drawElementImageToTexture` drops
+   images whose origin taints the canvas — iTunes covers, GitHub avatars, shields.io
+   badges disappear in canvas mode while local assets stay. Convert them to same-origin
+   blob URLs first (fetch with CORS, fall back to `wsrv.nl`), then request a paint.
+   See the `mode === 'canvas'` effect in `HTMLInCanvasSurface.tsx`.
+
+7. **Drawable children do not take pointer events until their geometry is registered.**
    Without `canvas.updateElementGeometry(content, { canvasTransform: new DOMMatrix() })`
    every click lands on the canvas: `elementFromPoint` returns `CANVAS` and the whole
    desktop is dead. Call it once after mount and again after every resize.

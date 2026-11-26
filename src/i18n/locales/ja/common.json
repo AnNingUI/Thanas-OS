@@ -18,7 +18,13 @@
     "calculator": "計算機",
     "appstore": "App Store",
     "settings": "システム設定",
-    "about": "情報"
+    "about": "情報",
+    "mail": "メール",
+    "messages": "メッセージ",
+    "photos": "写真",
+    "reminders": "リマインダー",
+    "weather": "天気",
+    "activity": "アクティビティモニタ"
   },
   "actions": {
     "open": "開く",

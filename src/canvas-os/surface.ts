@@ -89,6 +89,12 @@ export class Surface {
   private unsubscribe: (() => void) | null = null;
   private resizeObserver: ResizeObserver | null = null;
   private onWindowResize = () => this.resize();
+  private settleTimers: number[] = [];
+
+  /** 图片/字体等资源异步完成时，浏览器不会自动触发 canvas paint。 */
+  private repaintOnAsset = () => {
+    if (!this.disposed) requestPaint(this.canvas);
+  };
 
   constructor(canvas: HTMLCanvasElement, content: HTMLElement) {
     this.canvas = canvas;
@@ -191,6 +197,9 @@ export class Surface {
     this.unsubscribe?.();
     this.resizeObserver?.disconnect();
     window.removeEventListener('resize', this.onWindowResize);
+    window.removeEventListener('load', this.repaintOnAsset, true);
+    for (const id of this.settleTimers) window.clearTimeout(id);
+    this.settleTimers = [];
     this.effects = [];
     this.liveTex?.destroy();
     this.snapTex?.destroy();
@@ -252,6 +261,14 @@ export class Surface {
     this.hasFrame = false;
     requestPaint(this.canvas);
     requestAnimationFrame(() => this.syncHitGeometry());
+
+    // ⚠️ 桌面重挂载时，<img> 往往在首次捕获之后才解码完成。
+    // 不主动 requestPaint 的话纹理永远停在图片空白的那一帧。
+    window.addEventListener('load', this.repaintOnAsset, true);
+    document.fonts?.ready.then(() => this.repaintOnAsset()).catch(() => {});
+    for (const delay of [80, 300, 900, 2000]) {
+      this.settleTimers.push(window.setTimeout(() => this.repaintOnAsset(), delay));
+    }
   }
 
   private rebuildBindGroup(): void {

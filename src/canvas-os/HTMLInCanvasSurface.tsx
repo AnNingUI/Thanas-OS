@@ -55,7 +55,75 @@ export function HTMLInCanvasSurface({ enabled, children }: Props) {
     };
   }, [mode]);
 
-  if (mode !== 'canvas') return <>{children}</>;
+  // 跨域图片（iTunes 封面、GitHub 头像、shields 图标）会污染画布，
+  // drawElementImageToTexture 会直接丢弃它们。转成同源 blob URL 后再捕获。
+  useEffect(() => {
+    if (mode !== 'canvas') return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const made: string[] = [];
+    const originals: { img: HTMLImageElement; src: string }[] = [];
+    const seen = new WeakSet<HTMLImageElement>();
+    const repaint = () => (canvas as unknown as { requestPaint?: () => void }).requestPaint?.();
+
+    const swap = async (img: HTMLImageElement) => {
+      const src = img.currentSrc || img.src;
+      if (!/^https?:\/\//i.test(src)) return;
+      if (seen.has(img)) return;
+      seen.add(img);
+      const candidates = [
+        src,
+        `https://wsrv.nl/?url=${encodeURIComponent(src)}&w=800&output=png`,
+      ];
+      for (const url of candidates) {
+        try {
+          const res = await fetch(url, { mode: 'cors' });
+          if (!res.ok) continue;
+          const blob = await res.blob();
+          if (!blob.size || !blob.type.startsWith('image/')) continue;
+          const local = URL.createObjectURL(blob);
+          made.push(local);
+          originals.push({ img, src });
+          img.src = local;
+          await img.decode().catch(() => {});
+          repaint();
+          return;
+        } catch { /* 尝试下一个代理 */ }
+      }
+    };
+
+    const scan = () => {
+      canvas.querySelectorAll('img').forEach(img => { void swap(img); });
+    };
+    scan();
+    const mo = new MutationObserver((records) => {
+      for (const r of records) {
+        if (r.type === 'attributes') {
+          const img = r.target as HTMLImageElement;
+          if (img.tagName === 'IMG' && !img.src.startsWith('blob:')) { seen.delete(img); void swap(img); }
+        } else {
+          r.addedNodes.forEach(n => {
+            if (n instanceof HTMLImageElement) void swap(n);
+            else if (n instanceof HTMLElement) n.querySelectorAll('img').forEach(img => { void swap(img); });
+          });
+        }
+      }
+    });
+    mo.observe(canvas, { subtree: true, childList: true, attributes: true, attributeFilter: ['src'] });
+    repaint();
+    return () => {
+      mo.disconnect();
+      // 关闭 canvas 模式时把原始 URL 还回去，再释放 blob，
+      // 否则 <img> 仍指向已 revoke 的 blob，切回普通模式会变成裂图。
+      for (const { img, src } of originals) {
+        if (img.src.startsWith('blob:')) img.src = src;
+      }
+      for (const url of made) URL.revokeObjectURL(url);
+    };
+  }, [mode]);
+
+  if (mode !== 'canvas') return <>{children}</>
 
   return (
     <div className="hic-root">

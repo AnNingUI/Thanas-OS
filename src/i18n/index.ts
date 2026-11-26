@@ -13,6 +13,9 @@ import jaSettings from './locales/ja/settings.json';
 import enAppsCore from './locales/en/appsCore.json';
 import zhAppsCore from './locales/zh/appsCore.json';
 import jaAppsCore from './locales/ja/appsCore.json';
+import enAppsNew from './locales/en/appsNew.json';
+import zhAppsNew from './locales/zh/appsNew.json';
+import jaAppsNew from './locales/ja/appsNew.json';
 import enAppsMedia from './locales/en/appsMedia.json';
 import zhAppsMedia from './locales/zh/appsMedia.json';
 import jaAppsMedia from './locales/ja/appsMedia.json';
@@ -43,9 +46,9 @@ export function detectLanguage(): AppLanguage {
 }
 
 export const resources = {
-  en: { common: enCommon, os: enOs, settings: enSettings, appsCore: enAppsCore, appsMedia: enAppsMedia },
-  zh: { common: zhCommon, os: zhOs, settings: zhSettings, appsCore: zhAppsCore, appsMedia: zhAppsMedia },
-  ja: { common: jaCommon, os: jaOs, settings: jaSettings, appsCore: jaAppsCore, appsMedia: jaAppsMedia },
+  en: { common: enCommon, os: enOs, settings: enSettings, appsCore: enAppsCore, appsMedia: enAppsMedia, appsNew: enAppsNew },
+  zh: { common: zhCommon, os: zhOs, settings: zhSettings, appsCore: zhAppsCore, appsMedia: zhAppsMedia, appsNew: zhAppsNew },
+  ja: { common: jaCommon, os: jaOs, settings: jaSettings, appsCore: jaAppsCore, appsMedia: jaAppsMedia, appsNew: jaAppsNew },
 } as const;
 
 const language = detectLanguage();
@@ -55,7 +58,7 @@ i18n.use(initReactI18next).init({
   lng: language,
   fallbackLng: 'en',
   supportedLngs: SUPPORTED_LANGUAGES,
-  ns: ['common', 'os', 'settings', 'appsCore', 'appsMedia'],
+  ns: ['common', 'os', 'settings', 'appsCore', 'appsMedia', 'appsNew'],
   defaultNS: 'common',
   interpolation: { escapeValue: false },
   returnNull: false,

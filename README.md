@@ -300,6 +300,12 @@ is missing. Toggling the switch remounts the desktop (open windows are closed).
 Implementation notes and the traps that were hit are documented in
 [docs/HTML-IN-CANVAS.md](docs/HTML-IN-CANVAS.md).
 
+### Built-in apps
+
+Finder, Launchpad, Terminal, Safari, Mail, Messages, Notes, Reminders, Photos,
+Calendar, Maps, Weather, Music, App Store, Calculator, Activity Monitor, GitHub,
+LinkedIn, Contact, Journey, VS Code, Settings and About.
+
 ## Internationalization
 
 - Runtime: **react-i18next** with three locales — `en`, `zh`, `ja`.

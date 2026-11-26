@@ -1,0 +1,132 @@
+{
+  "mail": {
+    "newMessage": "New Message",
+    "searchPlaceholder": "Search mail",
+    "mailboxes": "Mailboxes",
+    "inbox": "Inbox",
+    "vip": "VIP",
+    "sent": "Sent",
+    "drafts": "Drafts",
+    "junk": "Junk",
+    "trash": "Trash",
+    "messageCount": "{{count}} messages",
+    "empty": "No messages",
+    "noSelection": "Select a message to read",
+    "reply": "Reply",
+    "forward": "Forward",
+    "archive": "Archive",
+    "delete": "Delete",
+    "to": "To",
+    "subject": "Subject",
+    "body": "Write your message…",
+    "send": "Send"
+  },
+  "messages": {
+    "search": "Search",
+    "newMessage": "New Message",
+    "iMessage": "iMessage",
+    "video": "Video call",
+    "placeholder": "iMessage"
+  },
+  "photos": {
+    "title": "Photos",
+    "search": "Search photos",
+    "library": "Library",
+    "favorites": "Favorites",
+    "recents": "Recents",
+    "albums": "Albums",
+    "people": "People",
+    "places": "Places",
+    "album": {
+      "travel": "Travel",
+      "wallpapers": "Wallpapers",
+      "people": "People & Pets"
+    },
+    "count": "{{count}} photos",
+    "years": "{{year}}",
+    "favorite": "Favorite",
+    "person": {
+      "thanas": "Thanas R",
+      "team": "Studio Team"
+    },
+    "back": "Back",
+    "close": "Close",
+    "empty": "No photos",
+    "albumCount": "{{count}} albums",
+    "personCount": "{{count}} people",
+    "placeCount": "{{count}} places"
+  },
+  "reminders": {
+    "search": "Search",
+    "today": "Today",
+    "scheduled": "Scheduled",
+    "all": "All",
+    "flagged": "Flagged",
+    "myLists": "My Lists",
+    "work": "Work",
+    "personal": "Personal",
+    "shopping": "Shopping",
+    "remaining": "{{count}} remaining",
+    "empty": "All caught up",
+    "placeholder": "New Reminder",
+    "add": "Add",
+    "items": {
+      "design": "Review the new Mail design",
+      "release": "Ship ThanasOS 2.0",
+      "groceries": "Buy milk and coffee",
+      "call": "Call Dad",
+      "book": "Read 20 pages",
+      "invoice": "Send the invoice"
+    },
+    "due": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "weekend": "This weekend"
+    }
+  },
+  "weather": {
+    "search": "Search city",
+    "hourly": "Hourly forecast",
+    "daily": "7-day forecast",
+    "today": "Today",
+    "now": "Now",
+    "highLow": "H:{{high}}° L:{{low}}°",
+    "feelsLike": "Feels like {{temp}}°",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "uv": "UV index",
+    "visibility": "Visibility",
+    "pressure": "Pressure",
+    "sun": "Sunrise / Sunset",
+    "condition": {
+      "clear": "Clear",
+      "partly": "Partly Cloudy",
+      "cloudy": "Cloudy",
+      "drizzle": "Drizzle",
+      "rain": "Rain",
+      "storm": "Thunderstorm",
+      "snow": "Snow",
+      "fog": "Fog"
+    }
+  },
+  "activity": {
+    "cpu": "CPU",
+    "memory": "Memory",
+    "energy": "Energy",
+    "disk": "Disk",
+    "network": "Network",
+    "search": "Search processes",
+    "system": "System",
+    "user": "User",
+    "idle": "Idle",
+    "physical": "Physical Memory",
+    "used": "Memory Used",
+    "cached": "Cached Files",
+    "sent": "Sent",
+    "received": "Received",
+    "threads": "Threads",
+    "process": "Process",
+    "pid": "PID",
+    "hint": "Values update every 1.5 seconds · demo data"
+  }
+}

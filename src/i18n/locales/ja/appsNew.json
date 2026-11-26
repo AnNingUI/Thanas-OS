@@ -1,0 +1,132 @@
+{
+  "mail": {
+    "newMessage": "新規メール",
+    "searchPlaceholder": "メールを検索",
+    "mailboxes": "メールボックス",
+    "inbox": "受信",
+    "vip": "VIP",
+    "sent": "送信済み",
+    "drafts": "下書き",
+    "junk": "迷惑メール",
+    "trash": "ゴミ箱",
+    "messageCount": "{{count}} 通",
+    "empty": "メールはありません",
+    "noSelection": "メールを選択して読む",
+    "reply": "返信",
+    "forward": "転送",
+    "archive": "アーカイブ",
+    "delete": "削除",
+    "to": "宛先",
+    "subject": "件名",
+    "body": "本文を入力…",
+    "send": "送信"
+  },
+  "messages": {
+    "search": "検索",
+    "newMessage": "新規メッセージ",
+    "iMessage": "iMessage",
+    "video": "ビデオ通話",
+    "placeholder": "iMessage"
+  },
+  "photos": {
+    "title": "写真",
+    "search": "写真を検索",
+    "library": "ライブラリ",
+    "favorites": "お気に入り",
+    "recents": "最近の項目",
+    "albums": "アルバム",
+    "people": "人物",
+    "places": "場所",
+    "album": {
+      "travel": "旅行",
+      "wallpapers": "壁紙",
+      "people": "人物とペット"
+    },
+    "count": "{{count}} 枚",
+    "years": "{{year}}年",
+    "favorite": "お気に入り",
+    "person": {
+      "thanas": "Thanas R",
+      "team": "スタジオチーム"
+    },
+    "back": "戻る",
+    "close": "閉じる",
+    "empty": "写真がありません",
+    "albumCount": "{{count}} 個のアルバム",
+    "personCount": "{{count}} 人",
+    "placeCount": "{{count}} か所"
+  },
+  "reminders": {
+    "search": "検索",
+    "today": "今日",
+    "scheduled": "予定",
+    "all": "すべて",
+    "flagged": "フラグ付き",
+    "myLists": "マイリスト",
+    "work": "仕事",
+    "personal": "個人",
+    "shopping": "買い物",
+    "remaining": "残り {{count}} 件",
+    "empty": "すべて完了",
+    "placeholder": "新規リマインダー",
+    "add": "追加",
+    "items": {
+      "design": "新しいメールのデザインを確認",
+      "release": "ThanasOS 2.0 をリリース",
+      "groceries": "牛乳とコーヒーを買う",
+      "call": "父に電話する",
+      "book": "20 ページ読む",
+      "invoice": "請求書を送る"
+    },
+    "due": {
+      "today": "今日",
+      "tomorrow": "明日",
+      "weekend": "今週末"
+    }
+  },
+  "weather": {
+    "search": "都市を検索",
+    "hourly": "1 時間ごとの予報",
+    "daily": "7 日間の予報",
+    "today": "今日",
+    "now": "現在",
+    "highLow": "最高 {{high}}° 最低 {{low}}°",
+    "feelsLike": "体感 {{temp}}°",
+    "humidity": "湿度",
+    "wind": "風速",
+    "uv": "UV 指数",
+    "visibility": "視程",
+    "pressure": "気圧",
+    "sun": "日の出 / 日の入り",
+    "condition": {
+      "clear": "快晴",
+      "partly": "晴れ時々くもり",
+      "cloudy": "くもり",
+      "drizzle": "霧雨",
+      "rain": "雨",
+      "storm": "雷雨",
+      "snow": "雪",
+      "fog": "霧"
+    }
+  },
+  "activity": {
+    "cpu": "CPU",
+    "memory": "メモリ",
+    "energy": "エネルギー",
+    "disk": "ディスク",
+    "network": "ネットワーク",
+    "search": "プロセスを検索",
+    "system": "システム",
+    "user": "ユーザ",
+    "idle": "アイドル",
+    "physical": "物理メモリ",
+    "used": "使用済みメモリ",
+    "cached": "キャッシュファイル",
+    "sent": "送信",
+    "received": "受信",
+    "threads": "スレッド",
+    "process": "プロセス",
+    "pid": "PID",
+    "hint": "1.5 秒ごとに更新 · デモデータ"
+  }
+}

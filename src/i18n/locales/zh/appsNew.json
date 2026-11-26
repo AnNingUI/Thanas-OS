@@ -1,0 +1,132 @@
+{
+  "mail": {
+    "newMessage": "新邮件",
+    "searchPlaceholder": "搜索邮件",
+    "mailboxes": "邮箱",
+    "inbox": "收件箱",
+    "vip": "VIP",
+    "sent": "已发送",
+    "drafts": "草稿",
+    "junk": "垃圾邮件",
+    "trash": "废纸篓",
+    "messageCount": "{{count}} 封邮件",
+    "empty": "没有邮件",
+    "noSelection": "选择一封邮件阅读",
+    "reply": "回复",
+    "forward": "转发",
+    "archive": "归档",
+    "delete": "删除",
+    "to": "收件人",
+    "subject": "主题",
+    "body": "写点什么…",
+    "send": "发送"
+  },
+  "messages": {
+    "search": "搜索",
+    "newMessage": "新信息",
+    "iMessage": "iMessage",
+    "video": "视频通话",
+    "placeholder": "iMessage"
+  },
+  "photos": {
+    "title": "照片",
+    "search": "搜索照片",
+    "library": "图库",
+    "favorites": "个人收藏",
+    "recents": "最近项目",
+    "albums": "相簿",
+    "people": "人物",
+    "places": "地点",
+    "album": {
+      "travel": "旅行",
+      "wallpapers": "壁纸",
+      "people": "人物与宠物"
+    },
+    "count": "{{count}} 张照片",
+    "years": "{{year}} 年",
+    "favorite": "收藏",
+    "person": {
+      "thanas": "Thanas R",
+      "team": "工作室团队"
+    },
+    "back": "返回",
+    "close": "关闭",
+    "empty": "没有照片",
+    "albumCount": "{{count}} 个相簿",
+    "personCount": "{{count}} 个人物",
+    "placeCount": "{{count}} 个地点"
+  },
+  "reminders": {
+    "search": "搜索",
+    "today": "今天",
+    "scheduled": "计划",
+    "all": "全部",
+    "flagged": "已标记",
+    "myLists": "我的列表",
+    "work": "工作",
+    "personal": "个人",
+    "shopping": "购物",
+    "remaining": "还剩 {{count}} 项",
+    "empty": "全部完成",
+    "placeholder": "新建提醒事项",
+    "add": "添加",
+    "items": {
+      "design": "查看新版邮件设计",
+      "release": "发布 ThanasOS 2.0",
+      "groceries": "买牛奶和咖啡",
+      "call": "给爸爸打电话",
+      "book": "读 20 页书",
+      "invoice": "发送发票"
+    },
+    "due": {
+      "today": "今天",
+      "tomorrow": "明天",
+      "weekend": "这个周末"
+    }
+  },
+  "weather": {
+    "search": "搜索城市",
+    "hourly": "逐小时预报",
+    "daily": "7 天预报",
+    "today": "今天",
+    "now": "现在",
+    "highLow": "最高 {{high}}° 最低 {{low}}°",
+    "feelsLike": "体感 {{temp}}°",
+    "humidity": "湿度",
+    "wind": "风速",
+    "uv": "紫外线",
+    "visibility": "能见度",
+    "pressure": "气压",
+    "sun": "日出 / 日落",
+    "condition": {
+      "clear": "晴",
+      "partly": "局部多云",
+      "cloudy": "多云",
+      "drizzle": "毛毛雨",
+      "rain": "雨",
+      "storm": "雷暴",
+      "snow": "雪",
+      "fog": "雾"
+    }
+  },
+  "activity": {
+    "cpu": "CPU",
+    "memory": "内存",
+    "energy": "能耗",
+    "disk": "磁盘",
+    "network": "网络",
+    "search": "搜索进程",
+    "system": "系统",
+    "user": "用户",
+    "idle": "空闲",
+    "physical": "物理内存",
+    "used": "已用内存",
+    "cached": "缓存文件",
+    "sent": "已发送",
+    "received": "已接收",
+    "threads": "线程",
+    "process": "进程",
+    "pid": "PID",
+    "hint": "数值每 1.5 秒更新 · 演示数据"
+  }
+}

@@ -18,7 +18,13 @@
     "calculator": "计算器",
     "appstore": "App Store",
     "settings": "系统设置",
-    "about": "关于"
+    "about": "关于",
+    "mail": "邮件",
+    "messages": "信息",
+    "photos": "照片",
+    "reminders": "提醒事项",
+    "weather": "天气",
+    "activity": "活动监视器"
   },
   "actions": {
     "open": "打开",

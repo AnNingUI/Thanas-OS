@@ -23,6 +23,12 @@ import { GoogleApp } from '@/components/apps/GoogleApp';
 import { CalendarApp } from '@/components/apps/CalendarApp';
 import { AppleMusicApp } from '@/components/apps/AppleMusicApp';
 import { MapsApp } from '@/components/apps/MapsApp';
+import { MailApp } from '@/components/apps/MailApp';
+import { MessagesApp } from '@/components/apps/MessagesApp';
+import { PhotosApp } from '@/components/apps/PhotosApp';
+import { RemindersApp } from '@/components/apps/RemindersApp';
+import { WeatherApp } from '@/components/apps/WeatherApp';
+import { ActivityMonitorApp } from '@/components/apps/ActivityMonitorApp';
 import { AppConfig } from '@/types/macos';
 
 const apps: AppConfig[] = [
@@ -42,6 +48,12 @@ const apps: AppConfig[] = [
   { id: 'contact', name: 'Contact', icon: '✉️', component: ContactApp, defaultSize: { width: 850, height: 750 }, chromeMode: 'integrated' },
   { id: 'calculator', name: 'Calculator', icon: '🧮', component: CalculatorApp, defaultSize: { width: 300, height: 520 }, nonResizable: true, noMaximize: true, chromeMode: 'integrated' },
   { id: 'appstore', name: 'App Store', icon: '🛍️', component: AppStoreApp, defaultSize: { width: 1100, height: 680 }, chromeMode: 'integrated' },
+  { id: 'mail', name: 'Mail', icon: '📧', component: MailApp, defaultSize: { width: 1120, height: 760 }, chromeMode: 'integrated' },
+  { id: 'messages', name: 'Messages', icon: '💬', component: MessagesApp, defaultSize: { width: 1020, height: 720 }, chromeMode: 'integrated' },
+  { id: 'photos', name: 'Photos', icon: '🖼️', component: PhotosApp, defaultSize: { width: 1120, height: 760 }, chromeMode: 'integrated' },
+  { id: 'reminders', name: 'Reminders', icon: '✅', component: RemindersApp, defaultSize: { width: 940, height: 720 }, chromeMode: 'integrated' },
+  { id: 'weather', name: 'Weather', icon: '☀️', component: WeatherApp, defaultSize: { width: 1040, height: 780 }, chromeMode: 'integrated' },
+  { id: 'activity', name: 'Activity Monitor', icon: '📊', component: ActivityMonitorApp, defaultSize: { width: 1060, height: 740 }, chromeMode: 'integrated' },
   { id: 'settings', name: 'Settings', icon: '⚙️', component: SettingsApp, defaultSize: { width: 1000, height: 790 }, chromeMode: 'integrated' },
 ];
 

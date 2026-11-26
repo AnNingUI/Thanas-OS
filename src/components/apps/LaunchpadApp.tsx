@@ -23,6 +23,12 @@ import googleNewIcon from '@/assets/google-icon-new.png';
 import calendarIcon from '@/assets/calendar-icon-new.png';
 import appleMusicIcon from '@/assets/apple-music-icon.png';
 import mapsIcon from '@/assets/maps-icon.png';
+import mailAppIcon from '@/assets/icons/mail.svg';
+import messagesAppIcon from '@/assets/icons/messages.svg';
+import photosAppIcon from '@/assets/icons/photos.svg';
+import remindersAppIcon from '@/assets/icons/reminders.svg';
+import weatherAppIcon from '@/assets/icons/weather.svg';
+import activityAppIcon from '@/assets/icons/activity.svg';
 
 export const APP_ICONS: Record<string, string> = {
   finder: finderIcon,
@@ -44,6 +50,12 @@ export const APP_ICONS: Record<string, string> = {
   calendar: calendarIcon,
   applemusic: appleMusicIcon,
   maps: mapsIcon,
+  mail: mailAppIcon,
+  messages: messagesAppIcon,
+  photos: photosAppIcon,
+  reminders: remindersAppIcon,
+  weather: weatherAppIcon,
+  activity: activityAppIcon,
 };
 
 const PAGE_SIZE = 28; // 7 cols x 4 rows

@@ -18,7 +18,13 @@
     "calculator": "Calculator",
     "appstore": "App Store",
     "settings": "Settings",
-    "about": "About"
+    "about": "About",
+    "mail": "Mail",
+    "messages": "Messages",
+    "photos": "Photos",
+    "reminders": "Reminders",
+    "weather": "Weather",
+    "activity": "Activity Monitor"
   },
   "actions": {
     "open": "Open",
