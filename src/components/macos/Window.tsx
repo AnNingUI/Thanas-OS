@@ -209,6 +209,7 @@ newWidth = Math.min(newWidth, usableWidth - resizeStart.posX);
         width: window.isMaximized ? undefined : window.size.width,
         height: window.isMaximized ? undefined : window.size.height,
         zIndex: window.zIndex,
+        visibility: window.isRestoring ? 'hidden' : undefined,
         background: 'hsl(var(--macos-glass))',
         border: '1px solid hsl(var(--macos-glass-border))',
         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 1px rgba(255, 255, 255, 0.15) inset',

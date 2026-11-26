@@ -18,6 +18,23 @@ interface ActiveEffect {
   start: number;
   duration: number;
   seed: number;
+  /** genie 反向播放（从 Dock 图标展开回窗口）。 */
+  reverse?: boolean;
+  /** 反向 Genie 结束时要通知的窗口。 */
+  windowId?: string;
+  /** 到点后等待窗口真正显示/被 live 捕获，再移除特效。 */
+  hold?: boolean;
+  holdReady?: boolean;
+  holdAt?: number;
+  seenVisible?: boolean;
+  /** 交接淡出开始时间。 */
+  fadeAt?: number;
+}
+
+interface PendingRestore {
+  windowId: string;
+  appId: string;
+  duration: number;
 }
 
 const UNIFORM_FLOATS = 8 + 3 * 16; // viewport/css/count/pad + 3 effects × 4 vec4
@@ -50,6 +67,9 @@ export class Surface {
 
   private liveTex: GPUTexture | null = null;
   private snapTex: GPUTexture | null = null;
+  private windowTex: GPUTexture | null = null;
+  /** 最小化时存下的「含窗口」整桌纹理，还原时用作反向 Genie 的源。 */
+  private restoreTextures = new Map<string, GPUTexture>();
   private sampler: GPUSampler | null = null;
   private uniformBuf: GPUBuffer | null = null;
   private bindGroup: GPUBindGroup | null = null;
@@ -65,6 +85,7 @@ export class Surface {
   private raf = 0;
   private disposed = false;
   private hasFrame = false;
+  private pendingRestore: PendingRestore | null = null;
   private unsubscribe: (() => void) | null = null;
   private resizeObserver: ResizeObserver | null = null;
   private onWindowResize = () => this.resize();
@@ -102,6 +123,12 @@ export class Surface {
     context.configure({ device, format: this.format, alphaMode: 'premultiplied' });
 
     this.sampler = device.createSampler({ magFilter: 'linear', minFilter: 'linear' });
+    // 还原动画用的窗口独立纹理；平时用 1×1 占位，避免 bind group 缺 binding。
+    this.windowTex = device.createTexture({
+      size: { width: 1, height: 1 },
+      format: this.format,
+      usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT,
+    });
 
     const module = device.createShaderModule({ code: shaderCode });
     const info = await module.getCompilationInfo?.();
@@ -114,6 +141,7 @@ export class Surface {
         { binding: 1, visibility: GPUShaderStage.FRAGMENT, texture: { sampleType: 'float' } },
         { binding: 2, visibility: GPUShaderStage.FRAGMENT, texture: { sampleType: 'float' } },
         { binding: 3, visibility: GPUShaderStage.FRAGMENT, sampler: { type: 'filtering' } },
+        { binding: 4, visibility: GPUShaderStage.FRAGMENT, texture: { sampleType: 'float' } },
       ],
     });
     const layout = device.createPipelineLayout({ bindGroupLayouts: [group0] });
@@ -166,6 +194,9 @@ export class Surface {
     this.effects = [];
     this.liveTex?.destroy();
     this.snapTex?.destroy();
+    this.windowTex?.destroy();
+    for (const tex of this.restoreTextures.values()) tex.destroy();
+    this.restoreTextures.clear();
     this.uniformBuf?.destroy();
   }
 
@@ -217,6 +248,14 @@ export class Surface {
       usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST
         | GPUTextureUsage.RENDER_ATTACHMENT,
     });
+    this.rebuildBindGroup();
+    this.hasFrame = false;
+    requestPaint(this.canvas);
+    requestAnimationFrame(() => this.syncHitGeometry());
+  }
+
+  private rebuildBindGroup(): void {
+    if (!this.liveTex || !this.snapTex || !this.windowTex || !this.uniformBuf || !this.sampler) return;
     this.bindGroup = this.device.createBindGroup({
       layout: this.pipelineMain!.getBindGroupLayout(0),
       entries: [
@@ -224,11 +263,9 @@ export class Surface {
         { binding: 1, resource: this.liveTex.createView() },
         { binding: 2, resource: this.snapTex.createView() },
         { binding: 3, resource: this.sampler },
+        { binding: 4, resource: this.windowTex.createView() },
       ],
     });
-    this.hasFrame = false;
-    requestPaint(this.canvas);
-    requestAnimationFrame(() => this.syncHitGeometry());
   }
 
   /**
@@ -242,9 +279,51 @@ export class Surface {
     return gen !== 'none';
   }
 
+  /** 最小化时保存一份含窗口的整桌帧；还原时直接用它，避免捕获时序问题。 */
+  private storeRestoreTexture(windowId: string): void {
+    if (!this.liveTex || !this.snapTex) return;
+    const old = this.restoreTextures.get(windowId);
+    old?.destroy();
+    const tex = this.device.createTexture({
+      size: { width: this.texW, height: this.texH },
+      format: this.format,
+      usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC,
+    });
+    // 用 live：最小化发生时窗口仍可见，live 已是含窗口的当前帧。
+    // 不能用 snapTex —— 它的捕获与这次 copy 的队列顺序不可靠，常常拷到旧帧。
+    const encoder = this.device.createCommandEncoder();
+    encoder.copyTextureToTexture(
+      { texture: this.liveTex },
+      { texture: tex },
+      { width: this.texW, height: this.texH },
+    );
+    this.device.queue.submit([encoder.finish()]);
+    this.restoreTextures.set(windowId, tex);
+    // 防御：最多缓存 6 个
+    if (this.restoreTextures.size > 6) {
+      const first = this.restoreTextures.keys().next().value;
+      if (first) { this.restoreTextures.get(first)?.destroy(); this.restoreTextures.delete(first); }
+    }
+  }
+
+
+
   private pushEffect(req: EffectRequest): void {
     if (this.disposed || !this.hasFrame) return;
 
+    // 还原：窗口还没挂载，先登记，等下一帧捕获到它再反向播放 Genie。
+    if (req.kind === 'genie-restore') {
+      if (!req.windowId) return;
+      this.pendingRestore = {
+        windowId: req.windowId,
+        appId: req.appId,
+        duration: req.duration ?? DURATIONS.genie,
+      };
+      requestPaint(this.canvas);
+      return;
+    }
+
+    if (!req.element) return;
     const from = rectOf(req.element);
 
     if (req.kind === 'wobble') {
@@ -252,7 +331,7 @@ export class Surface {
       // 目标尺寸的内容由 live 纹理直接呈现，避免拉伸与结束时的闪帧。
       const snapped = this.takeSnapshot();
       if (!snapped) return;
-      this.startEffect(3, from, from);
+      this.startEffect(3, from, from, { duration: req.duration });
       return;
     }
 
@@ -266,23 +345,37 @@ export class Surface {
         w: 36,
         h: 36,
       };
-      this.startEffect(2, from, to);
+      if (snapped && req.windowId) this.storeRestoreTexture(req.windowId);
+      this.startEffect(2, from, to, { duration: req.duration });
       return;
     }
 
     // smoke
-    if (snapped) this.startEffect(1, from, from);
+    if (snapped) this.startEffect(1, from, from, { duration: req.duration });
   }
 
-  private startEffect(kind: number, from: Rect, to: Rect): void {
-    if (this.effects.length >= MAX_EFFECTS) this.effects.shift();
+  private startEffect(
+    kind: number,
+    from: Rect,
+    to: Rect,
+    opts: { duration?: number; reverse?: boolean; windowId?: string } = {},
+  ): void {
+    if (this.effects.length >= MAX_EFFECTS) {
+      const dropped = this.effects.shift();
+      if (dropped?.windowId) {
+        window.dispatchEvent(new CustomEvent('hic:restore-done', { detail: { windowId: dropped.windowId } }));
+      }
+    }
     this.effects.push({
       kind,
       from,
       to,
       start: performance.now(),
-      duration: kind === 1 ? DURATIONS.smoke : kind === 2 ? DURATIONS.genie : DURATIONS.wobble,
+      duration: opts.duration
+        ?? (kind === 1 ? DURATIONS.smoke : kind === 2 ? DURATIONS.genie : DURATIONS.wobble),
       seed: Math.random() * 6.283,
+      reverse: opts.reverse,
+      windowId: opts.windowId,
     });
     requestPaint(this.canvas);
   }
@@ -292,7 +385,38 @@ export class Surface {
     if (this.effects.length > 0) {
       const now = performance.now();
       const before = this.effects.length;
-      this.effects = this.effects.filter((fx) => now - fx.start < fx.duration);
+      const next: ActiveEffect[] = [];
+      for (const fx of this.effects) {
+        const elapsed = now - fx.start;
+        if (elapsed < fx.duration) {
+          next.push(fx);
+          continue;
+        }
+        // 反向 Genie 的「交接帧」：先显示窗口并派发事件，
+        // 等 draw() 捕获到含窗口的 live 后再移除特效，避免结束时闪一帧背景。
+        if (fx.windowId) {
+          if (!fx.hold) {
+            fx.hold = true;
+            fx.holdAt = now;
+            if (fx.reverse) window.dispatchEvent(new CustomEvent('hic:restore-done', { detail: { windowId: fx.windowId } }));
+            requestPaint(this.canvas);
+          }
+          const timedOut = fx.holdAt !== undefined && now - fx.holdAt > 800;
+          if (!fx.holdReady && !timedOut) {
+            next.push(fx);
+            continue;
+          }
+          // 交接交叉淡化：等 live 已含窗口后，让特效窗口淡出
+          if (fx.holdReady) {
+            const fadeAge = fx.fadeAt !== undefined ? now - fx.fadeAt : 0;
+            if (fadeAge < 160) {
+              next.push(fx);
+              continue;
+            }
+          }
+        }
+      }
+      this.effects = next;
       if (this.effects.length !== before) requestPaint(this.canvas);
       this.draw();
     }
@@ -322,9 +446,15 @@ export class Surface {
       d[base + 6] = fx.to.w;
       d[base + 7] = fx.to.h;
       d[base + 8] = fx.kind;
-      d[base + 9] = t;
-      d[base + 10] = fx.seed;
-      d[base + 11] = fx.kind === 2 ? fx.duration / 1000 : 0; // genie 需要总时长（秒）
+      d[base + 9] = fx.reverse ? 1 - t : t;
+      if (fx.kind === 2) {
+        const fade = fx.fadeAt !== undefined ? 1 - Math.min(1, (now - fx.fadeAt) / 150) : 1;
+        d[base + 10] = Math.max(0, fade);
+      } else {
+        d[base + 10] = fx.seed;
+      }
+      // genie 需要总时长（秒）；用符号编码 reverse，shader 据此选择窗口纹理
+      d[base + 11] = fx.kind === 2 ? (fx.reverse ? -fx.duration / 1000 : fx.duration / 1000) : 0;
       // genie 的行进方向：指向目标中心，主轴取位移更大的那根
       const fcx = fx.from.x + fx.from.w / 2;
       const fcy = fx.from.y + fx.from.h / 2;
@@ -362,15 +492,87 @@ export class Surface {
     if (this.disposed || !this.pipelineMain || !this.liveTex || !this.bindGroup) return;
     if (this.canvas.width === 0 || this.canvas.height === 0) return;
 
-    const gen = drawElementToTexture(
-      this.device.queue,
-      this.content,
-      this.liveTex,
-      this.texW,
-      this.texH,
-    );
-    if (gen === 'none') return;
-    this.hasFrame = true;
+    // ⚠️ 还原那一帧不要重捕 live：窗口刚从 isMinimized 挂载出来，
+    // 首帧可能还没完成内容绘制（或被隐藏标记影响），重捕会把一块空白窗口
+    // 画到主通道上 —— 就是动画中途闪出的灰色大块。
+    // 继续用上一帧（最小化后、本来就没有窗口）的 live 作为背景。
+    if (!this.pendingRestore) {
+      // 在捕获**之前**判断哪些特效已经历过一帧「窗口可见」，
+      // 这样本次捕获一定包含窗口，移除特效才不会闪背景。
+      const readyNow = this.effects.filter(f => f.hold && f.seenVisible && !f.holdReady);
+
+      const gen = drawElementToTexture(
+        this.device.queue,
+        this.content,
+        this.liveTex,
+        this.texW,
+        this.texH,
+      );
+      if (gen === 'none') return;
+      this.hasFrame = true;
+
+      for (const f of readyNow) {
+        f.holdReady = true;
+        f.fadeAt = performance.now();
+        requestPaint(this.canvas);
+      }
+      // 本帧才变可见的，记下来，下一帧捕获后才允许移除
+      for (const f of this.effects) {
+        if (!f.hold || f.holdReady || !f.windowId) continue;
+        const el = document.querySelector<HTMLElement>(`[data-window-id="${f.windowId}"]`);
+        if (!el || getComputedStyle(el).visibility !== 'hidden') f.seenVisible = true;
+      }
+    } else if (!this.hasFrame) {
+      return;
+    }
+
+    // 还原：窗口已挂载。把**窗口元素本身**捕获到独立纹理，
+    // 不能从 live/快照里取 —— 那一帧可能还是上一帧的桌面（没有该窗口），
+    // 结果还原动画采样到桌面纹理而不是 app 内容。
+    if (this.pendingRestore) {
+      const pending = this.pendingRestore;
+      const el = document.querySelector<HTMLElement>(`[data-window-id="${pending.windowId}"]`);
+      if (el) {
+        // 窗口由 React 以 visibility:hidden 挂载，不会闪出完整尺寸。
+        // 反向 Genie 的源用最小化时缓存的「含窗口」纹理。
+        const stored = this.restoreTextures.get(pending.windowId);
+        this.pendingRestore = null;
+        if (!stored) {
+          window.dispatchEvent(new CustomEvent('hic:restore-done', { detail: { windowId: pending.windowId } }));
+          return;
+        }
+        // ⚠️ 窗口挂载时 animate-fade-in 是 scale(0.95)→1，持续 300ms。
+        // 不在测矩形前禁用，反向 Genie 的 from 就会小 5%，动画结束才“突然变大”。
+        el.style.animation = 'none';
+        el.style.opacity = '1';
+        void el.offsetWidth;
+        const from = rectOf(el);
+        this.windowTex?.destroy();
+        this.windowTex = this.device.createTexture({
+          size: { width: this.texW, height: this.texH },
+          format: this.format,
+          usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT,
+        });
+        const encoder = this.device.createCommandEncoder();
+        encoder.copyTextureToTexture(
+          { texture: stored },
+          { texture: this.windowTex },
+          { width: this.texW, height: this.texH },
+        );
+        this.device.queue.submit([encoder.finish()]);
+        this.rebuildBindGroup();
+
+        const dock = document.querySelector<HTMLElement>(`[data-dock-app="${pending.appId}"]`);
+        const to = dock ? rectOf(dock) : { x: from.x + from.w / 2 - 18, y: from.y + from.h - 40, w: 36, h: 36 };
+        this.startEffect(2, from, to, {
+          duration: pending.duration,
+          reverse: true,
+          windowId: pending.windowId,
+        });
+      } else {
+        requestPaint(this.canvas);
+      }
+    }
 
     const count = this.writeUniforms(performance.now());
     const encoder = this.device.createCommandEncoder();

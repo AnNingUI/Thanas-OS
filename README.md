@@ -292,7 +292,8 @@ smoke dissolve on close, funnel collapse into the dock on minimize, and a live
 window-geometry resize on maximize/restore (no snapshot stretching). Dock magnification, drag and resize keep working because
 the DOM is still the source of truth for layout and hit-testing.
 
-Enable it in **Settings → Displays → HTML-in-Canvas**. It is off by default, requires
+Enable it in **Settings → Displays → HTML-in-Canvas**. The same panel exposes the
+**Minimize / Close animation durations**. It is off by default, requires
 Chrome with HTML-in-Canvas + WebGPU, and falls back to the normal DOM renderer if either
 is missing. Toggling the switch remounts the desktop (open windows are closed).
 

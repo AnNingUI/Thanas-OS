@@ -12,9 +12,11 @@ dock on minimize, and a live window resize on maximize/restore.
 It is **opt-in**: Settings → Displays → *HTML-in-Canvas*. Default is off, and the
 browser-support check falls back to plain DOM without ever blanking the page.
 
-| Close (red) | Minimize (yellow) |
-| --- | --- |
-| ![smoke](assets/smoke.png) | ![genie](assets/genie.png) |
+| Close (red) | Minimize (yellow) | Restore (reverse) |
+| --- | --- | --- |
+| ![smoke](assets/smoke.png) | ![genie](assets/genie.png) | ![genie restore](assets/genie-restore.png) |
+
+![Displays settings](assets/settings-durations.png)
 
 Maximize/restore is **not** a canvas effect: the window's real DOM geometry is animated
 with a CSS transition, so the app content reflows every frame instead of being stretched.
@@ -40,7 +42,7 @@ Integration touches seven existing files:
 | `components/macos/Desktop.tsx` | wrap the desktop root in `<HTMLInCanvasSurface>` |
 | `components/macos/Window.tsx` | `data-window-id` (effect rect lookup) |
 | `components/macos/Dock.tsx` | `data-dock-app` (genie target rect) |
-| `components/apps/SettingsApp.tsx` | one `<Row>` + `<Switch>` in Displays |
+| `components/apps/SettingsApp.tsx` | HTML-in-Canvas switch + two duration sliders in Displays |
 | `index.css` | canvas surface + drawable-child sizing |
 
 No context API changes, no new dependencies, no build config changes.
@@ -57,7 +59,26 @@ No context API changes, no new dependencies, no build config changes.
    buffer (from rect, to rect, kind/progress/seed/duration, genie dir+perp).
    Maximize/restore bypasses this path entirely: `maximizeWindow()` animates the real
    DOM box (`left/top/width/height`) and commits React state at the end.
-6. The minimize effect is a line-for-line port of `Genie.fragment.wgsl`: rows are
+6. On minimize the surface also caches the current **live** frame (which still contains
+the window) keyed by window id. Restore emits `genie-restore`; the surface reuses that
+cached frame as the source, hides the newly mounted window, and runs the same Genie
+shader with `progress = 1 - t`, expanding from the dock icon back into the window.
+Using the cached live frame matters: a window captured right after mount can still be
+mid fade-in / not painted, which showed the desktop instead of the app. Before measuring the restore rectangle, the window's `animate-fade-in` (scale 0.95 → 1,
+300 ms) is cancelled; otherwise the reverse Genie starts from a 5%-smaller rect and the
+window appears to grow when the animation ends.
+
+The restored
+window is also mounted with `isRestoring: true` (`visibility: hidden`) and only revealed
+when the Surface dispatches `hic:restore-done`, so there is no one-frame full-size flash.
+
+The effect is not removed at the same moment the window is revealed: it holds at
+`progress = 0` (full window) until a paint has actually captured the now-visible window
+into `liveTex`, then the effect window cross-fades out over ~150 ms (`info.z` carries the
+hand-off alpha) and is dropped. That softens the change between the cached frame and the
+live window. Without that hand-off, removing the effect a
+frame before the window is captured shows one frame of bare desktop.
+7. The minimize effect is a line-for-line port of `Genie.fragment.wgsl`: rows are
    projected onto `(dir, perp)`, the band shrinks toward the dock icon, and each row's
    side margins follow `mix(mix(fromP, toP, slide), fromP, easeInOutQuad(t))`.
    Content is **compressed** into the shrinking band, never cropped.

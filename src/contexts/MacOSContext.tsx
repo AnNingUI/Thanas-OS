@@ -36,12 +36,25 @@ const DEFAULT_SETTINGS: MacOSSettings = {
   bluetooth: true,
   airdrop: true,
   focus: false,
+  genieDuration: 1000,
+  closeDuration: 1600,
 };
 
 export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: AppConfig[] }) => {
   const desktopScale = 0.9;
   const [windows, setWindows] = useState<WindowState[]>([]);
   const [focusedWindowId, setFocusedWindowId] = useState<string | null>(null);
+  // 反向 Genie 由 Surface 播放；播放结束通过事件通知这里取消隐藏标记。
+  useEffect(() => {
+    const onDone = (e: Event) => {
+      const id = (e as CustomEvent<{ windowId?: string }>).detail?.windowId;
+      if (!id) return;
+      setWindows(prev => prev.map(w => (w.id === id ? { ...w, isRestoring: false } : w)));
+    };
+    window.addEventListener('hic:restore-done', onDone);
+    return () => window.removeEventListener('hic:restore-done', onDone);
+  }, []);
+
   const [settings, setSettings] = useState<MacOSSettings>(() => {
     const saved = localStorage.getItem('macos-settings');
     return saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SETTINGS;
@@ -62,11 +75,7 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
     setPlayerVolume(settings.volume ?? 65);
   }, [settings]);
 
-  /**
-   * 把窗口动作转成表面特效（仅 HTML-in-Canvas 模式）。
-   * 只对最上层窗口生效：特效是叠加绘制的，后台窗口做特效会盖住上层窗口。
-   */
-  const triggerWindowEffect = (kind: EffectKind, windowId: string) => {
+  const triggerWindowEffect = (kind: EffectKind, windowId: string, duration?: number) => {
     if (!settings.htmlInCanvas) return;
     const target = windows.find(w => w.id === windowId);
     if (!target) return;
@@ -74,7 +83,7 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
     if (!top || top.id !== windowId) return;
     const el = document.querySelector<HTMLElement>(`[data-window-id="${windowId}"]`);
     if (!el) return;
-    emitEffect({ kind, element: el, appId: target.appId });
+    emitEffect({ kind, element: el, appId: target.appId, windowId, duration });
   };
 
   const openApp = (appId: string) => {
@@ -100,9 +109,21 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
     const minimizedWindow = windows.find(w => w.appId === appId && w.isMinimized);
     if (minimizedWindow) {
       setWindows(prev =>
-        prev.map(w => (w.id === minimizedWindow.id ? { ...w, isMinimized: false } : w))
+        prev.map(w => (w.id === minimizedWindow.id ? { ...w, isMinimized: false, isRestoring: true } : w))
       );
       focusWindow(minimizedWindow.id);
+      // 兜底：动画事件丢失时也不能让窗口永远隐藏
+      window.setTimeout(() => {
+        setWindows(prev => prev.map(w => (w.id === minimizedWindow.id ? { ...w, isRestoring: false } : w)));
+      }, (settings.genieDuration ?? 1000) + 500);
+      if (settings.htmlInCanvas) {
+        emitEffect({
+          kind: 'genie-restore',
+          appId,
+          windowId: minimizedWindow.id,
+          duration: settings.genieDuration,
+        });
+      }
       return;
     }
 
@@ -143,7 +164,7 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
   };
 
   const closeWindow = (windowId: string) => {
-    triggerWindowEffect('smoke', windowId);
+    triggerWindowEffect('smoke', windowId, settings.closeDuration);
     setWindows(prev => prev.filter(w => w.id !== windowId));
     if (focusedWindowId === windowId) {
       const remaining = windows.filter(w => w.id !== windowId);
@@ -152,7 +173,7 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
   };
 
   const minimizeWindow = (windowId: string) => {
-    triggerWindowEffect('genie', windowId);
+    triggerWindowEffect('genie', windowId, settings.genieDuration);
     setWindows(prev =>
       prev.map(w => (w.id === windowId ? { ...w, isMinimized: true } : w))
     );

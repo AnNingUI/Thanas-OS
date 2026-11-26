@@ -283,6 +283,12 @@ export const SettingsApp = () => {
                 <Row label="HTML-in-Canvas" desc="Draw the whole desktop through one WebGPU canvas (experimental).">
                   <Switch checked={!!settings.htmlInCanvas} onCheckedChange={v => updateSettings({ htmlInCanvas: v })} />
                 </Row>
+                <Row label="Minimize Animation" desc={`${settings.genieDuration ?? 1000} ms · HTML-in-Canvas`}>
+                  <div className="w-48"><AppleSlider value={settings.genieDuration ?? 1000} min={200} max={2500} step={50} onChange={v => updateSettings({ genieDuration: v })} /></div>
+                </Row>
+                <Row label="Close Animation" desc={`${settings.closeDuration ?? 1600} ms · HTML-in-Canvas`}>
+                  <div className="w-48"><AppleSlider value={settings.closeDuration ?? 1600} min={300} max={3000} step={50} onChange={v => updateSettings({ closeDuration: v })} /></div>
+                </Row>
               </Card>
             )}
 

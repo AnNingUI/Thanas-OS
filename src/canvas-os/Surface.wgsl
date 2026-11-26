@@ -16,6 +16,7 @@ struct Params {
 @group(0) @binding(1) var liveTex : texture_2d<f32>;
 @group(0) @binding(2) var snapTex : texture_2d<f32>;
 @group(0) @binding(3) var samp : sampler;
+@group(0) @binding(4) var windowTex : texture_2d<f32>;
 
 // ------------------------------------------------------------------ 公共
 
@@ -178,7 +179,8 @@ fn fs_fx(input : FxOut) -> @location(0) vec4<f32> {
   if (kind < 2.5) {
     let dir = input.genieDir.xy;
     let perp = input.genieDir.zw;
-    let duration = max(input.info.w, 1e-3);
+    let reverse = input.info.w < 0.0;
+    let duration = max(abs(input.info.w), 1e-3);
 
     // 原版时间轴：曲线阶段 0..50%，位移阶段 40%..100%（两段重叠）
     let totalCurve = max(duration * 0.5, 1e-5);
@@ -244,11 +246,19 @@ fn fs_fx(input : FxOut) -> @location(0) vec4<f32> {
     let uv = (srcPx - src.xy) / src.zw;
     if (uv.x < -0.002 || uv.x > 1.002 || uv.y < -0.002 || uv.y > 1.002) { discard; }
 
-    // 快照是整张桌面 → 映射到窗口子矩形
+    // 正向（最小化）从整桌快照取窗口子矩形；
+    // 反向（还原）直接采样「窗口自己的纹理」，避免取到桌面。
+    // 正向用整桌快照；反向用「还原瞬间同步捕获」的整桌纹理（含窗口），
+    // 两者都按窗口子矩形采样 —— 不会取到桌面背景。
     let snapUv = (src.xy + clamp(uv, vec2<f32>(0.0), vec2<f32>(1.0)) * src.zw) / u.cssSize;
-    let color = textureSampleLevel(snapTex, samp, snapUv, 0.0);
-    // 原版没有末端淡出：内容最终被压缩进目标矩形，由动画结束统一隐藏。
-    let alpha = color.a;
+    var color : vec4<f32>;
+    if (reverse) {
+      color = textureSampleLevel(windowTex, samp, snapUv, 0.0);
+    } else {
+      color = textureSampleLevel(snapTex, samp, snapUv, 0.0);
+    }
+    // 反向 Genie 的交接阶段用 info.z 做短暂交叉淡化，避免缓存纹理与实时窗口硬切。
+    let alpha = color.a * clamp(input.info.z, 0.0, 1.0);
     if (alpha <= 0.002) { discard; }
     return vec4<f32>(color.rgb * alpha, alpha);
   }

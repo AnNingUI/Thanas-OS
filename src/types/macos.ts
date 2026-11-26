@@ -39,6 +39,8 @@ export interface WindowState {
   position: { x: number; y: number };
   size: { width: number; height: number };
   isMinimized: boolean;
+  /** 正在播放还原动画：先以隐藏状态挂载，动画结束再显示。 */
+  isRestoring?: boolean;
   isMaximized: boolean;
   zIndex: number;
   preMaximizePosition?: { x: number; y: number };
@@ -64,6 +66,10 @@ export interface MacOSSettings {
   googleInstalled?: boolean;
   /** 是否用 HTML-in-Canvas 把整个桌面作为一张 WebGPU 纹理绘制（实验性）。 */
   htmlInCanvas?: boolean;
+  /** HTML-in-Canvas 模式下，最小化 Genie 动画时长（毫秒）。 */
+  genieDuration?: number;
+  /** HTML-in-Canvas 模式下，关窗烟雾动画时长（毫秒）。 */
+  closeDuration?: number;
 }
 
 export interface DockItem {
