@@ -126,9 +126,9 @@ The desktop widgets are not third-party libraries. Each one was built specifical
 
 | Layer | Choice |
 |-------|--------|
-| Framework | React 18 with TypeScript |
-| Build | Vite |
-| Styling | Tailwind CSS with semantic tokens in `src/index.css` |
+| Framework | React 19 with TypeScript 5.9 |
+| Build | Vite 8 |
+| Styling | Tailwind CSS 4 with semantic tokens in `src/index.css` |
 | Animation | Framer Motion plus hand-rolled CSS keyframes |
 | Icons | lucide-react and react-icons |
 | Markdown | react-markdown plus remark-gfm |
@@ -288,8 +288,8 @@ Things planned but not yet built. Contributions welcome.
 
 ThanasOS can render the **entire desktop as one WebGPU texture** captured from real DOM
 (`canvas[content="drawable"]`), with window effects ported from the local `Macos-Genie-Effect-With-WebGPU` prototype:
-smoke dissolve on close, funnel collapse into the dock on minimize, and an overshoot
-wobble on maximize/restore. Dock magnification, drag and resize keep working because
+smoke dissolve on close, funnel collapse into the dock on minimize, and a live
+window-geometry resize on maximize/restore (no snapshot stretching). Dock magnification, drag and resize keep working because
 the DOM is still the source of truth for layout and hit-testing.
 
 Enable it in **Settings → Displays → HTML-in-Canvas**. It is off by default, requires

@@ -1,0 +1,6 @@
+allowBuilds:
+  '@swc/core': true
+minimumReleaseAgeExclude:
+  - '@types/node@26.6.10'
+  - '@types/react@19.3.3'
+  - lucide-react@1.80.0

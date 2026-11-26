@@ -18,28 +18,21 @@ interface ActiveEffect {
   start: number;
   duration: number;
   seed: number;
-  /** wobble 需要把真实窗口藏起来，结束时再显示。 */
-  hideEl?: HTMLElement;
 }
 
 const UNIFORM_FLOATS = 8 + 3 * 16; // viewport/css/count/pad + 3 effects × 4 vec4
 const MAX_EFFECTS = 3;
-const HIDDEN_CLASS = 'hic-effect-hidden';
 
 const DURATIONS: Record<string, number> = {
   smoke: 1600,
   genie: 1000,
-  wobble: 380,
+  wobble: 240,
 };
 
 const rectOf = (el: Element): Rect => {
   const r = el.getBoundingClientRect();
   return { x: r.left, y: r.top, w: Math.max(1, r.width), h: Math.max(1, r.height) };
 };
-
-const sameRect = (a: Rect, b: Rect) =>
-  Math.abs(a.x - b.x) < 0.5 && Math.abs(a.y - b.y) < 0.5 &&
-  Math.abs(a.w - b.w) < 0.5 && Math.abs(a.h - b.h) < 0.5;
 
 /**
  * 整个桌面的 HTML-in-Canvas 表面。
@@ -88,9 +81,16 @@ export class Surface {
     if (!isSupported(this.canvas)) throw new Error('HTML-in-Canvas 不可用');
     if (!navigator.gpu) throw new Error('WebGPU 不可用');
 
-    const adapter = await navigator.gpu.requestAdapter();
+    // ⚠️ 多次热重载/频繁切模式后 requestAdapter 可能永久 pending。
+    // 没有超时的话 canvas 会停在默认 300×150，界面直接黑屏。
+    const withTimeout = <T,>(p: Promise<T>, ms: number, label: string): Promise<T> =>
+      Promise.race([
+        p,
+        new Promise<T>((_, reject) => setTimeout(() => reject(new Error(label + ' 超时')), ms)),
+      ]);
+    const adapter: any = await withTimeout((navigator as any).gpu.requestAdapter(), 5000, 'GPUAdapter 请求');
     if (!adapter) throw new Error('没有可用的 GPUAdapter');
-    const device = await adapter.requestDevice();
+    const device: any = await withTimeout(adapter.requestDevice(), 5000, 'GPUDevice 请求');
     if (this.disposed) return; // 初始化期间被关闭（快速切换开关）
     if (!supportsElementTexture(device.queue)) throw new Error('缺少 drawElementImageToTexture');
 
@@ -98,7 +98,7 @@ export class Surface {
     const context = this.canvas.getContext('webgpu') as GPUCanvasContext | null;
     if (!context) throw new Error('无法获取 webgpu context');
     this.context = context;
-    this.format = navigator.gpu.getPreferredCanvasFormat?.() ?? 'bgra8unorm';
+    this.format = (navigator as any).gpu.getPreferredCanvasFormat?.() ?? 'bgra8unorm';
     context.configure({ device, format: this.format, alphaMode: 'premultiplied' });
 
     this.sampler = device.createSampler({ magFilter: 'linear', minFilter: 'linear' });
@@ -163,7 +163,6 @@ export class Surface {
     this.unsubscribe?.();
     this.resizeObserver?.disconnect();
     window.removeEventListener('resize', this.onWindowResize);
-    for (const fx of this.effects) fx.hideEl?.classList.remove(HIDDEN_CLASS);
     this.effects = [];
     this.liveTex?.destroy();
     this.snapTex?.destroy();
@@ -249,19 +248,11 @@ export class Surface {
     const from = rectOf(req.element);
 
     if (req.kind === 'wobble') {
-      // 先隐藏真实窗口（保留几何），等 React 把新位置写进 DOM 后再读目标矩形。
+      // 只拍一张旧尺寸快照，原位置淡出；不要隐藏窗口、不要读目标矩形。
+      // 目标尺寸的内容由 live 纹理直接呈现，避免拉伸与结束时的闪帧。
       const snapped = this.takeSnapshot();
       if (!snapped) return;
-      req.element.classList.add(HIDDEN_CLASS);
-      requestAnimationFrame(() => {
-        if (this.disposed) return;
-        const to = rectOf(req.element);
-        if (sameRect(from, to)) {
-          req.element.classList.remove(HIDDEN_CLASS);
-          return;
-        }
-        this.startEffect(3, from, to, req.element);
-      });
+      this.startEffect(3, from, from);
       return;
     }
 
@@ -283,11 +274,8 @@ export class Surface {
     if (snapped) this.startEffect(1, from, from);
   }
 
-  private startEffect(kind: number, from: Rect, to: Rect, hideEl?: HTMLElement): void {
-    if (this.effects.length >= MAX_EFFECTS) {
-      const dropped = this.effects.shift();
-      dropped?.hideEl?.classList.remove(HIDDEN_CLASS);
-    }
+  private startEffect(kind: number, from: Rect, to: Rect): void {
+    if (this.effects.length >= MAX_EFFECTS) this.effects.shift();
     this.effects.push({
       kind,
       from,
@@ -295,7 +283,6 @@ export class Surface {
       start: performance.now(),
       duration: kind === 1 ? DURATIONS.smoke : kind === 2 ? DURATIONS.genie : DURATIONS.wobble,
       seed: Math.random() * 6.283,
-      hideEl,
     });
     requestPaint(this.canvas);
   }
@@ -305,11 +292,7 @@ export class Surface {
     if (this.effects.length > 0) {
       const now = performance.now();
       const before = this.effects.length;
-      this.effects = this.effects.filter((fx) => {
-        const done = now - fx.start >= fx.duration;
-        if (done) fx.hideEl?.classList.remove(HIDDEN_CLASS);
-        return !done;
-      });
+      this.effects = this.effects.filter((fx) => now - fx.start < fx.duration);
       if (this.effects.length !== before) requestPaint(this.canvas);
       this.draw();
     }

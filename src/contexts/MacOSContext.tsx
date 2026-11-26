@@ -166,40 +166,118 @@ export const MacOSProvider = ({ children, apps }: { children: ReactNode; apps: A
   };
 
   const maximizeWindow = (windowId: string) => {
-    triggerWindowEffect('wobble', windowId);
-    setWindows(prev =>
-      prev.map(w => {
-        if (w.id !== windowId) return w;
-        
-        if (w.isMaximized) {
-          // Un-maximize: restore previous position and size
+    const w = windows.find(x => x.id === windowId);
+    if (!w) return;
+
+    const scale = 0.9;
+    const containerW = window.innerWidth / scale;
+    const containerH = window.innerHeight / scale;
+    const maxRect = {
+      x: 0,
+      y: 28,
+      width: containerW,
+      height: containerH - 28 - 86,
+    };
+    const restoreRect = {
+      x: w.preMaximizePosition?.x ?? w.position.x,
+      y: w.preMaximizePosition?.y ?? w.position.y,
+      width: w.preMaximizeSize?.width ?? w.size.width,
+      height: w.preMaximizeSize?.height ?? w.size.height,
+    };
+    const toMax = !w.isMaximized;
+    const target = toMax ? maxRect : restoreRect;
+
+    // 结束后提交 React 状态；DOM 内联样式已经先落到目标值，提交时不会闪。
+    const commit = () => {
+      setWindows(prev =>
+        prev.map(item => {
+          if (item.id !== windowId) return item;
+          if (item.isMaximized) {
+            return {
+              ...item,
+              isMaximized: false,
+              position: item.preMaximizePosition || item.position,
+              size: item.preMaximizeSize || item.size,
+              preMaximizePosition: undefined,
+              preMaximizeSize: undefined,
+            };
+          }
           return {
-            ...w,
-            isMaximized: false,
-            position: w.preMaximizePosition || w.position,
-            size: w.preMaximizeSize || w.size,
-            preMaximizePosition: undefined,
-            preMaximizeSize: undefined,
-          };
-        } else {
-          // Maximize: store current position/size and go fullscreen
-          // If dock is auto-hide, use full height; otherwise leave space for dock
-          const maxWidth = window.innerWidth / desktopScale;
-          const maxHeight = settings.dockAutoHide 
-            ? window.innerHeight / desktopScale - 28 
-            : window.innerHeight / desktopScale - 28 - 86;
-          
-          return {
-            ...w,
+            ...item,
             isMaximized: true,
-            preMaximizePosition: w.position,
-            preMaximizeSize: w.size,
+            preMaximizePosition: item.position,
+            preMaximizeSize: item.size,
             position: { x: 0, y: 28 },
-            size: { width: maxWidth, height: maxHeight },
+            size: { width: maxRect.width, height: maxRect.height },
           };
-        }
-      })
-    );
+        })
+      );
+    };
+
+    const el = document.querySelector<HTMLElement>(`[data-window-id="${windowId}"]`);
+    if (!el || settings.reducedMotion) {
+      commit();
+      return;
+    }
+    // 防止动画中途重复点击
+    if (el.dataset.maximizing === '1') return;
+    el.dataset.maximizing = '1';
+
+    const current = el.getBoundingClientRect();
+    const from = {
+      x: toMax ? current.left / scale : parseFloat(el.style.left) || w.position.x,
+      y: toMax ? current.top / scale : parseFloat(el.style.top) || w.position.y,
+      width: toMax ? current.width / scale : parseFloat(el.style.width) || w.size.width,
+      height: toMax ? current.height / scale : parseFloat(el.style.height) || w.size.height,
+    };
+
+    // 先把当前几何写死成显式像素，避免 maximized 状态下的 right/bottom 干扰过渡
+    el.style.right = 'auto';
+    el.style.bottom = 'auto';
+    el.style.left = `${from.x}px`;
+    el.style.top = `${from.y}px`;
+    el.style.width = `${from.width}px`;
+    el.style.height = `${from.height}px`;
+    void el.offsetWidth; // 强制 reflow，transition 才有起点
+
+    el.style.transition =
+      'left 220ms cubic-bezier(0.2, 0.7, 0.2, 1), '
+      + 'top 220ms cubic-bezier(0.2, 0.7, 0.2, 1), '
+      + 'width 220ms cubic-bezier(0.2, 0.7, 0.2, 1), '
+      + 'height 220ms cubic-bezier(0.2, 0.7, 0.2, 1)';
+    el.style.left = `${target.x}px`;
+    el.style.top = `${target.y}px`;
+    el.style.width = `${target.width}px`;
+    el.style.height = `${target.height}px`;
+
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      delete el.dataset.maximizing;
+      el.style.transition = '';
+      // 与 React 将要写的样式保持一致，避免提交时跳动
+      if (toMax) {
+        el.style.left = '0px';
+        el.style.top = '28px';
+        el.style.right = '0px';
+        el.style.bottom = '86px';
+        el.style.width = 'auto';
+        el.style.height = 'auto';
+      } else {
+        el.style.right = 'auto';
+        el.style.bottom = 'auto';
+        el.style.left = `${target.x}px`;
+        el.style.top = `${target.y}px`;
+        el.style.width = `${target.width}px`;
+        el.style.height = `${target.height}px`;
+      }
+      commit();
+    };
+    el.addEventListener('transitionend', (ev) => {
+      if ((ev as TransitionEvent).propertyName === 'width') finish();
+    }, { once: true });
+    window.setTimeout(finish, 260);
   };
 
   const focusWindow = (windowId: string) => {

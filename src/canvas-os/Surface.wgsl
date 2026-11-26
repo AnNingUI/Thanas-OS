@@ -253,21 +253,16 @@ fn fs_fx(input : FxOut) -> @location(0) vec4<f32> {
     return vec4<f32>(color.rgb * alpha, alpha);
   }
 
-  // ---- 最大化 / 还原：带过冲的晃动
+  // ---- 最大化 / 还原：旧窗口原位淡出（交叉淡化）
+  // 不做几何拉伸：快照只有旧尺寸的内容，拉成新矩形必然马赛克；
+  // 结束时也不再切换可见性，因此不会闪一下。
   let p = progress;
-  let eased = 1.0 - pow(1.0 - p, 3.0);
-  let overshoot = sin(p * 3.14159265 * 2.4) * pow(1.0 - p, 2.0) * 0.06;
-  let t = clamp(eased + overshoot, 0.0, 1.2);
-  var cur = mix(rectA, rectB, t);
-  // 轻微横向抖动，让切换不是硬切
-  let wobble = sin(p * 24.0) * pow(1.0 - p, 2.0) * 0.012;
-  cur.x = cur.x + wobble * cur.z;
-
-  let uv = (pos - cur.xy) / max(cur.zw, vec2<f32>(1.0));
+  let uv = (pos - rectA.xy) / max(rectA.zw, vec2<f32>(1.0));
   if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) { discard; }
-  let srcUv = (rectA.xy + uv * rectA.zw) / u.cssSize;
-  let color = sampleSnap(srcUv);
-  let alpha = color.a * (1.0 - smoothstep(0.9, 1.0, p));
+
+  let snapUv = (rectA.xy + uv * rectA.zw) / u.cssSize;
+  let color = textureSampleLevel(snapTex, samp, snapUv, 0.0);
+  let alpha = color.a * (1.0 - smoothstep(0.0, 1.0, p));
   if (alpha <= 0.002) { discard; }
   return vec4<f32>(color.rgb * alpha, alpha);
 }

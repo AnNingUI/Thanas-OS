@@ -1,4 +1,5 @@
-import { Github, Linkedin, Mail, Coffee } from 'lucide-react';
+import { Mail, Coffee } from 'lucide-react';
+import { FaGithub, FaLinkedin } from 'react-icons/fa6';
 import { FrostedModal } from './FrostedModal';
 
 export const HelpModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => (
@@ -13,10 +14,10 @@ export const HelpModal = ({ open, onClose }: { open: boolean; onClose: () => voi
       <p className="text-xs uppercase tracking-wider text-white/50 font-semibold mb-2">Get in touch</p>
       <div className="grid grid-cols-1 gap-2">
         <a href="https://github.com/Thanas-R" target="_blank" rel="noreferrer" className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10">
-          <Github className="w-4 h-4" /><span className="text-sm">github.com/Thanas-R</span>
+          <FaGithub className="w-4 h-4" /><span className="text-sm">github.com/Thanas-R</span>
         </a>
         <a href="https://www.linkedin.com/in/thanasr/" target="_blank" rel="noreferrer" className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10">
-          <Linkedin className="w-4 h-4" /><span className="text-sm">linkedin.com/in/thanasr</span>
+          <FaLinkedin className="w-4 h-4" /><span className="text-sm">linkedin.com/in/thanasr</span>
         </a>
         <a href="mailto:thanas5.rd@gmail.com" className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10">
           <Mail className="w-4 h-4" /><span className="text-sm">thanas5.rd@gmail.com</span>
